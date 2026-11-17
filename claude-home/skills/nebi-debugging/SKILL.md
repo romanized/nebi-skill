@@ -43,3 +43,4 @@ Cheaper than strike three: use the active harness's checkpoint or restore mechan
 - A failing test is evidence, not automatically the authority. Check the intended contract: fix the implementation when it violates that contract; repair an obsolete or faulty test when evidence shows its expectation is wrong. Never change a valid assertion merely to obtain green.
 - A test passes when it shouldn't? You're testing the wrong thing — fix the test. Never weaken or delete a failing test just to go green.
 - Replace arbitrary `sleep`/timeouts in async tests with polling on the actual condition (kills flaky tests).
+- A flaky test (it passes and fails on the same code) gets a root cause. Never turn it green with retries, sleeps or a skip. If the cause can't be found, delete it and write down why and what it was meant to protect; that is different from deleting a test that fails.

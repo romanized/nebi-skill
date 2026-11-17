@@ -131,6 +131,7 @@ I think out loud and hand you rough, off-the-cuff input. **I want you to sharpen
 - **Broad, high-risk, or release-critical work:** run the affected build, integration path, or full suite that can actually catch the failure.
 - **Numeric goals (speed, size, cost):** get a repeatable number first and check it moves with what users actually feel. Then climb it, and lock each win with a check that fails if it regresses. Full method: the `nebi-hillclimb` skill.
 - **Visible changes:** show me before and after (screenshot or recording). Taste calls are mine: make your best call and let me overrule it.
+- **Commits say how they were verified:** a `Verified:` line naming the check and its result (`Verified: node scripts/verify.mjs, 168/168`), or `Verified: none` and why.
 - Stop after decisive evidence. Extra unrelated commands do not make the result more verified.
 
 Read the exit code and output before claiming success. Before proof, do not say "should," "probably," "seems to," "Perfect!," or "Done!". Claude's evidence ledger and Stop hook are a backstop, not a reason to run more checks.

@@ -2441,6 +2441,14 @@
       "sha256": "2346a723c0bc6148c6d7d0bcd9dc2b29b7549c41e8bb73b15160476b6b1174d4"
     },
     {
+      "id": "claude-verification",
+      "url": "https://claude.dev/blog/how-the-claude-code-team-thinks-about-verification/",
+      "kind": "page",
+      "why": "Anthropic (Addy Osmani), 2026-11-16: E2E, property and differential tests; a per-repo verify skill; a diff-triggered reliability checklist; checks out of reach of the change they judge; new gates in observe mode; commits stamped with how they were verified; findings tagged Important, Nit or Pre-existing. Basis for the 2026-11-17 reliability checklist, the Verified: commit line and the checker tags.",
+      "reviewed": "2026-11-17",
+      "sha256": "81621a539ebdebf3d85dd22174451a9e8d839221af8113a67d811fd0f79eff8b"
+    },
+    {
       "id": "claude-code-code-mode",
       "url": "https://code.claude.com/docs/en/code-mode.md",
       "kind": "page",

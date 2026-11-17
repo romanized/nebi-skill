@@ -4,6 +4,8 @@ I run Claude Code agents every day on client sites, shops, games and this repo. 
 
 Every entry comes from a dated record: my failure log (177 lines, kept private), the feedback inbox my prompt hook fills (110 lines), 136 session checkpoints, and the benchmark and research notes in this repo. I merged repeats into one entry per pattern and put the most recently seen first. Client, account and machine names are removed. Where nobody counted before and after a fix, the entry says *observed, not measured*.
 
+The checks these entries turned into live in the [reliability checklist](claude-home/skills/nebi-orchestration/references/reliability-checklist.md): each item names a trigger you can read from a diff, the check, and the failure behind it. The checker applies the items that match.
+
 ## Patterns
 
 - **Claiming done without proof is the most common failure:** about 25 times from July to November. A Stop hook catches most cases, but the habit has not gone away.
@@ -90,7 +92,7 @@ The problem here is inconsistency, not the gates themselves. I want confirmation
 - **What the agent did:**
   - **Launch work:** for three days it ran extra checker and polish rounds and wrote legal pages instead of fixing the two things blocking go-live.
   - **Ad project:** it spent 402 of 600 generation credits and about two days polishing the first ad, while ads 4 to 6 of a 12-ad plan never got made.
-  - **Website:** it proved a visual change at 390 and 1440 pixels wide, with motion shown as stills, while I review at about 1288 pixels. Every gate passed, and I called the live site ruined.
+  - **Website:** it proved a visual change at 390 and 1440 pixels wide, with motion shown as stills, while my window is about 1728 pixels wide. Every gate passed, and I called the live site ruined.
   - **Sweeps:** they read error lines and walked past the warnings.
   - **Everyday tool:** a session kept polishing a new button instead of fixing the tool I use every day.
   - **Design project:** three passes shipped work I disliked, partly because no lane was allowed to look at its own result. The only proof was the type checker, lint and contract tests.
