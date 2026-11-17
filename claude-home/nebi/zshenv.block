@@ -1,0 +1,11 @@
+# >>> nebi >>>
+# Master: nebi-skill claude-home/nebi/zshenv.block. Edit the master and re-apply; this block is replaced whole.
+# Artifact opens and clicked links go through $BROWSER: the router opens the project's Chrome profile.
+# Exported only once the router is deployed, so a missing file never breaks opens.
+if [ -x "$HOME/.claude/nebi/browser-open" ]; then
+  export BROWSER="$HOME/.claude/nebi/browser-open"
+fi
+# No "new task? /clear to save tokens" hint (mirrors settings.json env).
+export CLAUDE_CODE_IDLE_THRESHOLD_MINUTES=100000000
+export CLAUDE_CODE_IDLE_TOKEN_THRESHOLD=1000000000000
+# <<< nebi <<<

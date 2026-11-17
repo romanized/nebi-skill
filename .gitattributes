@@ -1,0 +1,11 @@
+# Shell scripts and the bash hook MUST be LF, or they break on Mac/Linux.
+*.sh text eol=lf
+claude-home/nebi/session-start-sweep.sh text eol=lf
+
+# Keep other text files consistent (LF in the repo).
+*.md text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+
+# PowerShell is fine either way; leave as-is.
+*.ps1 text

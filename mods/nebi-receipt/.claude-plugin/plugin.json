@@ -1,0 +1,9 @@
+{
+  "name": "nebi-receipt",
+  "version": "0.1.1",
+  "description": "One line under a reply that changed files: what changed, and whether a check passed after the last edit.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

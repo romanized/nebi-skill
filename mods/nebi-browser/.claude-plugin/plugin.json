@@ -1,0 +1,9 @@
+{
+  "name": "nebi-browser",
+  "version": "0.1.3",
+  "description": "Keeps each project in its own Chrome: refuses the wrong browser, pairing popups and the wrong Claude account, and routes opened links to the right profile.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

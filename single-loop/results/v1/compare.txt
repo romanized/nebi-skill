@@ -1,0 +1,49 @@
+Reviewed verdict: see PLAN.md and folds.log. This is the kit's raw comparison after the modelUsage regrade; tokens and cost are not comparable across accounts (baseline/v1 team, v2/v3 account a).
+
+# baseline vs v1
+
+13 tasks in both runs. Metric: pass.
+
+| | baseline | v1 | change |
+| --- | ---: | ---: | ---: |
+| tasks complete | 13.0/13 (100%) | 13.0/13 (100%) | +0.0 |
+| latency per task (s) | 63.3 | 97.2 | +53% |
+| model calls per task | 6.9 | 6.5 | -5% |
+| input tokens per task | 451,928 | 396,297 | -12% |
+| output tokens per task | 5,216 | 6,112 | +17% |
+
+## Paths that changed
+
+Reps of a task in which an agent was called. A task can keep its score and still take a different route.
+
+| task | agent | baseline | v1 |
+| --- | --- | ---: | ---: |
+| s3 | web-fetch | 0/2 | 2/2 |
+
+## By tag
+
+| tag | baseline | v1 |
+| --- | ---: | ---: |
+| builder | 6/6 | 6/6 |
+| chain-builder | 2/2 | 2/2 |
+| chain-checker | 2/2 | 2/2 |
+| chain-scout | 2/2 | 2/2 |
+| checker | 6/6 | 6/6 |
+| scout | 8/8 | 8/8 |
+
+## By agent, per task
+
+| agent | calls, baseline | calls, v1 | input tokens, baseline | input tokens, v1 |
+| --- | ---: | ---: | ---: | ---: |
+| main | 6.6 | 6.1 | 446,787 | 377,981 |
+| nebi-checker | 0.1 | 0.1 | 5,141 | 3,674 |
+| web-fetch | 0.0 | 0.1 | 0 | 9,543 |
+
+## Verdict
+
+**v1 holds.** It completes at least as many tasks as baseline and no task got worse.
+
+Notes:
+
+- The route changed on s3. Where the change was not meant to touch a task, read its trace even if the score held, and say what the new route costs.
+- Model for both runs: claude-opus-5-5.

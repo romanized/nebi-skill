@@ -1,0 +1,9 @@
+{
+  "name": "nebi-session-guard",
+  "version": "0.1.1",
+  "description": "Stops agents from opening terminals, Ghostty windows or interactive Claude sessions Nebi did not ask for, and has them hand him a paste-ready prompt instead.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

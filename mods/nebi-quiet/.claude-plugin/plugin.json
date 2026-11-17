@@ -1,0 +1,25 @@
+{
+  "name": "nebi-quiet",
+  "version": "0.1.0",
+  "description": "Quiets built-in drawings: a file write or edit takes one line, a running workflow one line, the push row and the ctrl+b pill draw nothing, and the footer drops its shortcut hints.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "edits": {
+      "type": "string",
+      "title": "File edits",
+      "description": "compact: one line per write or edit. full: Claude Code's own rows with the code.",
+      "options": ["compact", "full"],
+      "default": "compact"
+    },
+    "footer": {
+      "type": "string",
+      "title": "Footer hint",
+      "description": "trim: drop (shift+tab to cycle) and ? for shortcuts. engine: leave the footer as Claude Code draws it.",
+      "options": ["trim", "engine"],
+      "default": "trim"
+    }
+  }
+}

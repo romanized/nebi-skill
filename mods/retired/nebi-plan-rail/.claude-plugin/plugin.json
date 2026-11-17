@@ -1,0 +1,9 @@
+{
+  "name": "nebi-plan-rail",
+  "version": "0.1.0",
+  "description": "A live rail of Claude's plan above the prompt: the goal, what done looks like, and each step as it moves from todo to done, with a soft tick when one finishes.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

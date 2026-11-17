@@ -1,0 +1,79 @@
+{
+  "skill_name": "nebi-debugging",
+  "evals": [
+    {
+      "id": 1,
+      "name": "symptom-patch-refused",
+      "prompt": "Decide the next step only; do not execute. A TypeError surfaces in the checkout renderer; wrapping the render call in a null check makes the page load again. Is shipping that null check the right move?",
+      "expected_output": "No — investigate the root cause first: read the full trace, reproduce, and trace the bad value backward to its origin; a symptom patch is a failure.",
+      "files": [],
+      "expectations": [
+        "Refuses to ship the null check as the fix",
+        "Requires reading the trace and reproducing before any fix",
+        "Traces the bad value backward to its source",
+        "Lands the fix at the origin plus a failing test"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "three-strikes-escalate",
+      "prompt": "Decide the next step only; do not execute. Three different fixes for the same flaky checkout test have each failed, and a fourth small patch idea is on the table.",
+      "expected_output": "Stop patching: question the architecture, and escalate, rethink, or restart with clean context instead of stacking a fourth fix.",
+      "files": [],
+      "expectations": [
+        "Refuses the fourth stacked patch",
+        "Applies the 3-strike rule's substance",
+        "Questions the design, not just the code",
+        "Considers checkpoint/restore or a fresh agent over polluted context"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "no-cheap-substitute",
+      "prompt": "Decide the next step only; do not execute. The realtime sync feature in this game keeps failing; swapping it for a simple polling stub would make today's demo pass.",
+      "expected_output": "Stay in this project's real context and keep working the actual root cause; do not swap in the easier substitute or a fake success path.",
+      "files": [],
+      "expectations": [
+        "Rejects the stub as the resolution",
+        "Keeps investigating the real feature's failure",
+        "No hidden errors, silenced failures, or fake green"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "failing-test-integrity",
+      "prompt": "Decide the next step only; do not execute. A regression test still fails after the fix; loosening its assertion would make CI green.",
+      "expected_output": "Fix the code, not the test — never weaken or delete a failing test just to go green.",
+      "files": [],
+      "expectations": [
+        "Refuses to weaken or delete the test",
+        "Treats the failure as a signal about the code",
+        "Keeps the assertion at full strength"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "incident-containment",
+      "prompt": "Decide the next actions only; do not execute. A production worker is charging customers twice. Logs show the release introduced a duplicate queue subscription. An authorized reversible rollback stops new charges, but the duplicate cannot yet be reproduced locally.",
+      "expected_output": "Contain the incident with the authorized rollback; preserve logs and investigate the queue regression. Label rollback as mitigation and retain root-cause repair and verification as open.",
+      "files": [],
+      "expectations": [
+        "Allows authorized reversible containment before a local repro",
+        "Preserves diagnostic evidence",
+        "Distinguishes mitigation from completed repair"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "obsolete-test-contract",
+      "prompt": "Decide the change only; do not execute. The user approved changing the empty API response from null to []. The implementation returns [] and the old test still asserts null. Both the updated API contract and client migration require [].",
+      "expected_output": "Update the obsolete test to assert the approved contract, with appropriate regression coverage; do not restore the old implementation merely to pass the test.",
+      "files": [],
+      "expectations": [
+        "Uses the approved contract as authority",
+        "Repairs the obsolete assertion",
+        "Does not weaken valid regression coverage"
+      ]
+    }
+  ]
+}

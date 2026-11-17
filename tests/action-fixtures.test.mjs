@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { prepareActions, checkActions } from '../scripts/prepare-action-evals.mjs';
+test('action fixture is disposable, begins with real failing behavior and refuses clobber', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-action-smoke-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const prepared = prepareActions(dir);
+  assert.equal(prepared.tasks.length, 6);
+  const proof = spawnSync(process.execPath, ['proof.mjs'], { cwd: path.join(dir, 'debugging'), encoding: 'utf8' });
+  assert.notEqual(proof.status, 0); assert.match(proof.stderr, /TypeError/);
+  assert.throws(() => prepareActions(dir), /must be empty/);
+  assert.throws(() => checkActions(dir), /ENOENT/);
+});
+test('action grading accepts solved artifacts and rejects real proof/conclusion regressions', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-action-grade-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  prepareActions(dir);
+  const write = (name, file, text) => fs.writeFileSync(path.join(dir, name, file), text);
+  const implementation = "export const normalize = value => value === null ? '' : value.trim();\n";
+  write('debugging', 'normalize.mjs', implementation);
+  write('sessions', 'progress.json', '{"step1":true,"step2":true}');
+  write('sessions', 'HANDOFF.md', 'Not verified: runtime behavior outside this fixture.');
+  write('research', 'FINDING.md', 'Version 2.0.0 does not retry automatically. CHANGELOG.md is the local source.');
+  write('maintenance', 'demo/SKILL.md', '---\nname: demo\ndescription: "Audit configuration: find contradictory settings."\n---\n\n# Demo\nKeep this body.\n');
+  write('orchestration', 'config.json', '{"note":"preserve","timeout":30,"retries":2}');
+  write('prompting', 'notes.md', '# Status\nThe pack is ready for review.\n');
+  assert.deepEqual(checkActions(dir), []);
+  write('debugging', 'normalize.mjs', 'export const normalize = value => value.trim();\n');
+  assert.match(checkActions(dir).join('\n'), /original behavioral proof still fails/);
+  write('debugging', 'normalize.mjs', implementation);
+  write('research', 'FINDING.md', 'Version 2.0.0 retries automatically. CHANGELOG.md is the source.');
+  assert.match(checkActions(dir).join('\n'), /no-automatic-retry conclusion/);
+});

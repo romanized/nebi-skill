@@ -1,0 +1,119 @@
+{
+  "skill_name": "nebi-sessions",
+  "evals": [
+    {
+      "id": 1,
+      "name": "reverify-prior-done",
+      "prompt": "Decide the status only; do not execute. The previous session's note says the requested merge and test update are DONE, but the repo shows the branch unmerged and the test file untouched.",
+      "expected_output": "Classify it PARTIALLY DONE or NOT DONE from repository evidence, not DONE from the note, and flag the mismatch before building on it.",
+      "files": [],
+      "expectations": [
+        "Re-verifies the claim against git/files instead of trusting the note",
+        "Does not classify DONE",
+        "Flags the saved-state mismatch",
+        "Continues from the first unfinished step"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "handoff-points-not-pastes",
+      "prompt": "Decide the handoff content only; do not execute. Handing off mid-migration: a 300-line plan document and two ADRs exist in the repo, and the next session needs all three.",
+      "expected_output": "Reference the plan and ADRs by path; do not paste their content into the handoff.",
+      "files": [],
+      "expectations": [
+        "Points by path or URL instead of duplicating content",
+        "Includes purpose, next moves, and abandoned approaches with reasoning",
+        "Carries an explicit Not verified section",
+        "Names the skills the next session should invoke"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "dead-ends-not-retrod",
+      "prompt": "Decide the resume plan only; do not execute. The survey shows two approaches to the caching bug already tried and failed, steps 1-2 of 5 verified complete, and step 3 unfinished.",
+      "expected_output": "Continue from step 3 with the established approach; do not re-try the failed approaches or redo steps 1-2.",
+      "files": [],
+      "expectations": [
+        "Starts at the first unfinished step",
+        "Does not re-tread the failed approaches",
+        "Does not repeat completed work",
+        "Keeps the established approach unless it is broken"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "summary-keeps-unverified-label",
+      "prompt": "Decide what the summary keeps; do not execute. Context is nearly full mid-debug: the error code and next step are known, but the working theory about the cause is unconfirmed.",
+      "expected_output": "The summary carries identifiers, decisions, constraints, the error code, status, and next action — with the unconfirmed theory explicitly labeled UNVERIFIED.",
+      "files": [],
+      "expectations": [
+        "Carries identifiers, decisions, constraints, error code, status, and next action",
+        "Labels the unconfirmed theory UNVERIFIED",
+        "Points to artifacts by path instead of pasting detail"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "foreign-note-resolved",
+      "prompt": "Decide the session start only; do not execute. The user says: work on the active clean nebi-skill repo; the saved-work note belongs to a different project, leave it alone. The note confirms that other project.",
+      "expected_output": "Proceed from the active repository and request; leave the foreign note intact and retain task-specific state separately if needed.",
+      "files": [],
+      "expectations": [
+        "Does not ask the user to resolve an already resolved mismatch",
+        "Does not overwrite the other project note",
+        "Uses active repo evidence"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "multiple-projects-and-active-tasks",
+      "prompt": "Decide context selection only; do not execute. Two repositories named shop have different absolute paths. The current project has two unfinished checkpoints: checkout bug and landing page copy. The user explicitly asks to continue the checkout bug; the landing page note was updated more recently. A global current-work.md belongs to the other shop.",
+      "expected_output": "Use the current project identity and explicitly select its checkout task for this session; leave the other task and other project untouched. Do not use the newest or global note.",
+      "files": [],
+      "expectations": [
+        "Distinguishes projects by repository/path identity rather than basename",
+        "Matches the named checkout task rather than the newest task",
+        "Selection is local to this session",
+        "Does not read or rewrite the foreign global note"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "stale-checkpoint-write",
+      "prompt": "Decide recovery only; do not execute. Another Claude session updated the shared task checkpoint after Codex read it. The context helper rejected Codex save because expectedRevision was stale. The new checkpoint contains an accepted decision missing from the old draft.",
+      "expected_output": "Reload the current checkpoint, retain and reconcile the accepted decision, then save using the fresh revision. Do not directly overwrite the file or erase the other writer’s work.",
+      "files": [],
+      "expectations": [
+        "Reloads and reconciles before retrying",
+        "Preserves the accepted decision",
+        "Uses fresh expectedRevision",
+        "Does not bypass the helper with a direct write"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "idle-same-conversation",
+      "prompt": "Decide the next action only; do not execute. After a two-hour break, the same conversation continues. The latest user correction chose a 12-second video; an older checkpoint says 10 seconds. A submitted render job ID is present, but completion has not been checked. The user says Nebi resume.",
+      "expected_output": "Keep the accepted 12-second correction, reconcile the checkpoint, check the existing job and continue from unfinished work rather than submitting a duplicate or repeating discovery.",
+      "files": [],
+      "expectations": [
+        "Preserves the latest correction",
+        "Checks the existing job before resubmission",
+        "Does not infer task loss from cache or idle time",
+        "Continues from the unfinished step"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "resume-before-browser-action",
+      "prompt": "Decide the next action only; do not execute. A checkpoint records browser tab 7 and element 42 from yesterday. The user asks to continue the authorized form edit. The browser has been restarted.",
+      "expected_output": "Re-observe available browser state and verify the intended tab/form before using current references; an old element ID is not valid evidence.",
+      "files": [],
+      "expectations": [
+        "Re-observes live browser state",
+        "Does not click a stale element ID",
+        "Preserves authorized task scope"
+      ]
+    }
+  ]
+}

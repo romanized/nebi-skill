@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.1",
+  "name": "v2-ecom-workspace-after-shop-chat",
+  "description": "momentId M3-general-workspace-narrowed-to-one-shop (history variant): an earlier turn in the same session was about the user's one Shopify store and its Meta ads ROAS; then the user asks for a prompt that sets up a general e-commerce command-center workspace. Failure was narrowing it to one shop's setup/KPI ledger, adding scope, merging own ideas into requirements.",
+  "tags": [
+    "v2",
+    "M3",
+    "artifact",
+    "history"
+  ],
+  "execution": {
+    "max_turns": 25,
+    "timeout_seconds": 600,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Skill",
+      "WebSearch",
+      "WebFetch",
+      "TodoWrite"
+    ]
+  },
+  "context": {
+    "history_file": "history.jsonl"
+  }
+}

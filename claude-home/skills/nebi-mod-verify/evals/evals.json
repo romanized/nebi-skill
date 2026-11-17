@@ -1,0 +1,42 @@
+{
+  "skill_name": "nebi-mod-verify",
+  "evals": [
+    {
+      "id": 1,
+      "name": "plugin-test-is-not-paint",
+      "prompt": "Decide the next step only; do not execute. nebi-quiet passes claude plugin validate, claude plugin test on terminal and desktop, and tsc. The builder says it is done and the footer hint is fixed.",
+      "expected_output": "Not done yet: plugin test never sees the painted screen. Run the paint check (capture.mjs) after install, confirm 'shift+tab to cycle' is absent and the debug log shows the mod loaded, and compare against a --safe-mode baseline.",
+      "files": [],
+      "expectations": [
+        "Says plugin test checks the returned tree, not the painted screen",
+        "Proposes a real-session paint check with the string asserted absent",
+        "Includes the debug-log load check or the --safe-mode baseline",
+        "Does not declare the mod done"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "need-you-badge-vs-answer-keys",
+      "prompt": "Decide only; do not execute. A paint check of the turn-end screen shows one row: '❓ NEED YOU  nebi-skill · add a test for hello.py?' with nothing under it. Does this pass the NEED YOU rule?",
+      "expected_output": "Yes: the one-row NEED YOU badge is allowed; only a NEED YOU row followed by answer keys (1: … 2: … 0: dismiss) fails.",
+      "files": [],
+      "expectations": [
+        "Says the one-row badge passes",
+        "Names answer keys under NEED YOU as the failing case",
+        "Does not ask for the row to be removed"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "rollout-off-is-a-failure",
+      "prompt": "Decide only; do not execute. The paint check's debug.log has no 'hooks module nebi-beacon@nebi-mods loaded' line and contains: installed plugins' hooks modules not loaded: rollout flag (tengu_plugin_hooks_modules) is off. The screen looks clean. Can the mods be called done?",
+      "expected_output": "No: the mods did not load, so the clean screen comes from the no-mod fallbacks (status line, settings, output style). The load check fails; report it and re-run once mods load.",
+      "files": [],
+      "expectations": [
+        "Treats the rollout line as a load failure",
+        "Explains the clean screen comes from the no-mod layer, not the mods",
+        "Does not declare the mods done"
+      ]
+    }
+  ]
+}

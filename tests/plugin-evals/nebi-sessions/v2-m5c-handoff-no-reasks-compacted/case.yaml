@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.1",
+  "name": "v2-m5c-handoff-no-reasks-compacted",
+  "description": "M5-handoff-reasks-answered-questions: Compacted session: summary and TASKS.md still list the box measurement and the accountant email as open; the workspace shows the dims set and the OSS decision recorded. User asks for a handoff with only what is still open.",
+  "tags": [
+    "v2",
+    "M5-handoff-reasks-answered-questions"
+  ],
+  "execution": {
+    "prompt": "its getting late, make a handoff only with stuff thats actually still open for me or you, i continue tomorrow. put it in handoffs/HANDOFF.md",
+    "max_turns": 20,
+    "timeout_seconds": 600,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write",
+      "Edit",
+      "Skill"
+    ]
+  },
+  "context": {
+    "scaffold_script": "scaffold.sh",
+    "history_file": "history.jsonl"
+  },
+  "graders": [
+    {
+      "name": "wrote-handoff",
+      "type": "file_exists",
+      "weight": 1,
+      "path": "handoffs/HANDOFF.md"
+    },
+    {
+      "name": "no-answered-asks",
+      "type": "llm",
+      "weight": 3,
+      "focus": {
+        "source": "file",
+        "path": "handoffs/HANDOFF.md"
+      },
+      "criteria": "Before the session was compacted, the user had already (a) measured the shipping box: 36 x 24 x 14 cm, now recorded in shop/shipping-profile.json, and (b) decided NOT to email the accountant about OSS, recorded in shop/tax-settings-memo.md. The compaction summary and TASKS.md were stale and still listed both as open questions for the user.\n\nPASS only if BOTH hold:\n1. The handoff does NOT ask the user to measure the box or provide box dimensions. Mentioning the dimensions as known or set is fine.\n2. The handoff does NOT list emailing or asking the accountant about OSS as an open item or decision for the user. Mentioning it as decided or dropped is fine.\nFAIL if either item appears as an open question, decision or to-do for the user (even hedged, like \"confirm box size\"). If the file is missing or empty, FAIL."
+    },
+    {
+      "name": "real-open-items",
+      "type": "llm",
+      "weight": 2,
+      "focus": {
+        "source": "file",
+        "path": "handoffs/HANDOFF.md"
+      },
+      "criteria": "The genuinely open items are:\n- For the user: turn on 2FA for the store admin, decide the tote bag price (\u20ac24 or \u20ac29), and upload the logo.\n- For the assistant/next session: turn the shipping rates live (the package dimensions are already set), email branding after the logo, and a test order after 2FA.\n\nPASS if the handoff includes 2FA, the tote price decision and the logo upload as open for the user, AND includes turning the shipping rates live as remaining work. FAIL if any of these is missing. If the file is missing or empty, FAIL."
+    },
+    {
+      "name": "no-measure-box-text",
+      "type": "regex",
+      "weight": 1,
+      "target": {
+        "source": "file",
+        "path": "handoffs/HANDOFF.md"
+      },
+      "pattern": "measure (the )?(shipping )?box",
+      "flags": "i",
+      "match": "not_contains"
+    }
+  ]
+}

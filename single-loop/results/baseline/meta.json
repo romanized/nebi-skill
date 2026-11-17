@@ -1,0 +1,39 @@
+[
+  {
+    "variant": "baseline",
+    "model": "claude-opus-5-5",
+    "deny": [],
+    "reps": 2,
+    "tasks": [
+      "s1",
+      "s2",
+      "s3",
+      "s4",
+      "c1",
+      "c2",
+      "c3",
+      "b1",
+      "b2",
+      "b3"
+    ],
+    "commit": "17b32db6249032eacf4e7282b426cfc57471b9f3",
+    "claude": "2.1.325 (Claude Code)",
+    "started": "2026-11-16T18:37:14.705Z",
+    "ended": "2026-11-16T18:41:32.822Z"
+  },
+  {
+    "variant": "baseline",
+    "model": "claude-opus-5-5",
+    "deny": [],
+    "reps": 2,
+    "tasks": [
+      "l1",
+      "l2",
+      "l3"
+    ],
+    "commit": "17b32db6249032eacf4e7282b426cfc57471b9f3",
+    "claude": "2.1.325 (Claude Code)",
+    "started": "2026-11-16T18:43:01.597Z",
+    "ended": "2026-11-16T18:48:51.572Z"
+  }
+]

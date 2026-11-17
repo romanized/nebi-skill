@@ -1,0 +1,9 @@
+{
+  "name": "nebi-beacon",
+  "version": "0.3.4",
+  "description": "One row above the prompt while Claude waits on you or the turn died on an API error, one push per ask, and a beacon file other sessions read.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

@@ -1,0 +1,191 @@
+{
+  "about": "Nebi fleet eval: 10 golden tasks, one per job the lean sub-agents do in real work (scout = read-heavy research, checker = independent review of a builder's change, builder = bounded builds). Graders are deterministic and live in run.mjs. {EARSHOT} and {TE} are read-only clones at the pinned commits named in PLAN.md. l1-l3 were added after the first baseline run because no small task routed to a sub-agent; they cover the production chains (parallel scouts, parallel builders, build then independent review).",
+  "tasks": [
+    {
+      "id": "s1",
+      "domain": "scout",
+      "prompt": "Before I install earshot (the repo is cloned at {EARSHOT}), I want to know every environment variable the Python package in its earshot/ folder reads (not the tests or skills folders), with file:line for each, and which variable makes it run offline. Just report, don't change anything.",
+      "grade": {
+        "kind": "names",
+        "need": [
+          "EARSHOT_AST",
+          "EARSHOT_AST_REVISION",
+          "EARSHOT_BANK",
+          "EARSHOT_CLAP",
+          "EARSHOT_CLAP_REVISION",
+          "EARSHOT_DEBUG",
+          "EARSHOT_GEMINI_MODEL",
+          "EARSHOT_HOME",
+          "EARSHOT_OFFLINE",
+          "EARSHOT_PRECISION",
+          "EARSHOT_REFS",
+          "EARSHOT_REFSETS",
+          "EARSHOT_THREADS",
+          "GEMINI_API_KEY",
+          "GOOGLE_API_KEY"
+        ],
+        "minShare": 0.8,
+        "mustAll": [
+          "EARSHOT_OFFLINE"
+        ]
+      }
+    },
+    {
+      "id": "s2",
+      "domain": "scout",
+      "prompt": "I'm about to configure TokenEconomizer (cloned at {TE}). What are the defaults for toolprune_evidence, toolprune_min_sessions and toolprune_sessions, and for the loop guard's judge confidence? For each, give the file:line where the default is defined. Report only.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "toolprune_evidence[^\\n]{0,120}?(?<![0-9.])10(?![0-9])|(?<![0-9.])10(?![0-9])[^\\n]{0,60}toolprune_evidence",
+          "toolprune_min_sessions[^\\n]{0,120}?(?<![0-9.])2(?![0-9])|(?<![0-9.])2(?![0-9])[^\\n]{0,60}toolprune_min_sessions",
+          "toolprune_sessions[^\\n]{0,120}?(?<![0-9.])5(?![0-9])|(?<![0-9.])5(?![0-9])[^\\n]{0,60}toolprune_sessions",
+          "judge_confidence[^\\n]{0,120}?0\\.7\\b|0\\.7\\b[^\\n]{0,60}judge_confidence",
+          "config\\.py",
+          "rules\\.py"
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "domain": "scout",
+      "prompt": "Look it up in the official Claude Code docs: how do I stop Claude from ever using one particular custom sub-agent called reviewer? I want the exact rule string, which settings key it goes in, the equivalent command-line flag, and the docs URL. Don't change any settings.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "Agent\\(reviewer\\)",
+          "deny",
+          "--disallowedTools",
+          "code\\.claude\\.com/docs"
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "domain": "scout",
+      "prompt": "Which Claude Code hook events does the TokenEconomizer plugin at {TE} register, and what timeout does each one get? I need to know what it would add to every session before I install it. Report only.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "SessionStart[^\\n]{0,80}?(?<![0-9.])15(?![0-9])",
+          "UserPromptSubmit[^\\n]{0,80}?(?<![0-9.])20(?![0-9])",
+          "PostToolUse\\b[^\\n]{0,80}?(?<![0-9.])60(?![0-9])",
+          "PostToolUseFailure[^\\n]{0,80}?(?<![0-9.])60(?![0-9])",
+          "\\bStop\\b[^\\n]{0,80}?(?<![0-9.])10(?![0-9])",
+          "SessionEnd[^\\n]{0,80}?(?<![0-9.])10(?![0-9])"
+        ]
+      }
+    },
+    {
+      "id": "c1",
+      "domain": "checker",
+      "prompt": "A builder just made the uncommitted change in this repo. Review it before I merge: list only real bugs, each with file:line and how it fails. Don't fix anything.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "pageCount|paginate",
+          "floor|ceil|last (partial )?page|remainder|off[- ]by[- ]one|drops? (the )?(last|trailing|final)|partial page|lost|truncat"
+        ],
+        "none": [
+          "^\\W*(no|zero|0) (real |actual |blocking )?(bugs|issues)\\b",
+          "^\\W*(the change )?(looks|is) (good|correct|fine)\\b"
+        ]
+      }
+    },
+    {
+      "id": "c2",
+      "domain": "checker",
+      "prompt": "A builder just made the uncommitted change in this repo. Review it before I merge: list only real bugs, each with file:line and how it fails. Don't fix anything.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "saveAll|forEach",
+          "not awaited|never awaited|isn't awaited|is not awaited|doesn't await|does not await|without (being )?await|fire[- ]and[- ]forget|Promise\\.all|returns? before|unhandled|floating promise|aren't awaited|are not awaited"
+        ],
+        "none": [
+          "^\\W*(no|zero|0) (real |actual |blocking )?(bugs|issues)\\b",
+          "^\\W*(the change )?(looks|is) (good|correct|fine)\\b"
+        ]
+      }
+    },
+    {
+      "id": "c3",
+      "domain": "checker",
+      "prompt": "A builder just made the uncommitted change in this repo. Review it before I merge: list only real bugs, each with file:line and how it fails. Don't fix anything.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "isInside|startsWith|safeJoin",
+          "sibling|prefix|separator|path\\.sep|-evil|app2|/data/app[a-z0-9_-]|boundary"
+        ],
+        "none": [
+          "^\\W*(no|zero|0) (real |actual |blocking )?(bugs|issues)\\b",
+          "^\\W*(the change )?(looks|is) (good|correct|fine)\\b"
+        ]
+      }
+    },
+    {
+      "id": "b1",
+      "domain": "builder",
+      "prompt": "Implement SPEC.md in this repo and make sure npm test passes. Add tests for the new function.",
+      "grade": {
+        "kind": "hidden",
+        "file": "b1.test.mjs"
+      }
+    },
+    {
+      "id": "b2",
+      "domain": "builder",
+      "prompt": "SPEC.md describes two independent helpers in two different files. Build both, with tests, and make sure npm test passes.",
+      "grade": {
+        "kind": "hidden",
+        "file": "b2.test.mjs"
+      }
+    },
+    {
+      "id": "b3",
+      "domain": "builder",
+      "prompt": "npm test fails in this repo. Find the cause and fix it properly, not just for the failing case.",
+      "grade": {
+        "kind": "hidden",
+        "file": "b3.test.mjs"
+      }
+    },
+    {
+      "id": "l1",
+      "domain": "chain-scout",
+      "prompt": "I'm deciding whether to install two tools on my Mac: earshot (cloned at {EARSHOT}) and TokenEconomizer (cloned at {TE}). For each one, find every place its code starts a subprocess or makes a network request, with file:line, and tell me which is riskier to run on my machine and why. Report only, change nothing.",
+      "grade": {
+        "kind": "regex",
+        "all": [
+          "audio\\.py|video\\.py",
+          "llm\\.py|generativelanguage",
+          "sidecall\\.py",
+          "toolcheck\\.py|localhost|127\\.0\\.0\\.1"
+        ]
+      }
+    },
+    {
+      "id": "l2",
+      "domain": "chain-builder",
+      "prompt": "Three independent jobs in this repo, each touching its own files: build what SPEC-slugify.md describes, build what SPEC-helpers.md describes, and fix the failing duration test properly. Do all three, with tests, and keep npm test green.",
+      "grade": {
+        "kind": "hidden",
+        "files": [
+          "b1.test.mjs",
+          "b2.test.mjs",
+          "b3.test.mjs"
+        ]
+      }
+    },
+    {
+      "id": "l3",
+      "domain": "chain-checker",
+      "prompt": "Implement SPEC.md in this repo with tests. Before you tell me it's done, get an independent review of the change and fix anything real it finds. npm test must pass.",
+      "grade": {
+        "kind": "hidden",
+        "file": "b1.test.mjs"
+      }
+    }
+  ]
+}

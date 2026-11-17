@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-09-07T23:10:55.442Z",
+  "cliVersion": "2.1.263 (Claude Code)",
+  "requestedModel": "opus",
+  "source": "claude-home/skills",
+  "hashes": {
+    "nebi-debugging": "be008931a21a11dc26fc5fe9c1d0941bd51d947732427870e1af976494ce0d6b",
+    "nebi-maintenance": "0a9fc740dcf76a89344d8bad3d4a2a22d4ae99c858ee091b6637fa2beb203c16",
+    "nebi-orchestration": "dcc39440a47d37540119a6f3292a3a0d4eb85ad2ad08b525e5224fce8aa909fd",
+    "nebi-prompting": "128fae516d06d57f4e02339e58f74ba9737d04989a132fa83f0439b5c0bf45e3",
+    "nebi-research": "d3f2014e730bf8d705755bdf6f118933ba1a4dd68717a7155185431c692657ad",
+    "nebi-sessions": "0b3d39d3e43256f7ec76acb2cdb5fcf901979150f8fb5ce23f6daab6697eccd4"
+  },
+  "limitations": "Restricted Claude loader with explicit nebi-eval plugin; builtin skills remain competitors. Eval answers are excluded from staging. Invocation is measured, not behavioral quality. No raw transcripts or credentials stored.",
+  "results": [
+    {
+      "skill": "nebi-debugging",
+      "kind": "fire",
+      "prompt": "Resume the failed API upgrade investigation and fix its regression. Preserve yesterday's verified work.",
+      "forbiddenSkills": [
+        "nebi-prompting"
+      ],
+      "requiredSkills": [
+        "nebi-sessions"
+      ],
+      "status": "FAIL",
+      "fired": [
+        "nebi-sessions"
+      ],
+      "model": "claude-opus-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.1633995
+    },
+    {
+      "skill": "nebi-maintenance",
+      "kind": "fire",
+      "prompt": "Audit our Nebi doctrine enforcement and repair the broken Stop hook that contradicts its verification rule.",
+      "forbiddenSkills": [
+        "nebi-prompting"
+      ],
+      "requiredSkills": [
+        "nebi-debugging"
+      ],
+      "status": "FAIL",
+      "fired": [
+        "nebi-maintenance"
+      ],
+      "reason": "Missing co-fire: nebi-debugging",
+      "model": "claude-opus-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.4332685
+    },
+    {
+      "skill": "nebi-research",
+      "kind": "fire",
+      "prompt": "Compare the installed ORM's transaction behavior with its official versioned docs before we implement the next feature.",
+      "forbiddenSkills": [
+        "nebi-debugging"
+      ],
+      "status": "PASS",
+      "fired": [
+        "nebi-research"
+      ],
+      "model": "claude-opus-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.1373735
+    },
+    {
+      "skill": "nebi-prompting",
+      "kind": "fire",
+      "prompt": "Write a reviewable prompt for another agent to debug the deployment. Do not investigate or execute yet.",
+      "forbiddenSkills": [
+        "nebi-debugging"
+      ],
+      "status": "PASS",
+      "fired": [
+        "nebi-prompting"
+      ],
+      "model": "claude-opus-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.140438
+    }
+  ],
+  "totals": {
+    "pass": 2,
+    "fail": 2,
+    "error": 0
+  },
+  "note": "Single-trial restricted-loader sample; generatedAt is UTC, report date is Europe/Amsterdam. Recorded before final prompting-mode wording clarification; description semantics unchanged."
+}

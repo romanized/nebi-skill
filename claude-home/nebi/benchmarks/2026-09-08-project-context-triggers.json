@@ -1,0 +1,94 @@
+{
+  "generatedAt": "2026-09-08T07:32:24.411Z",
+  "cliVersion": "2.1.263 (Claude Code)",
+  "requestedModel": "sonnet",
+  "source": "/Users/nebi/Documents/GitHub/nebi-skill/claude-home/skills",
+  "hashes": {
+    "nebi-debugging": "be008931a21a11dc26fc5fe9c1d0941bd51d947732427870e1af976494ce0d6b",
+    "nebi-maintenance": "0a9fc740dcf76a89344d8bad3d4a2a22d4ae99c858ee091b6637fa2beb203c16",
+    "nebi-orchestration": "dcc39440a47d37540119a6f3292a3a0d4eb85ad2ad08b525e5224fce8aa909fd",
+    "nebi-prompting": "0c7a9182bf7945f56cd8eed15316d45cd788997654242425f7945cd3a8e8d1a0",
+    "nebi-research": "d3f2014e730bf8d705755bdf6f118933ba1a4dd68717a7155185431c692657ad",
+    "nebi-sessions": "b20ea7fed1340e7c374918d9c13ac0962fb04eaa7ad1b1a2257881d0f284f610"
+  },
+  "limitations": "Restricted Claude loader with explicit nebi-eval plugin; builtin skills remain competitors. Eval answers are excluded from staging. Invocation is measured, not behavioral quality. No raw transcripts or credentials stored.",
+  "results": [
+    {
+      "skill": "nebi-prompting",
+      "kind": "fire",
+      "prompt": "Can you reword and structure this prompt without changing how I said it? I want research first, then a plan, then build only after I approve it.",
+      "status": "PASS",
+      "fired": [
+        "nebi-prompting"
+      ],
+      "model": "claude-sonnet-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.059777000000000004
+    },
+    {
+      "skill": "nebi-prompting",
+      "kind": "not",
+      "prompt": "Let's pick up yesterday's onboarding work where we left off and keep going.",
+      "status": "PASS",
+      "fired": [
+        "nebi-sessions"
+      ],
+      "model": "claude-sonnet-5",
+      "registry": [
+        "deep-research",
+        "nebi-eval:nebi-debugging",
+        "nebi-eval:nebi-maintenance",
+        "nebi-eval:nebi-orchestration",
+        "nebi-eval:nebi-prompting",
+        "nebi-eval:nebi-research",
+        "nebi-eval:nebi-sessions",
+        "design-sync",
+        "dataviz",
+        "update-config",
+        "verify",
+        "debug",
+        "code-review",
+        "simplify",
+        "batch",
+        "fewer-permission-prompts",
+        "doctor",
+        "loop",
+        "schedule",
+        "claude-api",
+        "workflow-authoring",
+        "run",
+        "run-skill-generator"
+      ],
+      "costUSD": 0.0730124
+    }
+  ],
+  "totals": {
+    "pass": 2,
+    "fail": 0,
+    "error": 0
+  }
+}

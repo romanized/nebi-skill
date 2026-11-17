@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+// Nebi browser router, set as $BROWSER (~/.zshenv block, nebi-browser's $.env.set). Claude Code runs `$BROWSER <url>`
+// for artifact opens and clicked links, in the session's folder, and waits for it to exit: a non-zero exit counts as
+// a failed open. So this opens web links in the Chrome profile the folder routes to (route.mjs beside this file:
+// <git root>/.claude/browser.json, else the account default) and exits 0 at once. Anything that is not an http(s)
+// link, or a folder with no route, goes to plain `open`. A missing route.mjs or a bad route file never throws.
+//
+// Usage: browser-open [--dry-run] <url>    --dry-run prints the command instead of running it.
+// Spec: mods/CONTRACT.md "Route"; research/2026-10-03-mods-rework/spec-draft.md section 7 "Router".
+// `open -na "Google Chrome" --args --profile-directory=…` because `open -a` drops --args when Chrome already runs.
+import { spawn } from 'node:child_process';
+
+// `open` fails within ~20 ms when it cannot find Chrome. Past this, assume it worked and leave it running detached.
+const FAIL_WINDOW_MS = 50;
+
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const url = args.find((arg) => !arg.startsWith('-'));
+
+async function chromeProfile() {
+  try {
+    const { resolveRoute } = await import(new URL('./route.mjs', import.meta.url));
+    return resolveRoute({ cwd: process.cwd() })?.chromeProfile ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function commandFor(profile) {
+  return profile && /^https?:\/\//i.test(url)
+    ? ['open', '-na', 'Google Chrome', '--args', `--profile-directory=${profile}`, url]
+    : ['open', url];
+}
+
+// Resolves false when the command could not start or exited non-zero inside the fail window, else true.
+function launch([file, ...rest]) {
+  return new Promise((resolve) => {
+    try {
+      const child = spawn(file, rest, { detached: true, stdio: 'ignore' });
+      const timer = setTimeout(() => resolve(true), FAIL_WINDOW_MS);
+      const settle = (ok) => { clearTimeout(timer); resolve(ok); };
+      child.once('error', () => settle(false));
+      child.once('exit', (code) => settle(code === 0));
+      child.unref();
+    } catch {
+      resolve(false);
+    }
+  });
+}
+
+const shellQuote = (arg) => (/^[\w@%+=:,./-]+$/.test(arg) ? arg : `'${arg.replace(/'/g, `'\\''`)}'`);
+
+async function main() {
+  if (!url) {
+    console.error('Usage: browser-open [--dry-run] <url>');
+    return 2;
+  }
+  const command = commandFor(await chromeProfile());
+  if (dryRun) {
+    console.log(command.map(shellQuote).join(' '));
+    return 0;
+  }
+  if (!(await launch(command)) && command.length > 2) await launch(['open', url]);
+  return 0;
+}
+
+main().then((code) => process.exit(code), () => process.exit(0));

@@ -1,0 +1,137 @@
+{
+  "skill_name": "nebi-orchestration",
+  "evals": [
+    {
+      "id": 1,
+      "name": "solo-coupled-fix",
+      "prompt": "Decide the orchestration mode only; do not execute. Fix one null-pointer bug in src/cart.ts and run its focused test.",
+      "expected_output": "Solo lead, no fleet.",
+      "files": [],
+      "expectations": [
+        "Chooses solo",
+        "Does not dispatch a scout/checker",
+        "Uses focused proof",
+        "Avoids orchestration ceremony"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "parallel-independent-research",
+      "prompt": "Decide the orchestration mode only; do not execute. Research current official guidance for prompt design from OpenAI, Anthropic, and Google, with separate cited findings that a lead will synthesize.",
+      "expected_output": "Parallel read-only scouts with bounded source lanes and one lead synthesis.",
+      "files": [],
+      "expectations": [
+        "Chooses parallel scouts",
+        "Assigns non-overlapping vendor lanes",
+        "Requires URL/date receipts",
+        "Bounds returns",
+        "Lead synthesizes contradictions"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "serial-dependent-migration",
+      "prompt": "Decide the orchestration mode only; do not execute. Change the database schema, then update the API generated from it, then update the client that consumes the API.",
+      "expected_output": "Dependency-aware serial phases, not three simultaneous writers.",
+      "files": [],
+      "expectations": [
+        "Identifies schema to API to client dependency",
+        "Does not start all writers in parallel",
+        "Defines handoff artifacts",
+        "Runs combined integration proof"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "parallel-connected-features",
+      "prompt": "Decide the orchestration mode only; do not execute. Build a backend endpoint and frontend screen in parallel; both depend on a new response schema and must land together.",
+      "expected_output": "Lead-owned interface contract followed by disjoint parallel implementation and integration.",
+      "files": [],
+      "expectations": [
+        "Stabilizes response schema before parallel work",
+        "Assigns disjoint ownership",
+        "Names dependency/interface",
+        "Checks combined integration",
+        "Defines replan trigger for interface change"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "competing-diagnosis",
+      "prompt": "Decide the orchestration mode only; do not execute. An intermittent checkout failure has three plausible causes and no reliable reproduction yet; investigate without letting multiple agents edit the same files.",
+      "expected_output": "Read-only competing hypotheses with falsifiable evidence, then one owner implements.",
+      "files": [],
+      "expectations": [
+        "Uses read-only competing hypotheses or bounded investigations",
+        "Requires falsifiable evidence",
+        "Uses an arbiter/lead decision",
+        "Only one implementation owner",
+        "Avoids parallel edits"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "same-file-collision",
+      "prompt": "Decide the orchestration mode only; do not execute. Three requested improvements all modify the same checkout component and its shared state logic.",
+      "expected_output": "One owner or serialized work, not parallel writers.",
+      "files": [],
+      "expectations": [
+        "Rejects parallel writers",
+        "Assigns one owner or serial sequence",
+        "Preserves one coherent state decision",
+        "Uses targeted then combined proof"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "reject-unverified-done",
+      "prompt": "You are the lead mid-run. A builder lane reports DONE with receipts claiming changes only to src/api/routes.ts, but the actual diff also touches src/auth/session.ts, which another lane owns. Decide what to do with this report.",
+      "expected_output": "Reject the DONE label: receipts fail validation against the diff, and the out-of-scope write must be resolved before integration.",
+      "files": [],
+      "expectations": [
+        "Treats DONE as a claim pending receipt validation",
+        "Compares claimed changed files against the actual diff",
+        "Flags the write-scope violation on the other lane's file",
+        "Does not accept the report or integrate as-is"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "interface-change-midflight",
+      "prompt": "You are the lead mid-run. Backend and frontend lanes are building in parallel against an agreed response schema when the backend lane finds the schema needs a new required field. Decide how to proceed.",
+      "expected_output": "Pause the affected lanes, update the interface contract and work map under lead ownership, then dispatch the smallest delta; do not let lanes continue against the stale schema.",
+      "files": [],
+      "expectations": [
+        "Pauses affected lanes before further writes",
+        "Lead owns and approves the contract change",
+        "Updates the work map and interface contract",
+        "Dispatches the smallest delta instead of continuing unchanged"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "repair-budget-exhausted",
+      "prompt": "You are the lead mid-run. A lane has failed its acceptance check twice with the same error, exhausting its two-attempt repair budget. Decide the next step.",
+      "expected_output": "No unchanged retry: change coordination mode, scope, or owner, or escalate with the failing receipts.",
+      "files": [],
+      "expectations": [
+        "Recognizes the exhausted budget and recurring failure",
+        "Does not dispatch an unchanged retry",
+        "Changes mode, scope, or owner, or escalates",
+        "Carries the failing evidence and receipts forward"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "single-owner-shared-file",
+      "prompt": "Choose the route only; do not execute. One lead is making two small related edits in one file. There are no other writers, independent lanes, security risk, ambiguity, release requirements, or user-requested reviewers.",
+      "expected_output": "Keep one owner and run focused combined verification on that file; no mandatory fresh checker just because two edits share it.",
+      "files": [],
+      "expectations": [
+        "Uses solo ownership",
+        "Does not invent a checker requirement from a single shared file",
+        "Names focused combined proof"
+      ]
+    }
+  ]
+}

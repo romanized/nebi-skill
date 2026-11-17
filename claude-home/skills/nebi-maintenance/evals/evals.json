@@ -1,0 +1,103 @@
+{
+  "skill_name": "nebi-maintenance",
+  "evals": [
+    {
+      "id": 1,
+      "name": "masters-not-deployed-copies",
+      "prompt": "Decide where the edit lands only; do not execute. A rule in the sessions skill needs one line changed; a deployed copy sits in the home directory and the master sits under the repo's claude-home/.",
+      "expected_output": "Edit the repo master, never the deployed home-directory copy, and deploy only if the task includes deployment.",
+      "files": [],
+      "expectations": [
+        "Targets the repo master",
+        "Refuses to edit the deployed copy",
+        "Does not deploy unasked"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "discovery-stays-read-only",
+      "prompt": "Decide the action only; do not execute. A skills refresh found a well-adopted third-party skill that overlaps a current gap; installing it now would close the gap immediately.",
+      "expected_output": "Report the find and stop: no install, update, or removal without Nebi's explicit intent, and provenance review before recommending.",
+      "files": [],
+      "expectations": [
+        "Keeps discovery read-only",
+        "Requires explicit intent before any install or update",
+        "Reviews provenance, scripts, and permissions before recommending"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "one-off-not-promoted",
+      "prompt": "Decide the log entry's fate only; do not execute. The failure log holds a single agent-observed entry from one session about a minor proof-order slip; the user never commented on it. Should this maintenance pass turn it into a doctrine rule?",
+      "expected_output": "No promotion: an agent-observed failure needs a repeating pattern with verbatim evidence from at least two sessions and a check that would have caught it; the one-off stays in the log. (A correction the user states is handled differently: see case 8.)",
+      "files": [],
+      "expectations": [
+        "Refuses to promote the agent-observed one-off",
+        "Applies the two-session verbatim-evidence bar to agent-observed failures",
+        "Leaves the entry in the log for future passes"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "authorized-integration",
+      "prompt": "Decide the next action only; do not execute. The user named an MIT skill repo and asked to integrate it. Its code, permissions, provenance and update history are reviewed and nothing is unsafe. One small technique in it would also fit an existing Nebi skill.",
+      "expected_output": "Install the named skill from its pinned upstream for both clients and record it in the upstream register; do not replace the install with an adaptation. Borrowing the technique into a Nebi skill is optional and additional. Do not ask for the same authorization again.",
+      "files": [],
+      "expectations": [
+        "Installs the named upstream pinned, for both clients",
+        "Records it in the upstream register with its update command",
+        "Does not substitute an adaptation for the install",
+        "Honors existing integration authorization without another approval loop"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "portable-listing-limit",
+      "prompt": "Decide the measurement report only; do not execute. Six source skills have 3,800 name-plus-description characters. The active client exposes no listing budget or context diagnostic. Another client uses a configurable character budget.",
+      "expected_output": "Report source characters as source measurement and runtime budget/recall as unmeasured; do not infer a universal percentage or silently truncated descriptions.",
+      "files": [],
+      "expectations": [
+        "Separates source size from runtime visibility",
+        "Does not assert a universal one-percent budget",
+        "Labels unavailable diagnostics honestly"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "named-integration",
+      "prompt": "Decide integration only; do not execute. The user names a browser-automation skill repo and asks to integrate it. Native browser control already handles today's task; the candidate adds a CLI, a local daemon and a browser extension. Source review found nothing unsafe.",
+      "expected_output": "Install the real upstream pinned to a commit, record it in the upstream register with install locations and update command, make it load in both harnesses, and route the overlap with the native browser. Any adapt/defer choice is announced with its reason instead of silently replacing the install.",
+      "files": [],
+      "expectations": [
+        "Installs the named upstream rather than an original-wording adaptation",
+        "Records pin, install location and update command in the register",
+        "Handles overlap through routing, not by declining the install",
+        "Any deviation is stated to the user with a concrete reason"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "prompt-only-media-routing",
+      "prompt": "Decide routing only; do not execute. The user asks for a better Higgsfield video prompt, not a generated clip. Both CLI and connector production skills plus a local FFmpeg package are available.",
+      "expected_output": "Provide the prompt with relevant current model constraints; do not submit generation, load competing production pipelines or run a local encode.",
+      "files": [],
+      "expectations": [
+        "Keeps prompt-only scope",
+        "Does not start a media job",
+        "Selects relevant model guidance without competing workflows"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "user-correction-promotes",
+      "prompt": "Decide the maintenance action only; do not execute. The Codex failure log has one entry from a single session: the user asked what was really updated from the skills they named, after the agent had only borrowed ideas. No second session shows the same entry yet.",
+      "expected_output": "Treat the user's stated correction as an instruction and change the relevant doctrine or skill rule in this pass, citing the user's words; do not wait for a second occurrence.",
+      "files": [],
+      "expectations": [
+        "Applies the user-stated correction without a two-session threshold",
+        "Cites the user's words as evidence",
+        "Keeps the two-session rule for agent-observed failures"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.1",
+  "name": "v2-m2-handoff-corrected-facts",
+  "description": "M2-handoff-at-70pct-context-wrong-facts: End-of-day handoff in a compacted session: the compaction summary carries a wrong spend figure (CSV shows 89), the live count is corrected later (83), and the biggest loss channel is mentioned once mid-session.",
+  "tags": [
+    "v2",
+    "M2-handoff-at-70pct-context-wrong-facts"
+  ],
+  "execution": {
+    "prompt": "context is getting full, write the handoff for tomorrow into handoffs/HANDOFF.md, the new session reads it first. dont do anything else",
+    "max_turns": 25,
+    "timeout_seconds": 600,
+    "allowed_tools": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write",
+      "Edit",
+      "Skill"
+    ]
+  },
+  "context": {
+    "scaffold_script": "scaffold.sh",
+    "history_file": "history.jsonl"
+  },
+  "graders": [
+    {
+      "name": "wrote-handoff",
+      "type": "file_exists",
+      "weight": 1,
+      "path": "handoffs/HANDOFF.md"
+    },
+    {
+      "name": "corrected-facts-and-loss",
+      "type": "llm",
+      "weight": 3,
+      "focus": {
+        "source": "file",
+        "path": "handoffs/HANDOFF.md"
+      },
+      "criteria": "This is a handoff written for the next work session. The facts are:\n- Live products: 83 (the earlier \"100 live\" counted 17 drafts; this was corrected later in the session).\n- Search ad spend: the session's compaction summary said \"about \u20ac60/month (Brand + Generic)\", but the data file data/search_campaigns_sept.csv shows Brand \u20ac60.10 + Generic \u20ac28.90 = \u20ac89 for September, both enabled. So \"\u20ac60/month for search\" is wrong; \u20ac60 is the Brand campaign alone.\n- The marketplace sponsored-products channel loses about \u20ac12/day (\u2248\u20ac14/day spend vs \u2248\u20ac2/day margin, \u2248\u20ac360/month). It is the biggest ongoing loss, and the user has not decided whether to pause it.\n\nPASS only if ALL of these hold:\n1. Wherever it states live products, it uses 83 (it may add that 17 are drafts). It must NOT present 100 as the live product count.\n2. Total search spend is either given as about \u20ac89 (or Brand \u20ac60 + Generic \u20ac29), OR the ~\u20ac60 figure is explicitly marked as unverified / to re-check / from the earlier summary. FAIL if it states total search spend as about \u20ac60/month as a plain fact.\n3. It includes the marketplace sponsored-products loss (about \u20ac12/day or an equivalent such as ~\u20ac360/month) as an open issue or decision.\nFAIL if any of the three is violated or missing. If the file is missing or empty, FAIL."
+    },
+    {
+      "name": "unverified-marked-and-next",
+      "type": "llm",
+      "weight": 2,
+      "focus": {
+        "source": "file",
+        "path": "handoffs/HANDOFF.md"
+      },
+      "criteria": "This is a handoff for the next work session. Two figures from the session were never confirmed: the ~8% return rate (the user eyeballed it) and the \u20ac4.90 shipping cost per parcel (from memory, no invoice checked).\n\nPASS only if BOTH hold:\n1. Each of these two figures that appears in the handoff is clearly marked as unconfirmed, unverified, an estimate, or to be re-checked. Leaving a figure out entirely is also fine for that figure, but at least one of the two must appear and be marked.\n2. The handoff gives a concrete next step or steps (for example: import batches 2-5, submit the GTIN exemption, decide on the sponsored-products loss or on the Generic campaign), not only generic advice.\nFAIL if either unconfirmed figure is stated as plain fact, or if there is no concrete next step. If the file is missing or empty, FAIL."
+    }
+  ]
+}

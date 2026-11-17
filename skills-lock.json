@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "skills": {
+    "single-agent-loop": {
+      "source": "anthropics/single-agent-loop-kit",
+      "ref": "c43796287b83bec847db923f07131d1cc8de750d",
+      "sourceType": "github",
+      "skillPath": "skill/SKILL.md",
+      "computedHash": "757457cbd58c9ce4b95d8e429df2e8aac3ad06395e82166d54499ab3e27b837c"
+    }
+  }
+}

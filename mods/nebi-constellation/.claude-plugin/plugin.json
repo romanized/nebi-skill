@@ -1,0 +1,17 @@
+{
+  "name": "nebi-constellation",
+  "version": "0.2.2",
+  "description": "Your other live Claude sessions, kept quiet: one toast when one starts waiting on you, a footer label while two are using the same Chrome, and /sessions to list them.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "toast": {
+      "type": "boolean",
+      "title": "Toast when another session needs you",
+      "description": "One small toast when another live session starts waiting on you, batched within 10 seconds.",
+      "default": true
+    }
+  }
+}

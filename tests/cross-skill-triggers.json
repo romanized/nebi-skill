@@ -1,0 +1,48 @@
+[
+  {
+    "skill": "nebi-debugging",
+    "kind": "fire",
+    "prompt": "Resume the failed API upgrade investigation and fix its regression. Preserve yesterday's verified work.",
+    "forbiddenSkills": [
+      "nebi-prompting"
+    ],
+    "requiredSkills": [
+      "nebi-sessions"
+    ]
+  },
+  {
+    "skill": "nebi-maintenance",
+    "kind": "fire",
+    "prompt": "Audit our Nebi doctrine enforcement and repair the broken Stop hook that contradicts its verification rule.",
+    "forbiddenSkills": [
+      "nebi-prompting"
+    ],
+    "requiredSkills": [
+      "nebi-debugging"
+    ]
+  },
+  {
+    "skill": "nebi-research",
+    "kind": "fire",
+    "prompt": "Compare the installed ORM's transaction behavior with its official versioned docs before we implement the next feature.",
+    "forbiddenSkills": [
+      "nebi-debugging"
+    ]
+  },
+  {
+    "skill": "nebi-prompting",
+    "kind": "fire",
+    "prompt": "Write a reviewable prompt for another agent to debug the deployment. Do not investigate or execute yet.",
+    "forbiddenSkills": [
+      "nebi-debugging"
+    ]
+  },
+  {
+    "skill": "nebi-hillclimb",
+    "kind": "fire",
+    "prompt": "The collection page takes three seconds to become usable on mobile and nothing is broken; get it under one second.",
+    "forbiddenSkills": [
+      "nebi-debugging"
+    ]
+  }
+]

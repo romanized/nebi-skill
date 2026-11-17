@@ -1,0 +1,2452 @@
+{
+  "about": "One register for every upstream skill, pack, plugin and tool Nebi uses or references. Edit the master (claude-home/nebi/upstreams.json in the nebi-skill repo) and redeploy; copies live in ~/.claude/nebi/ and ~/.codex/nebi/. Check it with: node ~/.claude/nebi/upstreams.mjs. Install method: nebi-maintenance references/skill-sources.md.",
+  "reviewed": "2026-11-16",
+  "locks": [
+    "~/.agents/.skill-lock.json",
+    "~/Documents/GitHub/ecommerce-workspace/skills-lock.json"
+  ],
+  "lockRoots": [
+    "~/Documents/GitHub"
+  ],
+  "sources": [
+    {
+      "name": "addyosmani/agent-skills",
+      "repo": "addyosmani/agent-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "security-and-hardening",
+          "path": "skills/security-and-hardening",
+          "tree": "9fb34870625f80d5cac82625f388c0d81d3b525a",
+          "installed": [
+            "~/.agents/skills/security-and-hardening",
+            "~/.claude/skills/security-and-hardening"
+          ]
+        }
+      ],
+      "pin": "301b02b12bff98e4688e6984af6556802322bbde",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add addyosmani/agent-skills#<SHA> --skill security-and-hardening -g -a claude-code codex -y",
+      "decision": "installed, global"
+    },
+    {
+      "name": "anthropics/knowledge-work-plugins",
+      "repo": "anthropics/knowledge-work-plugins",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "metrics-review",
+          "path": "product-management/skills/metrics-review",
+          "tree": "cf538edaeb1ef432e7cb0f8fc323755a5f7f839f",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/metrics-review"
+        }
+      ],
+      "decision": "recorded in a lock; not installed"
+    },
+    {
+      "name": "anthropics/skills",
+      "repo": "anthropics/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "frontend-design",
+          "path": "skills/frontend-design",
+          "installed": [
+            "~/.agents/skills/frontend-design",
+            "~/.claude/skills/frontend-design"
+          ]
+        },
+        {
+          "name": "skill-creator",
+          "path": "skills/skill-creator",
+          "tree": "3cf9a8db32597ba3e24b584a3d696f4e11c7d7b6",
+          "installed": [
+            "~/.agents/skills/skill-creator"
+          ]
+        }
+      ],
+      "pin": "34040c9c568585f6929bedeaad110ad08f079624",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add anthropics/skills#<SHA> --skill frontend-design -g -a claude-code codex -y ; DISABLE_TELEMETRY=1 npx skills@1.7.0 add anthropics/skills#<SHA> --skill skill-creator -g -a codex -y",
+      "decision": "installed: frontend-design (updated 2026-09-22) for both clients; skill-creator Codex only",
+      "notes": "Claude Code already has the synced anthropic-skills:skill-creator, so skill-creator is not linked into ~/.claude/skills."
+    },
+    {
+      "name": "benjaminsehl/liquid-skills",
+      "repo": "benjaminsehl/liquid-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "shopify-liquid-themes",
+          "path": "skills/shopify-liquid-themes",
+          "tree": "fa88df3310f7c2060c08b973aea0069213b774d1",
+          "installed": [
+            "~/.agents/skills/shopify-liquid-themes",
+            "~/.claude/skills/shopify-liquid-themes"
+          ],
+          "parked": "~/.agents/skills-project-packs/shopify-liquid-themes"
+        },
+        {
+          "name": "liquid-theme-standards",
+          "path": "skills/liquid-theme-standards",
+          "tree": "4beb3dd1746bb4ae8a7f062bb7d947cde398d61f",
+          "installed": [
+            "~/.agents/skills/liquid-theme-standards",
+            "~/.claude/skills/liquid-theme-standards"
+          ],
+          "parked": "~/.agents/skills-project-packs/liquid-theme-standards"
+        },
+        {
+          "name": "liquid-theme-a11y",
+          "path": "skills/liquid-theme-a11y",
+          "tree": "92fc74821152cebef96312eb24528fd98222eda3",
+          "installed": [
+            "~/.claude/skills/liquid-theme-a11y",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/liquid-theme-a11y"
+          ],
+          "pin": "483f969bed623c87c9e26ac34324d8d7d8fe68c3"
+        }
+      ],
+      "pin": "af6111436ca2f9aff83e51a09651453ea16334c0",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add benjaminsehl/liquid-skills#<SHA> --skill shopify-liquid-themes liquid-theme-standards -g -a claude-code codex -y",
+      "decision": "installed, global; shortlist: re-source from official Shopify/liquid-skills (identical files) and add liquid-theme-a11y; 2026-11-11 liquid-theme-a11y installed (global and MeiMei-website) at 483f969 for the Shopify theme build: SKILL.md plus two reference files, Markdown only, no licence file like its siblings"
+    },
+    {
+      "name": "canva-sdks/canva-skills",
+      "repo": "canva-sdks/canva-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "canva-brand-check",
+          "path": "plugins/canva/skills/brand-check",
+          "installed": [
+            "~/.claude/skills/canva-brand-check"
+          ]
+        },
+        {
+          "name": "canva-edit-design",
+          "path": "plugins/canva/skills/edit-design",
+          "installed": [
+            "~/.claude/skills/canva-edit-design"
+          ]
+        },
+        {
+          "name": "canva-design-feedback",
+          "path": "plugins/canva/skills/get-design-feedback",
+          "installed": [
+            "~/.claude/skills/canva-design-feedback"
+          ]
+        },
+        {
+          "name": "canva-implement-feedback",
+          "path": "plugins/canva/skills/implement-feedback",
+          "installed": [
+            "~/.claude/skills/canva-implement-feedback"
+          ]
+        },
+        {
+          "name": "canva-resize-for-social-media",
+          "path": "plugins/canva/skills/resize-for-social-media",
+          "installed": [
+            "~/.claude/skills/canva-resize-for-social-media"
+          ]
+        }
+      ],
+      "pin": "972e8cecb4aa1eaf558c2be2f9de5c562d13ff93",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add canva-sdks/canva-skills#<SHA> --skill canva-brand-check canva-edit-design canva-design-feedback canva-implement-feedback canva-resize-for-social-media -g -a claude-code --copy -y",
+      "decision": "installed (named): 5 skills, Claude Code only (--copy)",
+      "why": "Editable layouts: swap copy/photos, resize for social, brand checks, apply review comments, export.",
+      "notes": "Needs the claude.ai Canva connector authenticated once (/mcp → claude.ai Canva → Authenticate). Codex gets the same skills from the official Canva plugin (openai-curated-remote, cached v15.0.0), enabled by the user in /plugins; do not also copy them into ~/.agents/skills. canva-bulk-create skipped (Enterprise autofill)."
+    },
+    {
+      "name": "coreyhaines31/marketingskills",
+      "repo": "coreyhaines31/marketingskills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "cro",
+          "path": "skills/cro",
+          "installed": [
+            "~/.agents/skills/cro",
+            "~/.claude/skills/cro"
+          ],
+          "parked": "~/.agents/skills-project-packs/cro"
+        },
+        {
+          "name": "copywriting",
+          "path": "skills/copywriting",
+          "installed": [
+            "~/.agents/skills/copywriting",
+            "~/.claude/skills/copywriting"
+          ],
+          "parked": "~/.agents/skills-project-packs/copywriting"
+        },
+        {
+          "name": "video",
+          "path": "skills/video",
+          "tree": "7918e961f12cb9a236a353cf5a6fdc04a18fbaab",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/video",
+          "pin": "5b2c0007766c6a1cf1d53fd8fc73e979e0821022"
+        },
+        {
+          "name": "seo-audit",
+          "path": "skills/seo-audit",
+          "installed": [
+            "~/.agents/skills/seo-audit",
+            "~/.claude/skills/seo-audit"
+          ],
+          "parked": "~/.agents/skills-project-packs/seo-audit"
+        },
+        {
+          "name": "ai-seo",
+          "path": "skills/ai-seo",
+          "installed": [
+            "~/.agents/skills/ai-seo",
+            "~/.claude/skills/ai-seo"
+          ],
+          "parked": "~/.agents/skills-project-packs/ai-seo"
+        },
+        {
+          "name": "programmatic-seo",
+          "path": "skills/programmatic-seo",
+          "tree": "afbffddf471de4fc36f31fb0e502be1d79a3cf1d",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/programmatic-seo",
+          "pin": "5b2c0007766c6a1cf1d53fd8fc73e979e0821022"
+        },
+        {
+          "name": "schema",
+          "path": "skills/schema",
+          "installed": [
+            "~/.agents/skills/schema",
+            "~/.claude/skills/schema"
+          ],
+          "parked": "~/.agents/skills-project-packs/schema"
+        },
+        {
+          "name": "emails",
+          "path": "skills/emails",
+          "tree": "5b4e8b70c6e47d428e0f26e17d6ec1e9ad2ea8e0",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/emails",
+          "pin": "5b2c0007766c6a1cf1d53fd8fc73e979e0821022"
+        },
+        {
+          "name": "analytics",
+          "path": "skills/analytics",
+          "installed": [
+            "~/.agents/skills/analytics",
+            "~/.claude/skills/analytics"
+          ],
+          "parked": "~/.agents/skills-project-packs/analytics"
+        },
+        {
+          "name": "product-marketing",
+          "path": "skills/product-marketing",
+          "installed": [
+            "~/.agents/skills/product-marketing",
+            "~/.claude/skills/product-marketing"
+          ]
+        },
+        {
+          "name": "ad-creative",
+          "path": "skills/ad-creative",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/ad-creative",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/ad-creative"
+          ]
+        },
+        {
+          "name": "ads",
+          "path": "skills/ads",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/ads",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/ads"
+          ]
+        },
+        {
+          "name": "attribution",
+          "path": "skills/attribution",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/attribution",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/attribution"
+          ]
+        },
+        {
+          "name": "customer-research",
+          "path": "skills/customer-research",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/customer-research",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/customer-research"
+          ]
+        },
+        {
+          "name": "emails",
+          "path": "skills/emails",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/emails",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/emails"
+          ]
+        },
+        {
+          "name": "offers",
+          "path": "skills/offers",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/offers",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/offers"
+          ]
+        }
+      ],
+      "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add coreyhaines31/marketingskills#<SHA> --skill cro copywriting seo-audit ai-seo schema analytics product-marketing -g -a claude-code codex -y ; cd ~/Documents/GitHub/ecommerce-workspace && DISABLE_TELEMETRY=1 npx skills@1.7.0 add coreyhaines31/marketingskills#<SHA> --skill ads attribution customer-research emails offers -a claude-code codex -y",
+      "decision": "installed (named): 7 global + 6 in ecommerce-workspace",
+      "why": "Store copy, CRO, SEO, analytics and ads across the Shopify stores. product-marketing is the shared context skill the others read.",
+      "localEdits": "ecommerce-workspace ad-creative SKILL.md: deliberate evidence-gathering rule and a fixed ads link (keep); one accidental \".Codex/product-marketing.md\" path (harmless, flagged to the user). Update it by hand, not with the command.",
+      "notes": "Parked older copies in ~/.agents/skills-project-packs are superseded. Left out on purpose: image and video (overlap Higgsfield/Canva/ffmpeg-skill), B2B/SaaS skills, competitor-profiling, social, programmatic-seo. 2026-11-10: updated to 9d6d7ce (7 global, 6 in ecommerce-workspace). ad-creative was merged three-way to keep the workspace's local edits; upstream rewrote the sentence that held the local link fix. New references suggest `npx is-agentic` and `npx afdocs check`: third-party npx, review before running. 2026-11-16: ads, ad-creative, offers, attribution and conversion-tracking also installed GLOBAL at 1f83744 (entry 'coreyhaines31/marketingskills (ad set, global)'); the workspace copies of ads/ad-creative/offers/attribution are left in place and duplicate those names in ecommerce-workspace."
+    },
+    {
+      "name": "d4vinci/scrapling",
+      "repo": "d4vinci/scrapling",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "scrapling-official",
+          "path": "agent-skill/Scrapling-Skill",
+          "installed": [
+            "~/.agents/skills/scrapling-official",
+            "~/.claude/skills/scrapling-official",
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/scrapling-official",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/scrapling-official"
+          ]
+        }
+      ],
+      "pin": "c5121c7c06a8595ed3a0a9b7b7dcd6802b5ebfc5",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add d4vinci/scrapling#<SHA> --skill scrapling-official -g -a claude-code codex -y ; uv tool install --force \"scrapling[all]==<version>\" && scrapling install",
+      "decision": "installed, global (2026-09-27, user: the scraper to use most of the time); the ecommerce-workspace project copies predate it",
+      "notes": "CLI + MCP server: uv tool install \"scrapling[all]==0.5.1\" (~/.local/bin/scrapling, scrapling-mcp), browsers via scrapling install. For Python code outside ecommerce-workspace/tools/.venv, run: uv run --with \"scrapling[all]==0.5.1\" python script.py. Use it for protected or JS-heavy pages; plain pages do not need a browser fetch. 2026-11-10: skill updated to c5121c7, which documents 0.5.1; CLI upgraded to 0.5.1 with uv and `scrapling install`. 0.5 has breaking changes for remote (CDP) sessions only; ecommerce-workspace tools/scrapling/scrape.py passes plain and stealth on 0.5.1. Re-checked later on 2026-11-10 (MeiMei-Roblox docs/proofs/K-skill-fixes.md): c5121c7 is still upstream HEAD, 0.5.1 still the latest on PyPI, the skill names no DynamicFetcher, and a real fetch of quotes.toscrape.com returned 200 with 10 quotes through Fetcher, AsyncFetcher, FetcherSession (sync and async), StealthyFetcher, StealthySession, AsyncStealthySession, RemoteSession and AsyncRemoteSession (against a local headless Chrome for Testing over CDP), plus the CLI's extract get and extract fetch."
+    },
+    {
+      "name": "dig1t/skills",
+      "repo": "dig1t/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "luau-best-practices",
+          "path": "luau-best-practices",
+          "tree": "4b61f3406cffcbe56d0b021e7f0d3219103b3eb6",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/luau-best-practices"
+        },
+        {
+          "name": "luau-type-expert",
+          "path": "luau-type-expert",
+          "tree": "861680d1b63158205d2ae3bff6342f6cdab71e87",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/luau-type-expert"
+        },
+        {
+          "name": "rojo-pro",
+          "path": "rojo-pro",
+          "tree": "555a2038ae4fec90e849747c08a73e1cd77713b1",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/rojo-pro"
+        }
+      ],
+      "pin": "547ab66e17dc4844f7461da3270c8737badcbc3b",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add dig1t/skills#<SHA> --skill luau-best-practices luau-type-expert rojo-pro -a claude-code codex -y (run inside the Roblox project; parked, so not global)",
+      "decision": "parked 2026-09-24: zero loads in 30 days of Claude and Codex sessions, both Rojo projects idle since July; re-enable per project from the parked pack (README there); nothing better found for Luau"
+    },
+    {
+      "name": "Donchitos/Claude-Code-Game-Studios",
+      "repo": "Donchitos/Claude-Code-Game-Studios",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "playtest-report",
+          "path": ".claude/skills/playtest-report",
+          "tree": "9715f83c8e539ea45ad99792aff50eea89fc23ae",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/playtest-report"
+        }
+      ],
+      "decision": "recorded in a lock; not installed"
+    },
+    {
+      "name": "emilkowalski/skills",
+      "repo": "emilkowalski/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "animate",
+          "path": "skills/animate",
+          "installed": [
+            "~/.claude/skills/animate"
+          ]
+        },
+        {
+          "name": "animate-expo",
+          "path": "skills/animate-expo",
+          "installed": [
+            "~/.claude/skills/animate-expo"
+          ]
+        },
+        {
+          "name": "animation-performance",
+          "path": "skills/animation-performance",
+          "installed": [
+            "~/.claude/skills/animation-performance"
+          ]
+        },
+        {
+          "name": "animation-vocabulary",
+          "path": "skills/animation-vocabulary",
+          "installed": [
+            "~/.claude/skills/animation-vocabulary"
+          ]
+        },
+        {
+          "name": "apple-design",
+          "path": "skills/apple-design",
+          "installed": [
+            "~/.claude/skills/apple-design"
+          ]
+        },
+        {
+          "name": "ask-sonner",
+          "path": "skills/ask-sonner",
+          "installed": [
+            "~/.claude/skills/ask-sonner"
+          ]
+        },
+        {
+          "name": "break-ui",
+          "path": "skills/break-ui",
+          "installed": [
+            "~/.claude/skills/break-ui"
+          ]
+        },
+        {
+          "name": "choreograph",
+          "path": "skills/choreograph",
+          "installed": [
+            "~/.claude/skills/choreograph"
+          ]
+        },
+        {
+          "name": "emil-design-eng",
+          "path": "skills/emil-design-eng",
+          "installed": [
+            "~/.agents/skills/emil-design-eng",
+            "~/.claude/skills/emil-design-eng"
+          ]
+        },
+        {
+          "name": "find-animation-opportunities",
+          "path": "skills/find-animation-opportunities",
+          "installed": [
+            "~/.claude/skills/find-animation-opportunities"
+          ]
+        },
+        {
+          "name": "improve-animations",
+          "path": "skills/improve-animations",
+          "installed": [
+            "~/.claude/skills/improve-animations"
+          ]
+        },
+        {
+          "name": "mobile-native",
+          "path": "skills/mobile-native",
+          "installed": [
+            "~/.claude/skills/mobile-native"
+          ]
+        },
+        {
+          "name": "pick-ui-library",
+          "path": "skills/pick-ui-library",
+          "installed": [
+            "~/.claude/skills/pick-ui-library"
+          ]
+        },
+        {
+          "name": "prototype",
+          "path": "skills/prototype",
+          "installed": [
+            "~/.claude/skills/prototype"
+          ]
+        },
+        {
+          "name": "remove-animations",
+          "path": "skills/remove-animations",
+          "installed": [
+            "~/.claude/skills/remove-animations"
+          ]
+        },
+        {
+          "name": "review-animations",
+          "path": "skills/review-animations",
+          "installed": [
+            "~/.claude/skills/review-animations"
+          ]
+        },
+        {
+          "name": "write-swift",
+          "path": "skills/write-swift",
+          "installed": [
+            "~/.claude/skills/write-swift"
+          ]
+        },
+        {
+          "name": "gestures",
+          "path": "skills/gestures",
+          "tree": "d30dfa5756b880d26c07adfb364d8506f963e6e6",
+          "installed": [
+            "~/.claude/skills/gestures",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/gestures"
+          ]
+        }
+      ],
+      "pin": "715c1807e08c497cfd1dc4feb450a2a3300ef2a9",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add emilkowalski/skills#<SHA> -s \"*\" -g -a claude-code -y",
+      "decision": "2026-11-07 owner named the whole set (MeiMei shop rebuild, \"be broad with them\"): all 17 skills installed global for Claude Code at c8a7962. MIT, Markdown only, no scripts. 2026-11-11 (MeiMei finish-the-site brief: \"all of it, for every motion decision\"): updated to 715c180, global and the MeiMei-website project copy. The diff from c8a7962 is one new skill, gestures (Markdown only), and a README line.",
+      "why": "Motion and interaction polish for landing pages and apps."
+    },
+    {
+      "name": "fal-ai-community/skills",
+      "repo": "fal-ai-community/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "fal-models-catalog",
+          "path": "skills/fal-models-catalog",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/fal-models-catalog",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/fal-models-catalog"
+          ]
+        },
+        {
+          "name": "fal-prompting",
+          "path": "skills/fal-prompting",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/fal-prompting",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/fal-prompting"
+          ]
+        },
+        {
+          "name": "fal-recipes",
+          "path": "skills/fal-recipes",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/fal-recipes",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/fal-recipes"
+          ]
+        },
+        {
+          "name": "genmedia",
+          "path": "skills/genmedia",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/genmedia",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/genmedia"
+          ]
+        }
+      ],
+      "pin": "ca79376d624d244e601f9182fa80b5bf66efec9c",
+      "update": "cd ~/Documents/GitHub/ecommerce-workspace && DISABLE_TELEMETRY=1 npx skills@1.7.0 add fal-ai-community/skills#<SHA> --skill fal-models-catalog fal-prompting fal-recipes genmedia -a claude-code codex -y",
+      "decision": "installed",
+      "notes": "2026-11-10: updated to ca79376. New genmedia/scripts/run_plan.py only shells out to the local `genmedia` CLI."
+    },
+    {
+      "name": "getsentry/skills",
+      "repo": "getsentry/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "security-review",
+          "path": "skills/security-review",
+          "tree": "7806c573500d4d254edb421542307b5b33b6a804",
+          "installed": [
+            "~/.agents/skills/security-review",
+            "~/.claude/skills/security-review"
+          ]
+        }
+      ],
+      "pin": "e94f22214528d69899d09c627b3315ddc3544816",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add getsentry/skills#<SHA> --skill security-review -g -a claude-code codex -y",
+      "decision": "installed, global"
+    },
+    {
+      "name": "github/awesome-copilot",
+      "repo": "github/awesome-copilot",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "gsap-framer-scroll-animation",
+          "path": "skills/gsap-framer-scroll-animation",
+          "tree": "b67d31bd2cd4e33cd22874c35ff35c4359fd9b8f",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/gsap-framer-scroll-animation"
+        }
+      ],
+      "pin": "66a60afe70fb20f90e6210befa46c24b85a88862",
+      "decision": "parked 2026-09-22 (user-approved): use official greensock/gsap-skills per GSAP project"
+    },
+    {
+      "name": "greensock/gsap-skills",
+      "repo": "greensock/gsap-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "gsap-core",
+          "path": "skills/gsap-core",
+          "tree": "135754edd728103e329a8df8b471b197375b370e",
+          "installed": [
+            "~/.claude/skills/gsap-core"
+          ]
+        },
+        {
+          "name": "gsap-frameworks",
+          "path": "skills/gsap-frameworks",
+          "installed": [
+            "~/.claude/skills/gsap-frameworks"
+          ]
+        },
+        {
+          "name": "gsap-performance",
+          "path": "skills/gsap-performance",
+          "tree": "34dec2f051872f8d02df06de97450e448bac9c5e",
+          "installed": [
+            "~/.claude/skills/gsap-performance"
+          ]
+        },
+        {
+          "name": "gsap-plugins",
+          "path": "skills/gsap-plugins",
+          "tree": "e31ccbdb75cf41f0e7df0fec567f6e07956eaca9",
+          "installed": [
+            "~/.claude/skills/gsap-plugins"
+          ]
+        },
+        {
+          "name": "gsap-react",
+          "path": "skills/gsap-react",
+          "installed": [
+            "~/.claude/skills/gsap-react"
+          ]
+        },
+        {
+          "name": "gsap-scrolltrigger",
+          "path": "skills/gsap-scrolltrigger",
+          "installed": [
+            "~/.claude/skills/gsap-scrolltrigger"
+          ]
+        },
+        {
+          "name": "gsap-timeline",
+          "path": "skills/gsap-timeline",
+          "tree": "37eb5d623c3e14367864d57160acb64f13950994",
+          "installed": [
+            "~/.claude/skills/gsap-timeline"
+          ]
+        },
+        {
+          "name": "gsap-utils",
+          "path": "skills/gsap-utils",
+          "installed": [
+            "~/.claude/skills/gsap-utils"
+          ]
+        }
+      ],
+      "pin": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add greensock/gsap-skills#<SHA> -s \"*\" -g -a claude-code -y",
+      "decision": "2026-11-05 owner named it for the strafe.games overhaul: installed global (every worktree needs it), pin aed9cfd. Skipped on purpose: gsap-react, gsap-frameworks, gsap-scrolltrigger, gsap-utils; the hub is vanilla and has no scroll scenes. Text only, no scripts. 2026-11-07: owner asked for the official GSAP skills broadly (MeiMei rebuild): all 8 installed global at the same pin aed9cfd (HEAD).",
+      "why": "Official GSAP guidance for the hub animation."
+    },
+    {
+      "name": "hardikpandya/stop-slop",
+      "repo": "hardikpandya/stop-slop",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "stop-slop",
+          "path": "",
+          "installed": [
+            "~/.agents/skills/stop-slop",
+            "~/.claude/skills/stop-slop"
+          ]
+        }
+      ],
+      "pin": "8da1f030185bdfe8471220585162991eaeb970e9",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add https://github.com/hardikpandya/stop-slop/tree/<SHA> --skill stop-slop -g -a claude-code codex -y",
+      "decision": "reinstalled 2026-09-22",
+      "why": "The writing rule (§8) delegates slop removal to it.",
+      "notes": "The July install had SKILL.md without its references/ folder, so the three files its method points to were missing."
+    },
+    {
+      "name": "higgsfield-ai/skills",
+      "repo": "higgsfield-ai/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "higgsfield-marketplace-cards",
+          "path": "higgsfield-marketplace-cards",
+          "tree": "dd4941e810db2bb8bb425bd31c3b6239ec383882",
+          "installed": [
+            "~/.agents/skills/higgsfield-marketplace-cards",
+            "~/.claude/skills/higgsfield-marketplace-cards"
+          ],
+          "parked": "~/.agents/skills-project-packs/higgsfield-marketplace-cards"
+        },
+        {
+          "name": "higgsfield-product-photoshoot",
+          "path": "higgsfield-product-photoshoot",
+          "tree": "6444cd228cbcfd06aded80443584d284471716b9",
+          "installed": [
+            "~/.agents/skills/higgsfield-product-photoshoot",
+            "~/.claude/skills/higgsfield-product-photoshoot"
+          ],
+          "parked": "~/.agents/skills-project-packs/higgsfield-product-photoshoot"
+        },
+        {
+          "name": "higgsfield-soul-id",
+          "path": "higgsfield-soul-id",
+          "tree": "a6fd7da975912909cde7d7b0697369a1114c1b9d",
+          "installed": [
+            "~/.agents/skills/higgsfield-soul-id",
+            "~/.claude/skills/higgsfield-soul-id"
+          ],
+          "parked": "~/.agents/skills-project-packs/higgsfield-soul-id"
+        },
+        {
+          "name": "higgsfield-generate",
+          "path": "higgsfield-generate",
+          "installed": [
+            "~/.agents/skills/higgsfield-generate",
+            "~/.claude/skills/higgsfield-generate"
+          ],
+          "parked": "~/.agents/skills-project-packs/higgsfield-generate"
+        },
+        {
+          "name": "higgsfield-brandkit",
+          "path": "higgsfield-brandkit",
+          "tree": "df239514974efa96d41798adcfdad6ea4b9fbf07",
+          "installed": [
+            "~/.agents/skills/higgsfield-brandkit",
+            "~/.claude/skills/higgsfield-brandkit"
+          ]
+        },
+        {
+          "name": "higgsfield-video-explainer",
+          "path": "higgsfield-video-explainer",
+          "tree": "25bac2d1e12c2253b9abe52bb1aa2e544efeb060",
+          "installed": [
+            "~/.agents/skills/higgsfield-video-explainer",
+            "~/.claude/skills/higgsfield-video-explainer"
+          ]
+        },
+        {
+          "name": "higgsfield-websites",
+          "path": "higgsfield-websites",
+          "tree": "ded32c3950db719dcfb4c842cba7839a95f09857",
+          "installed": [
+            "~/.agents/skills/higgsfield-websites",
+            "~/.claude/skills/higgsfield-websites"
+          ]
+        },
+        {
+          "name": "higgsfield-youtube-thumbnail",
+          "path": "higgsfield-youtube-thumbnail",
+          "tree": "5381648ebe24f5acbeeae29dac5d983771660b0b",
+          "installed": [
+            "~/.agents/skills/higgsfield-youtube-thumbnail",
+            "~/.claude/skills/higgsfield-youtube-thumbnail"
+          ]
+        }
+      ],
+      "pin": "27000402070db19d958789d05b3b52b6f4718d7c",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add higgsfield-ai/skills#<SHA> --skill higgsfield-marketplace-cards higgsfield-product-photoshoot higgsfield-soul-id higgsfield-generate higgsfield-brandkit higgsfield-video-explainer higgsfield-websites higgsfield-youtube-thumbnail -g -a claude-code codex -y",
+      "decision": "installed, global; all 8 identical to upstream on 2026-09-22",
+      "notes": "Parked June copies in ~/.agents/skills-project-packs/higgsfield-* are stale; shortlist: delete."
+    },
+    {
+      "name": "jeffallan/claude-skills",
+      "repo": "jeffallan/claude-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "shopify-expert",
+          "path": "skills/shopify-expert",
+          "tree": "4fad8ec9c2a95eba2a0b05c51cee5559fdf38ac0",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/shopify-expert"
+        }
+      ],
+      "pin": "efebc44c90ae6eb3b36ff1c53802a765418481b9",
+      "decision": "parked 2026-09-22 (user-approved): superseded by the official Shopify toolkit; wrong metafield example, do not re-enable"
+    },
+    {
+      "name": "jezweb/claude-skills",
+      "repo": "jezweb/claude-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "shopify-content",
+          "path": "plugins/shopify/skills/shopify-content",
+          "tree": "4234922109afb3b95b8b7f24ab7938d36f55b02a",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/shopify-content"
+        }
+      ],
+      "decision": "recorded in a lock; not installed"
+    },
+    {
+      "name": "kajisho5/ffmpeg-skill",
+      "repo": "kajisho5/ffmpeg-skill",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "ffmpeg-skill",
+          "path": "",
+          "installed": [
+            "~/.agents/skills/ffmpeg-skill",
+            "~/.claude/skills/ffmpeg-skill"
+          ]
+        }
+      ],
+      "pin": "6e42a79247909659b3d80833120b272fb5e46aba",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add https://github.com/kajisho5/ffmpeg-skill/tree/<SHA> --skill ffmpeg-skill -g -a claude-code codex -y",
+      "decision": "installed (named), global",
+      "why": "Deterministic local video/audio edits (cut, fit, captions, loudness, exports) with probe-first and verify-last scripts.",
+      "notes": "FFMPEG_SKILL_NO_OVERWRITE=1 is set in ~/.zshenv. Homebrew ffmpeg-full 9.0.2 is first on PATH via ~/.zshenv and ~/.zprofile; doctor 42/42 on 2026-09-23 (was 39/42 on plain ffmpeg). The mcp/server.py is not registered. Replaces the 2026-09-22 local-media adaptation. 2026-11-10: updated to 6e42a79. New script host johnvansickle.com (static FFmpeg builds, named in doctor output); the rest is tests and docs."
+    },
+    {
+      "name": "nexscope-ai/eCommerce-Skills",
+      "repo": "nexscope-ai/eCommerce-Skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "dropshipping-product-research",
+          "path": "dropshipping-product-research",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/dropshipping-product-research",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/dropshipping-product-research"
+          ]
+        }
+      ],
+      "pin": "ee0fb29433d02ccc22e3e6cea9ab4586d49fd42e",
+      "update": "cd ~/Documents/GitHub/ecommerce-workspace && DISABLE_TELEMETRY=1 npx skills@1.7.0 add nexscope-ai/eCommerce-Skills#<SHA> --skill dropshipping-product-research -a claude-code codex -y",
+      "decision": "installed"
+    },
+    {
+      "name": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "ui-ux-pro-max",
+          "path": ".claude/skills/ui-ux-pro-max",
+          "tree": "5cca2c41be4f7a85c3d8ff95e9bd42de9486745e",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/ui-ux-pro-max"
+        }
+      ],
+      "pin": "a38d04c3d5c298c851dbe5e6ee1965ee3de42cb5",
+      "decision": "parked 2026-09-22 (user-approved): overlaps frontend-design"
+    },
+    {
+      "name": "obra/superpowers",
+      "repo": "obra/superpowers",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "verification-before-completion",
+          "path": "skills/verification-before-completion",
+          "tree": "a4cb0b69aaefeab540947a7f1642bdaad810e37a",
+          "installed": [
+            "~/.agents/skills/verification-before-completion"
+          ]
+        },
+        {
+          "name": "receiving-code-review",
+          "path": "skills/receiving-code-review",
+          "installed": [
+            "~/.agents/skills/receiving-code-review",
+            "~/.claude/skills/receiving-code-review"
+          ]
+        }
+      ],
+      "pin": "5bf4e78011075bcfc0dc295f0724994cd123ee71",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add obra/superpowers#<SHA> --skill receiving-code-review -g -a claude-code codex -y && DISABLE_TELEMETRY=1 npx skills@1.7.0 add obra/superpowers#<SHA> --skill verification-before-completion -g -a codex -y",
+      "decision": "installed subset (named): receiving-code-review in both clients; verification-before-completion in Codex only (user decision 2026-09-24: 0 Claude loads in 30 days, core §6 and the Stop hook cover it; Codex loaded it in 146 sessions); deviation: no plugin, no other skills",
+      "why": "Review handling has no Nebi overlap; verification-before-completion targets the most logged failure (done before proof).",
+      "removed": "finishing-a-development-branch (installed and removed 2026-09-22 @5bf4e78): it fires at every task end, forces the full test suite and waits on a merge/PR/keep menu, against §4 and proportional §6 proof.",
+      "notes": "Deliberately not installed: the plugin SessionStart bootstrap (using-superpowers, \"1% chance means you must invoke\") and brainstorming/TDD/writing-plans/systematic-debugging/dispatching agents, which collide with nebi-* skills and doctrine §4/§6."
+    },
+    {
+      "name": "openai/skills",
+      "repo": "openai/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "security-threat-model",
+          "path": "skills/.curated/security-threat-model",
+          "tree": "455ed2d898ef7d1e8836898f07be3a7d2c3f38d2",
+          "installed": [
+            "~/.agents/skills/security-threat-model",
+            "~/.claude/skills/security-threat-model"
+          ]
+        }
+      ],
+      "pin": "5c8f1e26803bcfaffeceef1e7accbcf7e388417a",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add openai/skills#<SHA> --skill security-threat-model -g -a claude-code codex -y",
+      "decision": "installed, global"
+    },
+    {
+      "name": "pbakaus/impeccable",
+      "repo": "pbakaus/impeccable",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "impeccable",
+          "path": ".agents/skills/impeccable",
+          "tree": "c990cca10b374b1c821d2208cf826a52ae5975db",
+          "installed": [
+            "~/.agents/skills/impeccable",
+            "~/.claude/skills/impeccable"
+          ],
+          "parked": "~/.agents/skills-project-packs/impeccable"
+        }
+      ],
+      "pin": "ec229b48547f24685ffb22aa51c462c5ae27908c",
+      "decision": "2026-10-07 (user asked to install clear wins during rs-bol scan): installed v4.5.0, global (the bol bridge is built across many withdrawal-desk worktrees, so a project install would not reach the builders), skill folder only via the skills CLI (no hooks, no `npx impeccable install`). Supersedes the 2026-09-22 park; the parked copy in skills-project-packs is older.",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add pbakaus/impeccable#<SHA> --skill impeccable -g -a claude-code codex -y",
+      "why": "Operate-mode UX pass on the bol.com worker app: critique (Nielsen scoring, cognitive load, personas), distill, clarify, harden, audit, onboard.",
+      "notes": "scripts/impeccable launcher downloads engine v0.1.11 (Rust, built by github-actions release-engine.yml, release engine-v0.1.11 created 2026-10-02) from GitHub releases into ~/.impeccable/bin on first run, sha256-sidecar verified (same origin). The engine pings https://impeccable.style (update check, concept-seed API with telemetry) unless IMPECCABLE_NO_TELEMETRY / DO_NOT_TRACK and IMPECCABLE_NO_UPDATE_CHECK are set. It writes PRODUCT.md, DESIGN.md and .impeccable/ into the project root: do not run init/document inside repos that already own a DESIGN.md (cnlsneakers theme, bol bridge docs/DESIGN.md); keep hooks off; skip live and generate. Installed copy is the repo's .agents/skills/impeccable (includes Codex agents/*.toml); the repo also carries per-client copies (.claude/, plugin/, ...). 2026-11-10: updated to ec229b4. The register check reports scripts/impeccable.cmd as a local edit right after a clean install: the skills CLI normalises its line endings; nothing was edited. reference/hooks.md describes `impeccable hooks on`: keep hooks off as before."
+    },
+    {
+      "name": "pluginagentmarketplace/custom-plugin-game-developer",
+      "repo": "pluginagentmarketplace/custom-plugin-game-developer",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "level-design",
+          "path": "skills/level-design",
+          "tree": "01d27ca1f1087482db041c94bff6b426a5830720",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/level-design"
+        }
+      ],
+      "decision": "recorded in a lock; not installed"
+    },
+    {
+      "name": "shopify/shopify-ai-toolkit",
+      "repo": "shopify/shopify-ai-toolkit",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "shopify",
+          "path": "skills/shopify",
+          "pin": "a3d20f8dc284a2e8ae25272fa79520888abb5dcb",
+          "tree": "423b34481b3469d9cf29477c31badaf59fab3f46",
+          "installed": [
+            "~/.agents/skills/shopify",
+            "~/.claude/skills/shopify"
+          ]
+        },
+        {
+          "name": "shopify-liquid",
+          "path": "skills/shopify-liquid",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-liquid"
+        },
+        {
+          "name": "shopify-admin",
+          "path": "skills/shopify-admin",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-admin"
+        },
+        {
+          "name": "shopify-custom-data",
+          "path": "skills/shopify-custom-data",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-custom-data"
+        },
+        {
+          "name": "shopify-shopifyql",
+          "path": "skills/shopify-shopifyql",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-shopifyql"
+        },
+        {
+          "name": "shopify-use-shopify-cli",
+          "path": "skills/shopify-use-shopify-cli",
+          "installed": [],
+          "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-use-shopify-cli"
+        }
+      ],
+      "pin": "a3d20f8dc284a2e8ae25272fa79520888abb5dcb",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add Shopify/shopify-ai-toolkit#<SHA> --skill shopify -g -a claude-code codex -y",
+      "decision": "2026-10-07 (user asked to install clear wins during rs-bol scan): installed the unified `shopify` skill v1.17.1, global, pinned 8692e6a4 (per-skill pin). Upstream 2.0.0 retired the five per-topic skills below (still installed at the source pin 57e293be); remove them once a fresh session is confirmed using `shopify`, then move the source pin to the shopify pin. 2026-11-10: `shopify` updated to v1.19.0 (a3d20f8; script hosts unchanged, opt-out file still honoured). The five per-topic skills upstream retired are parked in ~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/: sessions kept loading the frozen ones (4 loads on 17-18 Oct against 1 for `shopify`).",
+      "why": "Store owner work across several stores (metafields, ShopifyQL, CLI) plus the bol bridge app: Polaris App Home patterns, Admin UI extensions (order-details block/action/print), offline validators for Admin GraphQL 2026-07 and Polaris components, app-store-review checklist.",
+      "notes": "Telemetry opt-out file at ~/.config/shopify-ai-toolkit/opt-out (keep it; toolkit scripts otherwise send prompt, code and queries to shopify.dev/mcp/usage); also pass OPT_OUT_INSTRUMENTATION=true when running scripts. SKILL.md frontmatter PostToolUse(Skill) hook execs $CLAUDE_PLUGIN_ROOT/scripts/track-telemetry.sh only if it exists (no-op for a plain skill install; the opt-out file also short-circuits it). validate.mjs needs typescript 5.9.3 (and theme-check 3.24.0 for liquid) next to the scripts; package.json lists them but they are not shipped, so `npm install --prefix ~/.agents/skills/shopify` is still to be run (not done: unpinned transitive deps). Never run scripts/import_mock_shop_catalog.mjs (execs `shopify store` create/import). search_docs.mjs queries shopify.dev. The skill folder also ships stray theme files (blocks/, sections/, featured-collection.liquid, config/, locales/) from upstream; harmless."
+    },
+    {
+      "name": "supabase/agent-skills",
+      "repo": "supabase/agent-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "supabase",
+          "path": "skills/supabase",
+          "installed": [
+            "~/.agents/skills/supabase",
+            "~/.claude/skills/supabase"
+          ]
+        },
+        {
+          "name": "supabase-postgres-best-practices",
+          "path": "skills/supabase-postgres-best-practices",
+          "installed": [
+            "~/.agents/skills/supabase-postgres-best-practices",
+            "~/.claude/skills/supabase-postgres-best-practices"
+          ]
+        }
+      ],
+      "pin": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add supabase/agent-skills#<SHA> --skill supabase supabase-postgres-best-practices -g -a claude-code codex -y",
+      "decision": "installed, global (4 Supabase projects)",
+      "why": "Official; RLS traps, migrations and Postgres rules. The Supabase MCP recommends it."
+    },
+    {
+      "name": "vercel-labs/agent-skills",
+      "repo": "vercel-labs/agent-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "web-design-guidelines",
+          "path": "skills/web-design-guidelines",
+          "tree": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
+          "installed": []
+        },
+        {
+          "name": "vercel-react-best-practices",
+          "path": "skills/react-best-practices",
+          "installed": [
+            "~/.agents/skills/vercel-react-best-practices",
+            "~/.claude/skills/vercel-react-best-practices"
+          ]
+        }
+      ],
+      "pin": "063bee94c3f4df8453406c830b0a7df0f2860278",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add vercel-labs/agent-skills#<SHA> --skill vercel-react-best-practices -g -a claude-code codex -y",
+      "decision": "installed: vercel-react-best-practices, global (React/Next sites)",
+      "notes": "web-design-guidelines is in the lock but not installed. Shortlist: vercel-react-view-transitions."
+    },
+    {
+      "name": "vercel-labs/skills",
+      "repo": "vercel-labs/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "find-skills",
+          "path": "skills/find-skills",
+          "tree": "76a98a285cb0434f3d39e1a873823556330e398b",
+          "installed": [
+            "~/.agents/skills/find-skills",
+            "~/.claude/skills/find-skills"
+          ]
+        }
+      ],
+      "pin": "773fb2c7bbf16781670a3520affc4abd0c6151ae",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add vercel-labs/skills#<SHA> --skill find-skills -g -a claude-code codex -y",
+      "decision": "installed, global (skills CLI helper)"
+    },
+    {
+      "name": "railwayapp/railway-skills",
+      "repo": "railwayapp/railway-skills",
+      "kind": "skills",
+      "pin": "526e95524e964ed326689cbac4464d97a58ab81c",
+      "decision": "installed, global; 2026-10-07 updated ca21b2a → dab1c2a with the skills CLI (the old copy described a project-wide tracing toggle the docs no longer have)",
+      "notes": "Installed by the skills CLI as ~/.agents/skills/use-railway with ~/.claude/skills/use-railway symlinked to it. The Railway CLI (`railway skills update`) also manages it, but its own install record still says ca21b2a and it skips the update as \"local changes\"; the files match dab1c2a. Its description fires broadly (\"MCP\", \"deployments\") — shortlist: name-only via skillOverrides if it mis-triggers. 2026-11-10: updated to 526e955 (skill 1.7.0). It now asks for a `RAILWAY_CALLER=skill:use-railway@1.7.0` prefix and a `RAILWAY_AGENT_SESSION` id on CLI calls: a caller tag Railway sees, nothing else.",
+      "skills": [
+        {
+          "name": "use-railway",
+          "path": "plugins/railway/skills/use-railway",
+          "installed": [
+            "~/.claude/skills/use-railway",
+            "~/.agents/skills/use-railway"
+          ]
+        }
+      ],
+      "update": "Managed by Railway tooling; to force: DISABLE_TELEMETRY=1 npx skills@1.7.0 add railwayapp/railway-skills#<SHA> --skill use-railway -g -a claude-code codex -y"
+    },
+    {
+      "name": "stripe (plugin)",
+      "repo": "stripe/ai",
+      "kind": "plugin",
+      "pin": "d8e14797c726086c4376f576f6fb7cbb908e5f15",
+      "decision": "installed Claude plugin (user scope); 2026-11-10 updated 0.10.3 -> 0.11.17 through the official marketplace without a diff review (first-party plugin).",
+      "notes": "Shortlist: move to the projects that take payments; stripe-directory/stripe-projects descriptions grab generic \"I need a database / find hosting\" requests.",
+      "skills": [
+        {
+          "name": "stripe@claude-plugins-official",
+          "path": "providers/claude/plugin",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/stripe/0.10.3"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update stripe@claude-plugins-official"
+    },
+    {
+      "name": "remotion (plugin)",
+      "repo": "remotion-dev/claude-code-plugin",
+      "kind": "plugin",
+      "pin": "6ccd1852dddbd46f5ca1a8544fb30fb97f747b06",
+      "decision": "installed Claude plugin (user scope); 2026-11-10 updated 4.0.512 -> 4.0.542 through its marketplace without a diff review (first-party plugin). Kept: capability routing sends code-built motion graphics to it.",
+      "installed": [
+        "~/.claude/plugins/cache/remotion/remotion/4.0.542"
+      ],
+      "notes": "Last used 84 days before 2026-11-10 per /skill-doctor; 12 skills in the listing.",
+      "update": "claude plugin marketplace update remotion && claude plugin update remotion@remotion"
+    },
+    {
+      "name": "claude-security (plugin)",
+      "repo": "anthropics/claude-plugins-official",
+      "kind": "plugin",
+      "decision": "installed Claude plugin 0.12.0 (user scope, current on 2026-11-10). A 0.10.2 copy is still enabled at project scope for nebi-skill and is what the register check compares against.",
+      "skills": [
+        {
+          "name": "claude-security@claude-plugins-official",
+          "path": "plugins/claude-security",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/claude-security/0.10.2"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update claude-security@claude-plugins-official"
+    },
+    {
+      "name": "Tencent/BrowserSkill",
+      "repo": "Tencent/BrowserSkill",
+      "kind": "reference",
+      "pin": "75e2c64abaf4b7cc75682d94b0c1fd5db0cbd5e5",
+      "decision": "removed 2026-09-23 by the user after trial: Claude in Chrome and the Codex browser already cover logged-in browsing; the extension injects into every page and the daemon accepts any extension origin",
+      "notes": "Free, MIT, local. Worth it only for terminal-only agents or recurring scripted browser jobs. Reinstall: bsk v0.3.0 release binary (sha256 f85b2d46...), the extension in a separate Chrome profile, then cd <project> && DISABLE_TELEMETRY=1 npx skills@1.7.0 add https://github.com/Tencent/BrowserSkill/tree/<SHA>/crates/bsk-cli/skill -a claude-code codex -y"
+    },
+    {
+      "name": "google/ax",
+      "repo": "google/ax",
+      "kind": "reference",
+      "pin": "d8ed0fe38bceb7842d3c47817d53d16ccdfcb601",
+      "decision": "not adopted: hosted cluster runtime (Kubernetes, Redis) for remote agents; no local use"
+    },
+    {
+      "name": "vercel-labs/agent-browser",
+      "repo": "vercel-labs/agent-browser",
+      "kind": "reference",
+      "decision": "not adopted: a second browser controller next to Claude in Chrome, the Codex browser and bsk"
+    },
+    {
+      "name": "cursor/plugins (cursor-team-kit)",
+      "repo": "cursor/plugins",
+      "kind": "reference",
+      "decision": "reference only: Cursor-internal workflow examples"
+    },
+    {
+      "name": "mattpocock/skills",
+      "repo": "mattpocock/skills",
+      "kind": "plugin",
+      "pin": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): installed mattpocock-skills 1.2.3 from claude-plugins-official (marketplace pins c55ee46), user scope, all 25 skills (11 model-invoked, 14 user-invoked). The earlier decision was reference only because of overlap with nebi-debugging/sessions/prompting. skillOverrides cannot hide plugin skills in Claude Code 2.1.300 (plugin skills are locked on), so none are set. Routing probe (1 run each, decision only): a failing-test fix chose nebi-debugging, a Stripe research ask nebi-research, a skill-description edit nebi-maintenance, a diff review the built-in code-review. 2026-11-10: disabled (`claude plugin disable mattpocock-skills@claude-plugins-official`), not removed. /skill-doctor showed 0 uses of all 25 skills since install, and they double nebi-debugging, nebi-research and the built-in code-review. Undo: `claude plugin enable mattpocock-skills@claude-plugins-official`.",
+      "notes": "MIT. Overlap to watch: diagnosing-bugs vs nebi-debugging, research vs nebi-research (writes a Markdown file into the repo), code-review vs the built-in code-review, writing-for-agents vs nebi-maintenance/skill-creator. setup-matt-pocock-skills edits CLAUDE.md/AGENTS.md if run. The plugin manager ran npm install of its changesets devDependencies into the cache, so the register check lists node_modules as local edits; that is expected, not an edit.",
+      "skills": [
+        {
+          "name": "mattpocock-skills@claude-plugins-official",
+          "path": "",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/mattpocock-skills/1.2.3"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update mattpocock-skills@claude-plugins-official"
+    },
+    {
+      "name": "wshobson/agents",
+      "repo": "wshobson/agents",
+      "kind": "reference",
+      "pin": "4236bb91f8395b0435f1d8b8baf9e8e4c69a8620",
+      "decision": "reference only: source of parallel-dispatch and review patterns in nebi-orchestration"
+    },
+    {
+      "name": "aaron-he-zhu/aaron-marketing-skills",
+      "repo": "aaron-he-zhu/aaron-marketing-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "attribution-reconciler",
+          "path": "ad/scale/attribution-reconciler",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/attribution-reconciler",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/attribution-reconciler"
+          ]
+        },
+        {
+          "name": "conversion-signal-qa",
+          "path": "ad/activate/conversion-signal-qa",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/conversion-signal-qa",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/conversion-signal-qa"
+          ]
+        },
+        {
+          "name": "ad-account-auditor",
+          "path": "ad/activate/ad-account-auditor",
+          "scope": "project:~/Documents/GitHub/ecommerce-workspace",
+          "installed": [
+            "~/Documents/GitHub/ecommerce-workspace/.agents/skills/ad-account-auditor",
+            "~/Documents/GitHub/ecommerce-workspace/.claude/skills/ad-account-auditor"
+          ]
+        }
+      ],
+      "pin": "3017529400159bdc629d1f79f9c2f4ccc66d7d1f",
+      "update": "cd ~/Documents/GitHub/ecommerce-workspace && DISABLE_TELEMETRY=1 npx skills@1.7.0 add aaron-he-zhu/aaron-marketing-skills#<SHA> --skill attribution-reconciler conversion-signal-qa ad-account-auditor -a claude-code codex -y",
+      "decision": "installed (owner's yes 28 Sep 2026 via the question tool: 'Yes, this workspace only'): 3 of the 120-skill plugin, project-local in ecommerce-workspace",
+      "why": "Order-ID-anchored reconciliation of Meta-claimed conversions against Shopify orders (attribution-reconciler), pre-launch tracking/UTM/dedup QA (conversion-signal-qa), point-in-time account audit gate (ad-account-auditor), for the Karpet24 Meta test reads. Found by the k24-meta-growth skill hunt (output/2026-09-28-karpet24-meta-growth/skills/SHORTLIST.md).",
+      "notes": "Reviewed at the pin 28 Sep 2026: Apache-2.0, 2,849 stars, pushed 2026-09-28, markdown only (no scripts), descriptions 364-631 chars. Partial install by design: the SKILL.md files link to plugin-shared files that are NOT installed (../../../references/roas-benchmark.md, skill-contract.md, measurement-protocol.md, scoring-semantics.md, auditor-runbook.md, runtime-invocation.md; ../../../SECURITY.md, CONNECTORS.md; ../../orchestrate/ad-test-designer/references/measurement-control.md) and hand off to skills we do not have (roi-calculator, report-generator, campaign-architect, budget-pacing-monitor, offer-claims-registry, dark-social-attributor). Each skill's core method is inline in its SKILL.md; ad-account-auditor has a standalone mode (references/auditor-runtime.md:419: no writes under memory/audits/). Their 'Save results' steps write to memory/… paths only after asking; in this workspace results go to output/ and ledger/ instead. 2026-11-16: landing-experience-checker and search-term-miner installed GLOBAL at 0d0dabf (entry 'aaron-he-zhu/aaron-marketing-skills (global pair)')."
+    },
+    {
+      "name": "antfu/skills",
+      "repo": "antfu/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "vitest",
+          "path": "skills/vitest",
+          "tree": "be4e34bc66369fd35b4de2ed50d9f3e8af5b133a",
+          "installed": [
+            "~/.agents/skills/vitest",
+            "~/.claude/skills/vitest"
+          ]
+        }
+      ],
+      "pin": "2b26163650610e2bd32261bef68b4093312cc6ff",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add antfu/skills#<SHA> --skill vitest -g -a claude-code codex -y",
+      "decision": "installed 2026-10-07 (user asked to install clear wins during rs-bol scan): vitest only, global",
+      "why": "Version-matched Vitest 5 reference (generated 2026-09-25 from vitest-dev/vitest) for the bol bridge's ~2,270-test sharded suite; records v4/v5 breaking changes (poolOptions removed, describe.sequential removed).",
+      "notes": "Reviewed at the pin: MIT, markdown only (SKILL.md, GENERATION.md, 19 references), no scripts or hooks. Other skills in the repo (nuxt, vue, pnpm, ...) left out on purpose."
+    },
+    {
+      "name": "checklist-design/skills",
+      "repo": "checklist-design/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "checklist-design",
+          "path": "skills/checklist-design",
+          "tree": "c10d18bbecbb88e95e3934f959ed5a9c3cd96e7f",
+          "installed": [
+            "~/.agents/skills/checklist-design",
+            "~/.claude/skills/checklist-design"
+          ]
+        }
+      ],
+      "pin": "bfae71e507b1b7c03c12e0756402b60eb80f5d14",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add checklist-design/skills#<SHA> --skill checklist-design -g -a claude-code codex -y",
+      "decision": "installed 2026-10-07 (user asked to install clear wins during rs-bol scan): skill folder only, global; drop it if the first audit adds nothing beyond impeccable",
+      "why": "Offline completeness audits of admin/dashboard screens against published checklists (data table, admin panel, single-item detail, empty state, saving changes, input errors, buttons).",
+      "notes": "Reviewed at the pin: MIT, v3.2.4, markdown only (SKILL.md + ~130 reference/checklist files), no scripts, no network. The repo's plugin adds a UserPromptSubmit hook (hooks/check-design-review-trigger.mjs) that a skills install does not bring; do not install the plugin."
+    },
+    {
+      "name": "typescript-lsp (plugin)",
+      "repo": "anthropics/claude-plugins-official",
+      "kind": "plugin",
+      "decision": "2026-10-10 (user asked for a massive Claude upgrade): installed Claude plugin 1.0.0, user scope, with typescript-language-server@6.0.2 and typescript@6.0.3 global (TypeScript 7 ships no tsserver). Proven: goToDefinition in a fresh headless session.",
+      "skills": [
+        {
+          "name": "typescript-lsp@claude-plugins-official",
+          "path": "plugins/typescript-lsp",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/typescript-lsp"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update typescript-lsp@claude-plugins-official"
+    },
+    {
+      "name": "exa-labs/exa-mcp-server",
+      "repo": "exa-labs/exa-mcp-server",
+      "kind": "reference",
+      "pin": "15ffb50519e719dc791cdc750ce5ed1934c0a1ed",
+      "decision": "2026-10-10: user-scope MCP only (claude mcp add -s user --transport http exa https://mcp.exa.ai/mcp), anonymous free tier. Deviation from the exa@claude-plugins-official plugin: its two skills were skipped because `search` fires on any research request next to nebi-research and forbids falling back to web search on rate limits. Proven: search in a fresh headless session.",
+      "notes": "Remote server, no local code. Paid key or OAuth only for higher limits and exa-agent."
+    },
+    {
+      "name": "ChromeDevTools/chrome-devtools-mcp",
+      "repo": "ChromeDevTools/chrome-devtools-mcp",
+      "kind": "reference",
+      "pin": "chrome-devtools-mcp@1.10.1 (npm)",
+      "decision": "2026-10-10: user-scope MCP `npx -y chrome-devtools-mcp@1.10.1 --isolated --no-usage-statistics` for audits only: Lighthouse, performance traces with CrUX, network and console. --isolated runs its own temporary Chrome profile, so it never touches Nebi's profiles; logged-in work stays with codex-browser. Proven: Lighthouse on karpet24.nl in a fresh headless session.",
+      "notes": "CrUX lookups send public page URLs to Google."
+    },
+    {
+      "name": "anthropics/skills (office)",
+      "repo": "anthropics/skills",
+      "kind": "reference",
+      "decision": "2026-10-10: not installed: xlsx, pdf, docx and pptx already reach Claude Code as synced claude.ai skills (~/.claude/skills/synced). LibreOffice (formula recalculation) is not installed; shortlisted."
+    },
+    {
+      "name": "liquid-lsp (plugin)",
+      "repo": "Shopify/liquid-skills",
+      "kind": "plugin",
+      "pin": "ae3e4cc3f454923e388bbd841fd931f0c7bf5be4",
+      "decision": "2026-10-10 (user asked for a massive Claude upgrade): installed from claude-plugins-official, user scope; runs `shopify theme language-server` (Shopify CLI 4.6.0). Proven: LSP hover on Karpet24 sections/header-mega-store.liquid in a fresh headless session.",
+      "skills": [
+        {
+          "name": "liquid-lsp@claude-plugins-official",
+          "path": "plugins/liquid-lsp",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/liquid-lsp"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update liquid-lsp@claude-plugins-official"
+    },
+    {
+      "name": "DannyMac180/cache_gap_check (gist)",
+      "repo": "https://gist.github.com/9b9196d2434709f3ac04bc394d02a562.git",
+      "kind": "tool",
+      "pin": "68d42b1ba28f50fa74444c8d3875cb24dcf44ccc",
+      "decision": "2026-10-11 (user named it): installed unmodified as ~/.claude/nebi/cache_gap_check.py. Read-only stdlib script: scans ~/.claude/projects transcripts and estimates whether subagentPromptCacheTtl 1h beats the 5m default. Reviewed: no network, no writes, no subprocess. Verdict on Nebi's data (14 d, 91k sub-agent requests): 99.5% of gaps under 5 min, 1h would cost +11% (read 0.1x) to +16.5% (read 0.05x, Opus/Sonnet 5.5), so subagentPromptCacheTtl stays unset. Rerun with --read-mult 0.05 when workflows change (long-lived teammates, resumed sub-agents).",
+      "notes": "Gist has no license; private personal use only. Its default --read-mult 0.1 overstates read cost for Opus/Sonnet 5.5 (0.05x).",
+      "installed": [
+        "~/.claude/nebi/cache_gap_check.py"
+      ],
+      "update": "gh api gists/9b9196d2434709f3ac04bc394d02a562 --jq '.files[\"cache_gap_check\"].content' > claude-home/nebi/cache_gap_check.py"
+    },
+    {
+      "name": "currents-dev/playwright-best-practices-skill",
+      "repo": "currents-dev/playwright-best-practices-skill",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "playwright-best-practices",
+          "path": "playwright-best-practices",
+          "tree": "b4620eb2cfc6b58173cda800b7c7578190dfd632",
+          "scope": "project:~/Documents/GitHub/personal-zombies-game",
+          "installed": [
+            "~/Documents/GitHub/personal-zombies-game/.claude/skills/playwright-best-practices"
+          ],
+          "pin": "283d5cbc5d11aac1abda058b16ad22c317d54dc0"
+        },
+        {
+          "name": "playwright-best-practices",
+          "path": "playwright-best-practices",
+          "tree": "65ed9f36bf8b264bbf825533120c72cfc0931571",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/playwright-best-practices"
+          ]
+        }
+      ],
+      "pin": "0b75b5835a87de1fdd202ba965f3bc5a27738fdf",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add currents-dev/playwright-best-practices-skill#<SHA> --skill playwright-best-practices -g -a claude-code -y (global); the project copy in personal-zombies-game: cd ~/Documents/GitHub/personal-zombies-game && the same without -g",
+      "decision": "installed, project personal-zombies-game; 2026-11-07 (Deadlight M2-T19, Q12 default) also installed global at the same pin 283d5cb, so every M2 worktree session loads it (T11, T90, T93). ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has it too.",
+      "why": "Reference for the BO1 Zombies milestone-end Playwright runner (multi-user contexts, WebSockets, canvas/WebGL, trace and reporting) and for Deadlight M2's browser tests.",
+      "notes": "2026-10-12 review at the pin: MIT, 60 markdown files (SKILL.md v1.2 plus references), no scripts, hooks or allowed-tools. Codex parked, so claude-code only. 2026-11-07 re-read the pin: still MIT, 63 files, markdown only; docs show `npx playwright ...` commands and an execSync prisma example, run only if an agent follows them.",
+      "localEdits": "Global copy: added the upstream LICENSE.md (MIT, Currents Software) byte for byte; no SKILL.md change. The skills CLI does not copy it. B6 Y2 note: its WebGL readiness snippet is wrong for three's webgl2 context."
+    },
+    {
+      "name": "stablyai/orca",
+      "repo": "stablyai/orca",
+      "kind": "tool",
+      "pin": "2bb20586ebc39d605e16d95f57420e20a16e7485",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): installed Orca.app 1.4.224 (release v1.4.224) from the official tap stablyai/orca (tap 967c589), plus the orca CLI at /opt/homebrew/bin/orca. Electron desktop ADE: one task to several CLI agents (claude included), each in its own git worktree, compare and merge. Proven: spctl accepted (Notarized Developer ID, team 6CX3WHS9HZ), orca --version 1.4.224. Not launched by the agent.",
+      "notes": "MIT. First app launch merges Orca agent-status hooks into ~/.claude/settings.json (shared by all three accounts) and a hook into ~/.codex; turn off in Settings > Agents > Agent status hooks or `orca agent hooks off`. PostHog telemetry is opt-in behind a banner (DO_NOT_TRACK=1 or ORCA_TELEMETRY_DISABLED=1 force it off). The app self-updates (cask auto_updates), so the installed version drifts from the pin.",
+      "installed": [
+        "/Applications/Orca.app",
+        "/opt/homebrew/bin/orca"
+      ],
+      "update": "brew upgrade --cask --greedy stablyai/orca/orca"
+    },
+    {
+      "name": "xerj-org/xerj",
+      "repo": "xerj-org/xerj",
+      "kind": "tool",
+      "pin": "692a4a59b1e660531fae8cf39c5c6a0518300fa5",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): installed the v1.0.0-rc.95 aarch64-apple-darwin binary at ~/.local/bin/xerj (sha256 c0947886… matched the release .sha256; ad-hoc signed). Local Elasticsearch-compatible BM25/kNN search server plus CLI (autoindex, search, def) and stdio MCP (xerj mcp). Not wired into every session: xerj mcp needs a running node and an indexed folder, so per-project wiring is upstream's own `xerj init` (writes .mcp.json, .claude/skills/xerj, AGENTS.md). Proven: node green, autoindex of 3 .mjs files, search ranked upstreams.mjs:158 first, def found upstreams.mjs:50.",
+      "notes": "Apache-2.0, pre-1.0 (release candidate). Its help text tells agents to file GitHub issues and PRs \"on behalf of a human\"; settings env sets XERJ_DISABLE_FEEDBACK=1, which removes that invitation (checked by diffing --help). --insecure nodes have no auth; keep the data dir outside indexed folders.",
+      "installed": [
+        "~/.local/bin/xerj"
+      ],
+      "update": "V=<TAG>; F=xerj-${V#v}-aarch64-apple-darwin.tar.gz; curl -fsSLO https://github.com/xerj-org/xerj/releases/download/$V/$F{,.sha256} && shasum -a 256 -c $F.sha256 && tar -xzf $F && install -m 755 ${F%.tar.gz}/xerj ~/.local/bin/xerj"
+    },
+    {
+      "name": "mksglu/context-mode",
+      "repo": "mksglu/context-mode",
+      "kind": "reference",
+      "pin": "40813fe886798bad07c69a43d2ae00a52b4b934d",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): NOT installed (deviation, reported to the user). Verified at the pin: hooks/core/routing.mjs:733-771 rewrites Bash curl/wget (and inline fetch, gradle/mvn) into an echo that exits 0, so verification commands report success without running; WebFetch is denied in the main session; start.mjs writes a SessionStart hook into $CLAUDE_CONFIG_DIR/settings.json and repairs enabledPlugins/installed_plugins.json on every MCP boot, even MCP-only. Also stores prompts on disk and appends ~600 words to every Agent dispatch.",
+      "notes": "Elastic-2.0 (source-available). Code unchanged since 2026-06-26 apart from bot stats commits. The \"98%\" is raw tool-output bytes vs returned bytes on fixtures (its own BENCHMARK.md says 96%)."
+    },
+    {
+      "name": "code-modernization (plugin)",
+      "repo": "anthropics/claude-plugins-official",
+      "kind": "plugin",
+      "pin": "8f814f49002ff824e8a9ba43cf96112dc7f5948d",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): installed Claude plugin 1.0.0, user scope, options on defaults. Anthropic-verified legacy-modernization workflow: /code-modernization:modernize, then assess, map, extract-rules, brief, uplift/transform/reimagine, verify, harden; 8 agents; a progress pane. Reviewed: its hooks exit at once unless the folder has its analysis/ artifacts (health runs once per version and machine; counts go only through Claude Code's own telemetry); the pane opens only where analysis/ exists. 2026-11-10: disabled, not removed. 0 uses of its 20 skills and 7 agent types since install, and no legacy-migration project is open; every session carried their listing. Undo: `claude plugin enable code-modernization@claude-plugins-official`.",
+      "skills": [
+        {
+          "name": "code-modernization@claude-plugins-official",
+          "path": "plugins/code-modernization",
+          "installed": [
+            "~/.claude/plugins/cache/claude-plugins-official/code-modernization/1.0.0"
+          ]
+        }
+      ],
+      "update": "claude plugin marketplace update claude-plugins-official && claude plugin update code-modernization@claude-plugins-official"
+    },
+    {
+      "name": "steipete/claude-code-mcp",
+      "repo": "steipete/claude-code-mcp",
+      "kind": "reference",
+      "pin": "2e401f3ed81d32435ca6cfe85a3ac1404d318c84",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): NOT installed (deviation, reported to the user). Archived; npm @steipete/claude-code-mcp 1.10.12 (2025-05-17) is the last release and always spawns claude -p --dangerously-skip-permissions rooted at $HOME. Built so Cursor/Windsurf can call Claude Code; inside Claude Code, native sub-agents, background agents and the Workflow tool do the same under Nebi's own hooks. Install on request: claude mcp add -s user claude-code-mcp -- npx -y @steipete/claude-code-mcp@1.10.12 (with CLAUDE_CONFIG_DIR unset so it lands in ~/.claude.json).",
+      "notes": "MIT. README documents a permissionMode option that only exists in unreleased HEAD."
+    },
+    {
+      "name": "FlorianBruniaux/claude-code-ultimate-guide",
+      "repo": "FlorianBruniaux/claude-code-ultimate-guide",
+      "kind": "skills",
+      "pin": "a7603eccc8992455235042e72cca78176810bd56",
+      "decision": "2026-10-15 (user named it from a \"7 repos\" post): pinned reference clone at ~/.agents/references/claude-code-ultimate-guide (hook, skill and workflow patterns; official docs win on conflict), plus eval-hooks installed unmodified, global, as the clear win: a hooks audit against the documented rules with an audit-only mode. The skills CLI does not see examples/skills, so eval-hooks was copied from the pinned clone. Skipped: its MCP server (fetches unpinned GitHub content at runtime; grep the clone instead), tools/onboarding-prompt.md (unpinned remote instructions) and the examples/plugins/security-suite install.sh.",
+      "notes": "CC-BY-SA-4.0. Candidates seen, not installed: eval-skills, eval-agents, eval-rules, token-audit, the best-of-n workflow, bash hooks (secrets and prompt-injection scanners). Some README install lines are outdated (brew install --cask claude-code is current).",
+      "skills": [
+        {
+          "name": "eval-hooks",
+          "path": "examples/skills/eval-hooks",
+          "tree": "146bf8f16b462967116f2eef69495f6ac44c2fb0",
+          "installed": [
+            "~/.agents/skills/eval-hooks",
+            "~/.claude/skills/eval-hooks"
+          ]
+        }
+      ],
+      "update": "G=~/.agents/references/claude-code-ultimate-guide; git -C $G fetch -q origin && git -C $G checkout -q <SHA> && rm -rf ~/.agents/skills/eval-hooks && cp -R $G/examples/skills/eval-hooks ~/.agents/skills/eval-hooks"
+    },
+    {
+      "name": "Leonxlnx/taste-skill",
+      "repo": "Leonxlnx/taste-skill",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "design-taste-frontend",
+          "path": "skills/taste-skill",
+          "tree": "90f92ba7a3ce514cf85a2809583712dbd14106ea",
+          "installed": [
+            "~/.claude/skills/design-taste-frontend",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/design-taste-frontend"
+          ]
+        },
+        {
+          "name": "high-end-visual-design",
+          "path": "skills/soft-skill",
+          "tree": "1b5943432ddd1b980206968c529a323cc992dbec",
+          "installed": []
+        }
+      ],
+      "pin": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add Leonxlnx/taste-skill#<SHA> --skill design-taste-frontend -g -a claude-code -y",
+      "decision": "2026-11-05 owner named it for the strafe.games overhaul: installed global, pin 12af471. Read SKILL.md and scripts: lint/inspect/draw run locally, assets.mjs only fetches open-license images when called. 2026-11-10: held at 12af471 on purpose. Upstream 2.5.1 (f6b7657) adds a Stop hook in SKILL.md frontmatter (the finish gate) that runs on every Stop for the rest of a session, can block stopping up to 30 times in 6 hours, and looks for gate.mjs in the project's own .claude/skills before the home copy. Reviewed otherwise safe (no data sent, argv-only spawns). To take 2.5.1: install it, then delete the `hooks:` block from the installed SKILL.md and register that as a local edit. 2026-11-11 (MeiMei finish-the-site brief: \"bring it up to date with its upstream\"): took 2.5.1 at f6b7657, global and the MeiMei-website project copy, with the Stop hook removed as planned above. The 12af471 copy is saved in that session scratchpad only; reinstall the pin to get it back.",
+      "why": "Art direction, no-slop house rules and a real-browser inspector for public pages.",
+      "localEdits": "Global copy and the MeiMei-website project copy (both .claude and .agents), identical: (1) SKILL.md frontmatter `hooks:` block (the Stop finish gate) deleted; (2) eight reviewed edits from the 2026-11-11 skill review (MeiMei-website docs/briefs/research/finish/taste-skill.md section 3): a route for projects with their own tokens and motion library, catalogues as tall as their rows, shops with product pages, card loops on tech only, when no pause control is needed (references/motion.md), two languages and CJK type (references/system.md), a living subject, the look round. The whole local diff against f6b7657 is MeiMei-website docs/briefs/taste-skill-local-edits.patch (157 lines): after an update, re-apply it with patch -p1 in the skill folder and resolve by hand what no longer matches. ~/.agents/skills/design-taste-frontend is still the old 12af471 copy (Codex parked).",
+      "notes": "The MeiMei-website project copy is gitignored for its size (40 MB); restore it with npx skills experimental_install, then delete the hooks block again."
+    },
+    {
+      "name": "gamedev-skills/awesome-gamedev-agent-skills",
+      "repo": "gamedev-skills/awesome-gamedev-agent-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "create-game-assets",
+          "path": "skills/disciplines/create-game-assets",
+          "tree": "75c20076a125f07ba5763c4d9c1be32f2ad470bf",
+          "installed": [
+            "~/.claude/skills/create-game-assets"
+          ]
+        },
+        {
+          "name": "game-feel",
+          "path": "skills/disciplines/game-feel",
+          "tree": "7a1eb41bdf2fce7adeadb4b97efa8241fb9c7f98",
+          "installed": [
+            "~/.claude/skills/game-feel"
+          ]
+        },
+        {
+          "name": "shader-programming",
+          "path": "skills/disciplines/shader-programming",
+          "tree": "3e25fc1565f7bb12dc67cccda8079bf9927aa491",
+          "installed": [
+            "~/.claude/skills/shader-programming"
+          ]
+        }
+      ],
+      "pin": "4cce500ce1a779b12fdd824be581c7d2ab4e7ba2",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add gamedev-skills/awesome-gamedev-agent-skills#<SHA> --skill create-game-assets game-feel shader-programming -g -a claude-code -y",
+      "decision": "2026-11-05 find for the strafe.games overhaul (owner asked for game art, feel and shader best practice): global, pin 19d93f9. Only 3 of 78 skills, engine-neutral. create-game-assets ships local QA scripts (Pillow), no network.",
+      "why": "Game art pipeline, juice and shader method. Beat cloudai-x/threejs-skills and pixijs/pixijs-skills for this job: the overhaul does not touch engine internals."
+    },
+    {
+      "name": "CloudAI-X/threejs-skills",
+      "repo": "CloudAI-X/threejs-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "threejs-animation",
+          "path": "skills/threejs-animation",
+          "tree": "cbb1071d4c33a16eb269bd00924b443b438704c1",
+          "installed": [
+            "~/.claude/skills/threejs-animation"
+          ]
+        },
+        {
+          "name": "threejs-postprocessing",
+          "path": "skills/threejs-postprocessing",
+          "tree": "6c3086cc84c817aa7b9ae5f5772831d7f817e63f",
+          "installed": [
+            "~/.claude/skills/threejs-postprocessing"
+          ]
+        },
+        {
+          "name": "threejs-asset-pipeline",
+          "path": "skills/threejs-asset-pipeline",
+          "tree": "4c532c9ff52ff06817729f99af85c325b8db5042",
+          "installed": [
+            "~/.claude/skills/threejs-asset-pipeline"
+          ]
+        },
+        {
+          "name": "threejs-performance",
+          "path": "skills/threejs-performance",
+          "tree": "8110ce022149af0179344c39de096f57a1da94e9",
+          "installed": [
+            "~/.claude/skills/threejs-performance"
+          ]
+        },
+        {
+          "name": "threejs-loaders",
+          "path": "skills/threejs-loaders",
+          "tree": "b29c77d7204d8f9d031b2eca4d8e47cb10348c91",
+          "installed": [
+            "~/.claude/skills/threejs-loaders"
+          ]
+        }
+      ],
+      "pin": "0e181866f095b5f06d005133876e926515390d95",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add CloudAI-X/threejs-skills#<SHA> --skill threejs-animation threejs-postprocessing threejs-asset-pipeline threejs-performance threejs-loaders -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
+      "decision": "2026-11-07 (Deadlight M2-T19, Q12 default): 5 of 13 skills installed global at pin 0e18186 (MIT, written for three r186; Deadlight is on 0.187.0). Reviewed SKILL.md of all five at the pin: markdown only, no scripts, hooks or allowed-tools, no network of their own. threejs-asset-pipeline's text tells the agent to run `npx @gltf-transform/cli ...` and `npx gltfjsx`, which fetch packages only if an agent follows it. ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has them too.",
+      "why": "Version-current three.js method for Deadlight M2: clip blending and additive layers (T40), post-processing (T62, T64), glTF compression and loaders (T63, T86), performance (T91).",
+      "localEdits": "Added the upstream root LICENSE (MIT, CloudAI-X) byte for byte into each of the five skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
+      "notes": "Left out on purpose: the other 8 skills (fundamentals, geometry, lighting, materials, shaders, textures, interaction, react-three-fiber). B6 section 3 gap: threejs-animation's additive example rebases on the clip's own frame 0 and never shows referenceClip; Deadlight hit reactions need makeClipAdditive(clip, 0, locomotionClip)."
+    },
+    {
+      "name": "design.how",
+      "repo": "https://design.how/.well-known/agent-skills/index.json",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "build-design-system",
+          "digest": "sha256:cd0298ea97c501f0387ea5aeef864580c06f5e01de1e8197c7d6376dfe7f568c",
+          "installed": [
+            "~/.claude/skills/build-design-system"
+          ]
+        },
+        {
+          "name": "component-docs",
+          "digest": "sha256:ed50d4af6037f8fcc54f0e1b863a0ef6456551928d0911ebe2d6c0bbabe7e006",
+          "installed": [
+            "~/.claude/skills/component-docs"
+          ]
+        },
+        {
+          "name": "design-system-boss",
+          "digest": "sha256:041cb28de5f14846bd65b185e12059bee3472d24a27797eb23dde1660d5c45ce",
+          "installed": [
+            "~/.claude/skills/design-system-boss"
+          ]
+        },
+        {
+          "name": "migrate-design-system",
+          "digest": "sha256:cbf4b27491c8f06058def0e4f2b86c4a53b01edef15f68d0f000377101e8608a",
+          "installed": [
+            "~/.claude/skills/migrate-design-system"
+          ]
+        },
+        {
+          "name": "token-mapping",
+          "digest": "sha256:6886cad4fe8fe1a7",
+          "installed": [
+            "~/.claude/skills/token-mapping"
+          ]
+        },
+        {
+          "name": "ui-review",
+          "digest": "sha256:4c1c697ecde90b2b",
+          "installed": [
+            "~/.claude/skills/ui-review"
+          ]
+        }
+      ],
+      "pin": "archive digests 2026-11-07 (well-known index, no git SHA)",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add https://design.how -s \"*\" -g -a claude-code -y (compare digests in the index first)",
+      "decision": "2026-11-07 owner named it (MeiMei shop rebuild): 6 skills installed global for Claude Code. Digests verified against the index. build-design-system and migrate-design-system ship Node scripts: local Playwright capture of a user-given base URL, oklch math, pixel diff, self-tests in temp dirs; no outbound network beyond the given base."
+    },
+    {
+      "name": "design.how vault: swing-type",
+      "repo": "https://design.how/vault/swing-type/.well-known/agent-skills/index.json",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "swing-type",
+          "digest": "sha256:6b6d79e4caafa89be3aefe43d6c74a523d28f9ba8d57d5eabef0a8790f7ad7dd",
+          "installed": [
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/swing-type",
+            "~/Documents/GitHub/MeiMei-website/.agents/skills/swing-type"
+          ]
+        }
+      ],
+      "pin": "archive digest 2026-11-12 (well-known index under the vault page, no git SHA; MIT per design.how, source repo arla6ka/design.how)",
+      "update": "cd ~/Documents/GitHub/MeiMei-website && DISABLE_TELEMETRY=1 npx skills@1.7.6 add https://design.how/vault/swing-type -a claude-code --copy -y, then copy .claude/skills/swing-type to .agents/skills/swing-type (compare the digest in the index first)",
+      "decision": "2026-11-12 Nebi named it (npx skills add https://design.how/vault/swing-type) for the MeiMei shop's moving MeiMei / ToleTole type. Project scope: one site uses it. Digest verified against the index; installed files identical to the reviewed archive. Contents: SKILL.md, references/perf.md, a Canvas 2D engine (engine.ts, framework-free), a React card wrapper and usePause helper, fonts.css, and scripts/check.mjs (Node, no packages, reads the given folder only, no network).",
+      "notes": "Constraint the engine imposes: every cycled word needs the same letter count (MeiMei 6, ToleTole 8). The card is React; the MeiMei site uses custom-element islands, so only the card wrapper gets ported. It loops for ever, which needs a pause control under WCAG 2.2.2."
+    },
+    {
+      "name": "1nird/animations-cutscenes-skill",
+      "repo": "1nird/animations-cutscenes-skill",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roblox-animation",
+          "path": "rxz-animation-&-cutscene/skills/roblox-animation",
+          "tree": "e5922f4c3370e03330a5700d7a9a6c2c407b8373",
+          "installed": [
+            "~/.claude/skills/roblox-animation"
+          ]
+        }
+      ],
+      "pin": "46740e219c5c084ef5079a1131368440218c4cf2",
+      "update": "No CLI update. git clone https://github.com/1nird/animations-cutscenes-skill into a scratch folder, git checkout <SHA>, read the diff from the pin, then replace ~/.claude/skills/roblox-animation with a plain cp -R of 'rxz-animation-&-cutscene/skills/roblox-animation' and copy 'rxz-animation-&-cutscene/LICENSE.txt' into it. Do not copy dist/stage (a second SKILL.md with the same name). Re-apply every item in localEdits. Never run the repo's install or build scripts or unpack its dist zip.",
+      "decision": "2026-11-09 Nebi named it (MeiMei-Roblox hero shooter, 'the skills that I just found'): installed global for Claude Code at pin 46740e2 by plain cp -R from the reviewed clone, not npx skills add (it re-downloads, its #sha pin is untested and SKILL.md sits in a non-standard folder). Reviewed at the pin by an Opus reviewer and a Fable security skeptic; both reports are in /Users/nebi/Documents/GitHub/MeiMei-Roblox/docs/research/skill-reviews-1nird.md (a session scratchpad file). Verdict: install with fixes. Safe: no installer, network, credentials, hooks or settings writes. The exporter was unproven in Studio; proof P3 (2026-11-10) found and fixed 13 bugs, so the installed copy carries a local patch (localEdits).",
+      "why": "Roblox KeyframeSequence and cutscene authoring as data: R15 joint tables, priority and masking guidance, cutscene shot validator. Nothing installed covers it.",
+      "notes": "Licence: custom 'rxz free licence' (use and modify, including commercial Roblox games; no resale; keep the file and name the source if passed on). 2026-11-10: the exporter is patched locally (see localEdits) after MeiMei-Roblox proof P3 (docs/proofs/P3-animation.md, record docs/proofs/K-skill-fixes.md) showed upstream clips move 0 of 15 motors in Studio. Fixed: flat pose tree, root translation on HumanoidRootPart, rotation-order mismatch between .rbxmx and Luau, mirrored left/right, easing one segment late, CubicV2 In/Out swapped, markers dropped, every joint at Weight 1, .rbxmx prolog, crash on non-R15 joints, fk.py grounded/locomotion, preview slerp vs engine lerp. Still open: joint and marker names go unescaped into generated Luau (--name is slugged); verify.py needs --skip-cutscene for animation-only runs; references/poses.md and examples/*.json were tuned against the mirrored preview (negate Y and Z, and root X, to reuse); scripts/blender.py opens .blend files without --disable-autoexec, so bake only .blend files made on this Mac; CutscenePlayer freezes the player and forces all CoreGui back on, so never mid-match. The docs use the Windows py launcher 29 times; the local block covers it.",
+      "localEdits": "Added upstream 'rxz-animation-&-cutscene/LICENSE.txt' byte for byte as LICENSE.txt. SKILL.md: a '## Local setup (macOS, Nebi)' block right after the SKILL.md frontmatter (python3 only; uv run --with for numpy/scipy/pillow/requests, never pip into Homebrew Python or --break-system-packages; Blender at /opt/homebrew/bin/blender 5.2.3 LTS; built-in Studio MCP Roblox_Studio, not robloxstudio-mcp; outputs into the project with --out; generated Studio scripts only in a disposable place; on an MCP timeout or Studio problem stop and ask the lead, never kill processes, close Studio, use the command bar or dismiss dialogs). 2026-11-10 patch (Nebi approved): scripts/anim.py, animlib.py, fk.py, preview.py and verify.py replaced by the Studio-proven copies from MeiMei-Roblox out/proofs/P3-animation/scripts (only change on top: 'tools/check_build.luau' paths read 'scripts/check_build.luau'); added scripts/check_build.luau, scripts/dump_rig.luau, examples/rig-r15-studio.json and local/P3-exporter.patch (the diff against the pin); SKILL.md local block rewritten to say what was fixed, run order (Lune) and known limits. Pristine pre-patch copy: ~/.agents/skills-archive/2026-11-10-roblox-animation-46740e2-before-P3-patch. On an upstream update, diff upstream's exporter against local/P3-exporter.patch before re-applying; keep the local copies unless upstream fixes the same rows."
+    },
+    {
+      "name": "1nird/Map-and-Model",
+      "repo": "1nird/Map-and-Model",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roblox-map",
+          "path": "rxz-map-model-texture/skills/roblox-map",
+          "tree": "309437eae17ee0f2f0f9e049924d78ad6420e468",
+          "installed": [
+            "~/.claude/skills/roblox-map"
+          ]
+        },
+        {
+          "name": "roblox-3d-model",
+          "path": "rxz-map-model-texture/skills/roblox-3d-model",
+          "tree": "4f0c9bab23801654ff72c271d4539f105d5bd3ca",
+          "installed": [
+            "~/.claude/skills/roblox-3d-model"
+          ]
+        },
+        {
+          "name": "roblox-texture-gen",
+          "path": "rxz-map-model-texture/skills/roblox-texture-gen",
+          "tree": "e1f357a0225415159330da1b8984197db31e22fa",
+          "installed": [
+            "~/.claude/skills/roblox-texture-gen"
+          ]
+        }
+      ],
+      "pin": "f3c098c837ea843caff6b8aad011eb1811cfefaf",
+      "update": "No CLI update. git clone https://github.com/1nird/Map-and-Model into a scratch folder, git checkout <SHA>, read the diff from the pin, then replace ~/.claude/skills/roblox-map, roblox-3d-model and roblox-texture-gen with a plain cp -R of rxz-map-model-texture/skills/<name> and copy rxz-map-model-texture/LICENSE.txt into each. Re-apply every item in localEdits. Never run the repo's install or build scripts or unpack its dist zip.",
+      "decision": "2026-11-09 Nebi named it (MeiMei-Roblox hero shooter, 'the skills that I just found'): installed global for Claude Code at pin f3c098c by plain cp -R from the reviewed clone, not npx skills add (it re-downloads, its #sha pin is untested and SKILL.md sits in a non-standard folder). Reviewed at the pin by an Opus reviewer and a Fable security skeptic; both reports are in /Users/nebi/Documents/GitHub/MeiMei-Roblox/docs/research/skill-reviews-1nird.md (a session scratchpad file). Verdict: install with fixes. No installer, hooks or config; servers bind to localhost; keys are env vars only. The skeptic's blockers are instructions and scripts, handled by the local edits and the rules in notes.",
+      "why": "roblox-map proves an arena greybox (reachability, sightlines, spawns) against the game's movement numbers before art exists. roblox-3d-model is the Roblox back half for AI meshes: decimate, UV and normal bake, Open Cloud upload, MeshBank. roblox-texture-gen came along as two small files.",
+      "notes": "Licence: custom 'rxz free licence' (use and modify, including commercial Roblox games; no resale; keep the file and name the source if passed on). Not patched, from the reviews: roblox-map build.lua, build_terrain.lua (serve_map.py hardcodes clear), lighting.py, emit.py and install_dressing.lua clear terrain and destroy the same-named model, SpawnLocations, Baseplate, Sky, Atmosphere and PostEffects with no confirmation, so they run only in a disposable place and the real game gets emit.py --rbxmx into the Rojo tree; build_map.py defaults its output into the skill folder, so always pass --out; capture_receiver.py joins an unsanitised name into the output path and takes unauthenticated POSTs, so run it for minutes only or use the MCP capture; the Kiln route (references/kiln-route.md) installs unreviewed third-party code and is off until Kiln is reviewed, and kiln-init --harness claude is never run; the three kaggle_*.py files are dead code and stay unused; render_check.py needs --engine CYCLES or WORKBENCH on Blender 5.2; image_to_3d.py passes hf_token=, which the repo's own note says fails on gradio_client 2.6.0; roblox-texture-gen serves on port 8765, which another project on this Mac holds, and requests the Pollinations 'flux' model, which the anonymous tier silently downgrades; prompts and concept images go to Pollinations, Hugging Face and Cloudflare. roblox-3d-model/scripts/batch.py still mentions the command bar in comments (lines 38, 501) and prints a pointer to references/traps.md (551-553), which now lands on the local line.",
+      "localEdits": "All three: added upstream rxz-map-model-texture/LICENSE.txt byte for byte as LICENSE.txt, and in SKILL.md a '## Local setup (macOS, Nebi)' block right after the SKILL.md frontmatter (python3 only; uv run --with for numpy/scipy/pillow/requests, never pip into Homebrew Python or --break-system-packages; Blender at /opt/homebrew/bin/blender 5.2.2; built-in Studio MCP Roblox_Studio, not robloxstudio-mcp; outputs into the project with --out; generated Studio scripts only in a disposable place; on an MCP timeout or Studio problem stop and ask the lead, never kill processes, close Studio, use the command bar or dismiss dialogs). roblox-map: description trimmed from 1,232 to 992 characters (cut the list 'catching floating platforms ... shorter than a ragdoll' and reworded 'the PROVER: it answers' to 'the PROVER, which answers'). roblox-3d-model: description trimmed from 1,525 to 1,021 characters (cut 'and end to end', the Hi3DGen aside down to 'a HuggingFace Space; Kaggle is OFF', the 'GEOMETRY AND COLOUR BOTH WORK ...' sentence down to 'with colour painted procedurally into the UV atlas', '(session-local, no credentials)', '(never Decal)', the batch.py sentence and 'wants a set of models made'); SKILL.md paragraph 'IF THE MCP BRIDGE IS WEDGED, USE STUDIO'S COMMAND BAR' with its two bullets (upstream lines 458-464) replaced by one line pointing to the local block; references/traps.md table rows at upstream lines 442-444 (close the stale Studio, command bar, clear the Dangerous Command Detected dialog) merged into one row and the section at 448-472 (close Studio, kill all node.exe matching robloxstudio-mcp, command bar, clear the dialog) replaced by a retitled heading and one line, both pointing to the local block. roblox-texture-gen: no other change."
+    },
+    {
+      "name": "1nird/roblox-vfx-v2",
+      "repo": "1nird/roblox-vfx-v2",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roblox-vfx",
+          "path": "skills/roblox-vfx",
+          "tree": "1a3ef0d7be520230a8c54cad410a9c113d81cdcd",
+          "installed": [
+            "~/.claude/skills/roblox-vfx"
+          ]
+        }
+      ],
+      "pin": "b2a2a1daa6be92fe7a060d7c6e3a1ad3328c82c1",
+      "update": "No CLI update. git clone https://github.com/1nird/roblox-vfx-v2 into a scratch folder, git checkout <SHA>, read the diff from the pin, then back up ~/.claude/skills/roblox-vfx first (it holds LOCAL.md, work/, sim/out and the generated library, about 250 MB once built), replace it with a plain cp -R of skills/roblox-vfx, copy LICENSE.txt into it and move LOCAL.md and the generated library back. Re-apply every item in localEdits. Never run the repo's install or build scripts or unpack its dist zip.",
+      "decision": "2026-11-09 Nebi named it (MeiMei-Roblox hero shooter, 'the skills that I just found'): installed global for Claude Code at pin b2a2a1d by plain cp -R from the reviewed clone, not npx skills add (it re-downloads, its #sha pin is untested and SKILL.md sits in a non-standard folder). Reviewed at the pin by an Opus reviewer and a Fable security skeptic; both reports are in /Users/nebi/Documents/GitHub/MeiMei-Roblox/docs/research/skill-reviews-1nird.md (a session scratchpad file). Verdict: install with fixes, author route only. The harvest route is disabled locally: the skeptic found Luau injection from third-party pack names into Studio payloads and into the shipped VFXKit module. Supersedes the v1 roblox-vfx in 1nird/rbx-vfx-and-sfx-skills, which is not installed.",
+      "why": "Roblox VFX as code: effect definitions judged frame by frame in a browser simulator of ParticleEmitter, Beam and Trail, generated textures and Blender meshes, exported as a Studio kit. Nothing installed covers it.",
+      "notes": "Licence: custom 'rxz Roblox VFX v2 - free licence' (use and modify, including commercial Roblox games; no resale; keep the file and name the source if passed on; generated output is the user's). Not patched, from the reviews: scripts/emit_luau.py writes recipe names as unescaped table keys; payload.py and compose.py paste recipe JSON into a Luau long string with no ]==] check; recipe_server.py and sim/serve.py take unauthenticated POSTs; SKILL.md tells the agent to loadstring code fetched from 127.0.0.1:48752; sim/mesh/obj_to_fbx.py points at the wrong folder; the script that makes the __vt and __em textures (tools/sync_vt.py) and scripts/corpus_stats.py are not shipped; no Open Cloud uploader ships; the sim defaults to port 8765, which another project on this Mac holds; stage.lua, scene and contact-grid payloads change whatever place is open, so scratch place only; never pass a quoted ~ to classify_lib.py. Still in SKILL.md and overridden by the local block, not removed: 'RULE ZERO ... overrides time and token budget' (taste guidance, not binding) and the third-party robloxstudio-mcp recovery that says to kill a server process and run a TCP forwarder (around installed line 1105).",
+      "localEdits": "Added upstream LICENSE.txt byte for byte. SKILL.md: a '## Local setup (macOS, Nebi)' block right after the SKILL.md frontmatter (python3 only; uv run --with for numpy/scipy/pillow/requests, never pip into Homebrew Python or --break-system-packages; Blender at /opt/homebrew/bin/blender 5.2.2; built-in Studio MCP Roblox_Studio, not robloxstudio-mcp; outputs into the project with --out; generated Studio scripts only in a disposable place; on an MCP timeout or Studio problem stop and ask the lead, never kill processes, close Studio, use the command bar or dismiss dialogs), with the outputs rule allowing this skill's own generated library to stay inside its folder as designed, plus one line: harvest route disabled (payload.py, compose.py, emit_luau.py, recipe_server.py have unescaped Luau injection points from third-party pack names), author route only until patched. Description trimmed from 1,102 to 1,017 characters by cutting ' No harvested effects ship.' and ', wants effects that look professional rather than generic'. No script changed. SKILL.md section 'When the MCP is connected but every call times out' (robloxstudio-mcp port-kill / TCP forwarder recovery) replaced by one local pointer to the stop-and-ask rule (2026-11-09, lead)."
+    },
+    {
+      "name": "1nird/rbx-vfx-and-sfx-skills",
+      "repo": "1nird/rbx-vfx-and-sfx-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roblox-sfx",
+          "path": "rxz-vfx-sfx/dist/stage/rxz-vfx-sfx/skills/roblox-sfx",
+          "tree": "b4a145311ff720fcde7e41f824befb2bcaa78e0f",
+          "installed": [
+            "~/.claude/skills/roblox-sfx"
+          ]
+        },
+        {
+          "name": "roblox-vfx",
+          "path": "rxz-vfx-sfx/dist/stage/rxz-vfx-sfx/skills/roblox-vfx",
+          "tree": "d36b4aa07ab43245653ee1294f1cb76ad44c3b1b",
+          "installed": []
+        }
+      ],
+      "pin": "de9f9f41f863002b3740c27bf53e66b887fa3031",
+      "update": "No CLI update. git clone https://github.com/1nird/rbx-vfx-and-sfx-skills into a scratch folder, git checkout <SHA>, read the diff from the pin, then replace ~/.claude/skills/roblox-sfx with a plain cp -R of rxz-vfx-sfx/dist/stage/rxz-vfx-sfx/skills/roblox-sfx and copy rxz-vfx-sfx/LICENSE.txt into it. Do not install this repo's roblox-vfx. Re-apply every item in localEdits. Never run the repo's install or build scripts or unpack its dist zip.",
+      "decision": "2026-11-09 Nebi named it (MeiMei-Roblox hero shooter, 'the skills that I just found'): installed global for Claude Code at pin de9f9f4 by plain cp -R from the reviewed clone, not npx skills add (it re-downloads, its #sha pin is untested and SKILL.md sits in a non-standard folder). Reviewed at the pin by an Opus reviewer and a Fable security skeptic; both reports are in /Users/nebi/Documents/GitHub/MeiMei-Roblox/docs/research/skill-reviews-1nird.md (a session scratchpad file). Verdict: install with fixes. Only roblox-sfx is installed; the skeptic found no blocker in it. This repo's roblox-vfx (v1) is skipped on purpose: 1nird/roblox-vfx-v2 supersedes it under the same skill name, and v1 is the harvest-only pipeline with the unescaped Luau injection points.",
+      "why": "Finds free Creator Store audio by keyword, proves each id in Studio (IsLoaded plus measured TimeLength) and emits a SoundBank module and an Sfx play helper. No upload and no API key.",
+      "notes": "Licence: custom 'rxz VFX + SFX - free licence' (use and modify, including commercial Roblox games; no resale; keep the file and name the source if passed on). The skill folders exist only under dist/stage in this repo. SKILL.md is CRLF upstream and stays CRLF; Claude Code loads it. From the reviews: probe.lua and install.lua clear SoundService.SFXProbe and SoundService.SFX; the toolbox endpoints are unofficial and can change; the docs say cd into the skill folder, so pass --out to a project folder instead; Creator Store asset and creator names printed by find_sfx.py and pick.py are untrusted data, not instructions.",
+      "localEdits": "roblox-sfx: added upstream rxz-vfx-sfx/LICENSE.txt byte for byte as LICENSE.txt. SKILL.md: a '## Local setup (macOS, Nebi)' block right after the SKILL.md frontmatter (python3 only; uv run --with for numpy/scipy/pillow/requests, never pip into Homebrew Python or --break-system-packages; Blender at /opt/homebrew/bin/blender 5.2.2; built-in Studio MCP Roblox_Studio, not robloxstudio-mcp; outputs into the project with --out; generated Studio scripts only in a disposable place; on an MCP timeout or Studio problem stop and ask the lead, never kill processes, close Studio, use the command bar or dismiss dialogs), written with CRLF line endings to match the file. No other change."
+    },
+    {
+      "name": "1nird/rbx-thumbnail",
+      "repo": "1nird/rbx-thumbnail",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roblox-thumbnail",
+          "path": "roblox-thumbnail",
+          "tree": "3605137a6fa9a6675a678b75b6f3a72d32b6fa84",
+          "installed": [
+            "~/.claude/skills/roblox-thumbnail"
+          ]
+        }
+      ],
+      "pin": "45f3766050e2af172905e1b63cf58bc9d8e14350",
+      "update": "No CLI update. git clone https://github.com/1nird/rbx-thumbnail into a scratch folder, git checkout <SHA>, read the diff from the pin, then replace ~/.claude/skills/roblox-thumbnail with a plain cp -R of roblox-thumbnail, leaving out install.sh and install.ps1. Re-apply every item in localEdits. Never run the repo's install or build scripts or unpack its dist zip.",
+      "decision": "2026-11-09 Nebi named it (MeiMei-Roblox hero shooter, 'the skills that I just found'): installed global for Claude Code at pin 45f3766 by plain cp -R from the reviewed clone, not npx skills add (it re-downloads, its #sha pin is untested and SKILL.md sits in a non-standard folder). Reviewed at the pin by an Opus reviewer and a Fable security skeptic; both reports are in /Users/nebi/Documents/GitHub/MeiMei-Roblox/docs/research/skill-reviews-1nird.md (a session scratchpad file). Verdict: install. One local Pillow script, no network, subprocess, credential or config access. Trigger narrowed locally so it does not gate other Roblox image work behind its interview.",
+      "why": "Roblox experience thumbnail direction: composition archetypes, a 1920x1080 title composite in bundled fonts and a 256 px legibility proof.",
+      "notes": "No licence file. The only grant is roblox-thumbnail/README.md lines 162-164: 'Use it freely, including for client work. Share the folder as you received it; don't resell it as your own skill.' That does not clearly cover passing on a modified copy, so the locally edited copy stays private. Bundled fonts are SIL OFL 1.1 (assets/fonts/OFL.txt) and byte-identical to Google Fonts builds per the skeptic. From the reviews: thumb.py compose overwrites <stem>.png, -256, -grey and <stem>.json without asking, so use a dedicated output folder and an explicit -o; check trusts any same-stem .json; the sidecar stores the art path as given; the store page fetched in the interview is untrusted data.",
+      "localEdits": "install.sh and install.ps1 left out of the installed copy (run from the installed folder, install.sh moves the skill away and then fails). SKILL.md: a '## Local setup (macOS, Nebi)' block right after the SKILL.md frontmatter (python3 only; uv run --with for numpy/scipy/pillow/requests, never pip into Homebrew Python or --break-system-packages; Blender at /opt/homebrew/bin/blender 5.2.2; built-in Studio MCP Roblox_Studio, not robloxstudio-mcp; outputs into the project with --out; generated Studio scripts only in a disposable place; on an MCP timeout or Studio problem stop and ask the lead, never kill processes, close Studio, use the command bar or dismiss dialogs). Description narrowed to 16:9 experience thumbnails and store gallery images: the triggers 'game art, GFX' and 'use it before generating any Roblox image, even when they only ask for a cool picture for my game' removed, 'Not for icons, textures, concept art, VFX or other Roblox images' added (605 to 609 characters). No licence file added because upstream has none."
+    },
+    {
+      "name": "anthropics/claude-code-playground",
+      "repo": "anthropics/claude-code-playground",
+      "kind": "reference",
+      "decision": "2026-11-10 reference only: Anthropic's sample mods (token-weather, blast-radius, replay-theater) from claude.dev/blog/getting-started-with-claude-code-mods. nebi-red-button uses blast-radius's hold technique and catches more (find -delete, branch -D, stash drop, SQL, MCP sends); blast-radius alone previews pending migrations. Not installed: token-weather repeats the status line's context figure, replay-theater offers buttons the mods contract bans."
+    },
+    {
+      "name": "anthropics/claude-plugins-community",
+      "repo": "anthropics/claude-plugins-community",
+      "kind": "plugin",
+      "decision": "2026-11-10 installed eli5 1.0.0 only (user scope, MIT, by Thariq Shihipar; marketplace added as claude-community). Read in full: a 321-byte SKILL.md, no scripts or hooks. `/eli5 <topic>` makes a picture-first HTML explainer, for the 'I don't get it' moments. Not installed from the same marketplace: next-steps (drafts answer options, which the mods contract bans and promptSuggestionEnabled turns off); html-plan (a plan page you answer in place; ships a 145 KB runtime and pack.mjs that need a review first: shortlist).",
+      "pin": "163301d1904c0a994539f5226ce0fcd65b8652bf",
+      "update": "claude plugin marketplace update claude-community && claude plugin update eli5@claude-community",
+      "why": "Nebi's standing complaint is walls of text; this is a one-word way to ask for the picture version.",
+      "installed": [
+        "~/.claude/plugins/cache/claude-community/eli5/1.0.0"
+      ]
+    },
+    {
+      "name": "shadcn/improve",
+      "repo": "shadcn/improve",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "improve",
+          "path": "skills/improve",
+          "tree": "7d77d76815e6deb704427f17f6e393f55e3cb6da",
+          "installed": [
+            "~/.claude/skills/improve",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/improve"
+          ]
+        }
+      ],
+      "pin": "cac56e1ebd3c279aa9153616cfeac7b174ab90f9",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add shadcn/improve#<SHA> --skill improve -g -a claude-code -y",
+      "decision": "2026-11-11 owner named it as a requirement for the MeiMei finish-the-site brief: installed global and in MeiMei-website at cac56e1. MIT, Markdown only (SKILL.md and three references), no scripts or hooks. It audits read-only and writes plans under plans/ only.",
+      "why": "Codebase audit by the strongest model, with self-contained plans cheaper models execute."
+    },
+    {
+      "name": "GoogleChrome/modern-web-guidance",
+      "repo": "GoogleChrome/modern-web-guidance",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "modern-web-guidance",
+          "path": "skills/modern-web-guidance",
+          "tree": "7c7d6612af788857352d452ebe263ad462351658",
+          "installed": [
+            "~/.claude/skills/modern-web-guidance",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/modern-web-guidance"
+          ]
+        }
+      ],
+      "pin": "64a6d708f5a43f2cd3fde5d4d7db3905ba1bdf65",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add GoogleChrome/modern-web-guidance#<SHA> --skill modern-web-guidance -g -a claude-code -y; cd ~/Documents/GitHub/MeiMei-website && DISABLE_TELEMETRY=1 npx skills@1.7.6 add GoogleChrome/modern-web-guidance#<SHA> --skill modern-web-guidance -a claude-code -y",
+      "decision": "2026-11-11 owner named it (Chrome for Developers, \"Modern Web Guidance\", npx modern-web-guidance@latest install) for the MeiMei finish-the-site brief: installed global and in MeiMei-website at 4dd9683 (release v1.0.0). Apache-2.0. The official installer only wraps `npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance`, so the pinned skills CLI was used instead. The skill folder is SKILL.md plus 209 guide files; search, retrieve and legacy-scan run the npm package modern-web-guidance@latest through npx (reviewed 1.0.0: source repo GoogleChrome/modern-web-guidance-src, maintainers from the Chrome team). The second skill in the repo, chrome-extensions, is left out: no project needs it. 2026-11-16 updated to v1.0.1 (64a6d70): 46 guide files revised, guides/js/js.md added, search adds BM25 ranking; the npm package 1.0.1 was diffed against 1.0.0 and has the same network endpoints and the same DISABLE_TELEMETRY switch. Global and MeiMei-website copies updated, telemetry edit re-applied.",
+      "why": "Current web platform best practice with Baseline data, searched per task, for every web UI build.",
+      "localEdits": "SKILL.md, global and MeiMei-website project copy: the three command lines start with DISABLE_TELEMETRY=1, because the CLI otherwise sends each search query, guide id and the agent name to Google (Clearcut) through a detached watchdog process. Re-apply after every update.",
+      "notes": "The skill description says MANDATORY for all HTML/CSS and client-side JS tasks, so it fires often; park it per project if that gets noisy. @latest is unpinned by design: the skill prints an update notice when the installed skill-version is older than the package."
+    },
+    {
+      "name": "Leonxlnx/earshot",
+      "repo": "Leonxlnx/earshot",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "earshot",
+          "path": "skills/earshot",
+          "tree": "bde28b14fda1dca7e3e0e45e74f8999ad5daca2f",
+          "installed": [
+            "~/.claude/skills/earshot"
+          ]
+        },
+        {
+          "name": "real-sound",
+          "path": "skills/real-sound",
+          "tree": "1e9da216572e938d8766ff1d81f9b8c4faaaca43",
+          "installed": [
+            "~/.claude/skills/real-sound"
+          ]
+        }
+      ],
+      "pin": "4ac3d2ac2b151e1c23376f9ce7f3047a17050013",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add Leonxlnx/earshot#<SHA> --skill earshot --skill real-sound -g -a claude-code -y && uv tool install --python 3.12 --reinstall \"earshot[mcp] @ git+https://github.com/Leonxlnx/earshot@<SHA>\" && earshot doctor --fetch",
+      "decision": "2026-11-16 owner named it: installed at v0.4.1 (4ac3d2a). MIT. CLI via uv tool on Python 3.12 (the Homebrew default 3.15 has no torch wheels), both skills global, models (CLAP laion/larger_clap_general@16c8cc3 and AST MIT/ast-finetuned-audioset@f826b80, safetensors, ~1.1 GB) fetched into ~/.cache/earshot/hf. No telemetry; the only outbound calls are the pinned Hugging Face downloads and the optional Gemini critique. Gemini critique stays off only because neither GEMINI_API_KEY nor GOOGLE_API_KEY is exported: skipping the [llm] extra changes nothing (its one dependency, requests, arrives with transformers), and llm_critique's consent is a flag the agent sets. The MCP server is not registered at user scope: it keeps a Python process with torch (~150 MB idle, more once models load) alive in every session; add it per project instead (see notes).",
+      "why": "Lets an agent hear audio: match/rank/find/ab sound candidates, a listening timeline and sync check for a video's soundtrack, loudness and a launch-film critique, plus 252 offline code-made SFX (sfx/kit). Nothing else in the pack can listen.",
+      "notes": "real-sound's {{PY}} is ~/.local/share/uv/tools/earshot/bin/python (the only interpreter with earshot and numpy; Homebrew python3 has neither). Ignore the skills' `pip install -e` and `claude mcp add --scope user` lines: per project with audio work use `claude mcp add earshot --scope project -e EARSHOT_THREADS=3 -- earshot mcp` (raise MCP_TIMEOUT to 60000 for the first model load). Never export GEMINI_API_KEY or GOOGLE_API_KEY in a shell profile or an earshot .mcp.json: that alone opens the audio upload. One CLI listen takes ~15 s with models cached. Very short UI sounds (<150 ms) score badly against text such as 'a soft UI click' (CLAP hears them as percussion): compare candidates with rank/ab instead of trusting match's absolute z. ~/.cache/earshot/decoded keeps a float32 copy of every file analysed and is never pruned; clear it after big jobs. MCP sfx_render/kit_render/sheet write to any absolute path they are given. real-sound downloads from Freesound/Mixkit and checks licences; keep its credits file with the video. Disk: ~1.0 GB models (~/.cache/earshot/hf), ~1.1 GB uv environment, and ~/.cache/earshot/decoded grows with every file analysed (328 MB after the first day). real-sound is listed name-only (skillOverrides) because it serves one narrow job; the capability-routing row points to it.",
+      "localEdits": "earshot/SKILL.md and real-sound/SKILL.md: one note under the title naming {{PY}} = ~/.local/share/uv/tools/earshot/bin/python and saying not to pip install or add the MCP at user scope. Re-apply after every update."
+    },
+    {
+      "name": "anthropics/single-agent-loop-kit",
+      "repo": "anthropics/single-agent-loop-kit",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "single-agent-loop",
+          "path": "skill",
+          "tree": "ff71059841f26f924ac5f954d176aab6fe5ef5b5",
+          "installed": [
+            "~/Documents/GitHub/nebi-skill/.claude/skills/single-agent-loop"
+          ]
+        }
+      ],
+      "pin": "c43796287b83bec847db923f07131d1cc8de750d",
+      "update": "cd ~/Documents/GitHub/nebi-skill && DISABLE_TELEMETRY=1 npx skills@1.7.6 add anthropics/single-agent-loop-kit#<SHA> --skill single-agent-loop -a claude-code -y",
+      "decision": "2026-11-16 the official migration kit linked from Anthropic's 2026-10-22 article 'Building agents: when to fold subagents into your main agent loop', which the owner's screenshot summarised. Apache-2.0, Markdown plus stdlib Python scripts (coupling_map, compare, chain_coverage, estimate). Installed in nebi-skill only: the fleet it audits lives here. Used for the 2026-11-16 fleet audit in single-loop/ (PLAN.md, traces extractor, 10-task eval).",
+      "why": "Measured keep/fold/merge/as-tool verdicts for sub-agents, one change at a time against the same eval.",
+      "notes": "Its check-in stops assume an owner answering after each step; when the owner pre-authorises the whole run, write each check-in to single-loop/PLAN.md and stop only when a task gets worse."
+    },
+    {
+      "name": "microsoft/TokenEconomizer",
+      "repo": "microsoft/TokenEconomizer",
+      "kind": "plugin",
+      "pin": "583fff78bf504b59d542f953c31e87d01d02ab42",
+      "skills": [
+        {
+          "name": "tokeneconomizer@tokeneconomizer",
+          "path": "plugin",
+          "installed": [
+            "~/.agents/references/TokenEconomizer/plugin"
+          ]
+        }
+      ],
+      "update": "git -C ~/.agents/references/TokenEconomizer fetch && git -C ~/.agents/references/TokenEconomizer checkout <SHA> && claude plugin update tokeneconomizer@tokeneconomizer",
+      "decision": "2026-11-16 owner named it: installed as a trial. Apache-2.0, stdlib Python, no telemetry; hooks on SessionStart, UserPromptSubmit, PostToolUse(+Failure), Stop and SessionEnd, none on PreToolUse, never blocks. Defaults were unsafe here (toolprune=auto writes permissions.deny, its own model calls use Haiku), so global config is enabled=false, toolprune=propose with a protect list (Workflow, SendMessage, ListAgents, ScheduleWakeup, Cron*, worktrees, Monitor, PushNotification, SendUserFile, the browser MCPs, railway, exa), microskills=envfacts (no model calls), loopguard=nudge with claude_paid_model=sonnet at low effort. Enabled in nebi-skill, cnlsneakers and ecommerce-workspace (the three busiest repos over 30 days) after a history import of 33, 94 and 46 sessions. Nebi's hooks skip its `claude -p` sidecalls (TE_SIDECALL=1).",
+      "why": "Learns from past sessions per repo: proposes dropping tools a repo never uses, states repeated facts at session start, nudges a stuck turn once.",
+      "notes": "The plugin runs from the clone (marketplace 'tokeneconomizer', user scope; settings.json and plugins are shared by all three config dirs). CLI: ~/.agents/references/TokenEconomizer/plugin/scripts/te (or ~/.tokeneconomizer/bin/te once a hook has run). After a week: `te status` in each trial repo (effective tokens per session, plugin overhead, proposed tools). Its first proposal in nebi-skill lists several hundred never-used claude.ai connector tools; apply only ever with named tools (`te toolprune apply <tool> ...`), never bare: the stored proposals (545 tools in nebi-skill, 728 in ecommerce-workspace, 1,432 in cnlsneakers) include tools in real use. The global protect list (repo-level lists replace it, so keep it global) covers the browser MCPs, railway, exa, the claude.ai connectors in use (Shopify, Supabase, Higgsfield, ElevenLabs, Canva, Gmail, Google Drive, Claude Docs, Mobbin), namecheap, domain-check, Roblox Studio, plugin MCPs and core deferred tools. settings.json env carries TE_TOOLPRUNE=propose and TE_CLAUDE_PAID_MODEL=sonnet so a lost config.json cannot fall back to auto-prune and Haiku. Do not run `te toolprune measure` or `refresh-catalog`: both hardcode Haiku. Rollback: disable the plugin, `te toolprune restore` in each repo, remove ~/.tokeneconomizer. Cost: a Python start per tool call (about 0.1 s) in every session, even where it is disabled. ~/.tokeneconomizer is shared by every account."
+    },
+    {
+      "name": "petergyang/no-ai-slop",
+      "repo": "petergyang/no-ai-slop",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "no-ai-slop",
+          "path": "skills/no-ai-slop",
+          "tree": "3d8be37cd59f6601cbc33676ecaf5b42865daf63",
+          "installed": [
+            "~/.claude/skills/no-ai-slop",
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/no-ai-slop"
+          ]
+        }
+      ],
+      "pin": "000650b156983f5159695b441477f4e63b25dc85",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add petergyang/no-ai-slop#<SHA> --skill no-ai-slop -g -a claude-code -y",
+      "decision": "2026-11-11 the MeiMei finish-the-site brief names no-ai-slop as a skill to use and it was not installed: this is its upstream (13.4k stars, MIT). Installed global and in MeiMei-website at 000650b. Markdown only (SKILL.md, eval.md, Codex metadata); the repo packager script is never called by the skill.",
+      "why": "Edits copy while keeping the writer's voice, and has a detect-only mode; stop-slop only removes patterns. Copy only, not images."
+    },
+    {
+      "name": "op7418/Humanizer-zh",
+      "repo": "op7418/Humanizer-zh",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "humanizer-zh",
+          "path": "",
+          "tree": "ded2b658950f2d854d82c7903fa51aee855cfb44",
+          "scope": "project:~/Documents/GitHub/MeiMei-website",
+          "installed": [
+            "~/Documents/GitHub/MeiMei-website/.claude/skills/humanizer-zh",
+            "~/Documents/GitHub/MeiMei-website/.agents/skills/humanizer-zh"
+          ]
+        }
+      ],
+      "pin": "f4518a8eab97b8bfebc66a89d34320a89bef6930",
+      "update": "cd ~/Documents/GitHub/MeiMei-website && DISABLE_TELEMETRY=1 npx skills@1.7.6 add op7418/Humanizer-zh#<SHA> --skill humanizer-zh -a claude-code --copy -y, then copy .claude/skills/humanizer-zh to .agents/skills/humanizer-zh (the CLI writes only the Claude Code copy)",
+      "decision": "2026-11-12 found by the skill hunt of the MeiMei make-it-alive brief (docs/briefs/research/alive/skills.md in that repo), not named by Nebi: installed in MeiMei-website only, at f4518a8 (revision 2026-09-23, upstream HEAD on the day). MIT, 22.7k stars, 57.8k installs on skills.sh. Read at the pin: SKILL.md (31 check points for template phrasing in Chinese, each with a case to keep), README, CHANGELOG, LICENSE and tests/ (18 text cases, one Markdown fixture, check_structure.py: Python stdlib, reads two files and prints JSON, never called by SKILL.md). No hooks, no network, no installer. Installed files are byte-identical to the reviewed download. Project scope: one site writes Chinese copy.",
+      "why": "The installed slop skills (stop-slop, no-ai-slop, the ai-tells reference of copywriting) are English. This is the Chinese counterpart for the /zh/ copy pass, and its first rule is to add no fact the source lacks.",
+      "notes": "It edits existing text; it does not write copy. MeiMei-website docs/i18n.md stays the authority for the Chinese voice (no typed space between hanzi and Latin, particle limits, her names); run humanizer-zh after that rewrite, as the last check. The skill root is the repo root, so README.md, CHANGELOG.md, LICENSE, .gitignore and tests/ are installed with SKILL.md."
+    },
+    {
+      "name": "CloudAI-X/threejs-skills (2025-portfolio-hero)",
+      "repo": "CloudAI-X/threejs-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "threejs-shaders",
+          "path": "skills/threejs-shaders",
+          "tree": "218c683a0d871e7087193ff42dcaf99ca93a4637",
+          "installed": [
+            "~/Documents/GitHub/2025-portfolio-hero/.claude/skills/threejs-shaders"
+          ]
+        }
+      ],
+      "pin": "0e181866f095b5f06d005133876e926515390d95",
+      "update": "cd ~/Documents/GitHub/2025-portfolio-hero && DISABLE_TELEMETRY=1 npx skills@1.7.0 add CloudAI-X/threejs-skills#<SHA> --skill threejs-shaders -a claude-code -y; then re-copy the upstream root LICENSE into the skill folder",
+      "decision": "2026-11-13 R10 skill hunt for the head-tracked splat hero (Session 1 brief asked to install clear wins): project scope, one project uses it. Same reviewed repo and pin as the five global threejs-* skills. Read SKILL.md at the pin (497 lines): markdown only, no scripts, hooks or allowed-tools, no network. Fills the gap the engine-neutral shader-programming leaves: ShaderMaterial, onBeforeCompile, TSL and GLSL-to-TSL for three r186.",
+      "why": "Custom splat and post shaders for the hero (Spark dyno GLSL blocks, fisheye/erosion passes) in three.js terms.",
+      "localEdits": "Added the upstream root LICENSE (MIT, CloudAI-X) byte for byte; no SKILL.md change. Installed folder otherwise identical to the pin (diff -r 2026-11-13)."
+    },
+    {
+      "name": "Moh4696/open-3d-skills (2025-portfolio-hero)",
+      "repo": "Moh4696/open-3d-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "site-check",
+          "path": "skills/site-check",
+          "tree": "915f9a3ee69c02590b2c1133143d73f50dbdb016",
+          "installed": [
+            "~/Documents/GitHub/2025-portfolio-hero/.claude/skills/site-check"
+          ]
+        }
+      ],
+      "pin": "53beb899e77f65d50160a3765f36f5ddb8b3c19b",
+      "update": "cd ~/Documents/GitHub/2025-portfolio-hero && DISABLE_TELEMETRY=1 npx skills@1.7.0 add Moh4696/open-3d-skills#<SHA> --skill site-check -a claude-code -y; then re-copy the upstream root LICENSE into the skill folder",
+      "decision": "2026-11-13 R10 skill hunt for the head-tracked splat hero: project scope. MIT (exploraX), 361 stars, pushed 2026-11-09. Read SKILL.md, scripts/check.py and scripts/serve.py at the pin: Playwright Chromium (--enable-gpu, --use-angle=metal) plus WebKit at 1440/768/390, frame time, draw calls via window.__app.renderer, blank-canvas, overflow and reduced-motion checks, contact sheet, exit 1 on failure; no network calls of its own; serve.py is a local Range-capable static server. Needs pip playwright + pillow and a WebKit build.",
+      "why": "Verifies the hero's camera-free path (mouse/touch fallback) and Safari/WebKit rendering; launch args are hard-coded, so the fake-camera tracked path stays in the hand-written Playwright harness.",
+      "localEdits": "Added the upstream root LICENSE (MIT, exploraX) byte for byte; no SKILL.md change. Installed folder otherwise identical to the pin (diff -r 2026-11-13).",
+      "notes": "SKILL.md mentions sibling skills frame-capture and scroll-film, which are not installed (frame-capture is a maybe for recording the share clip; read record.py line by line first)."
+    },
+    {
+      "name": "coreyhaines31/marketingskills (ad set, global)",
+      "repo": "coreyhaines31/marketingskills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "conversion-tracking",
+          "path": "skills/conversion-tracking",
+          "tree": "29777c654e3bce1d1aabd04a05fd4ba1bc01d5e8",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/conversion-tracking"
+          ]
+        },
+        {
+          "name": "ads",
+          "path": "skills/ads",
+          "tree": "29bd502ddaf6bd4092e7830202d9ac81d17d7038",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/ads"
+          ]
+        },
+        {
+          "name": "ad-creative",
+          "path": "skills/ad-creative",
+          "tree": "d60074be5426ffc74f3ad53916c713544b4014cd",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/ad-creative"
+          ]
+        },
+        {
+          "name": "offers",
+          "path": "skills/offers",
+          "tree": "599b891d5b5a00c7bb07d52197d0886f753cedf0",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/offers"
+          ]
+        },
+        {
+          "name": "attribution",
+          "path": "skills/attribution",
+          "tree": "a0d2f04dc6b62e362e913f3d6ea756a03f64fc8e",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/attribution"
+          ]
+        }
+      ],
+      "pin": "1f837447b20bb6f0e72d87b80ece1c221c362c7d",
+      "update": "T=$(mktemp -d) && git clone -q --filter=blob:none --no-checkout https://github.com/coreyhaines31/marketingskills $T/r && mkdir $T/x && git -C $T/r archive <SHA> skills/conversion-tracking skills/ads skills/ad-creative skills/offers skills/attribution | tar -x -C $T/x && for n in conversion-tracking ads offers attribution; do rm -rf ~/.claude/skills/$n && cp -Rp $T/x/skills/$n ~/.claude/skills/$n; done; ad-creative: back up ~/.claude/skills/ad-creative, copy the new folder, then three-way merge SKILL.md (git merge-file ours=backup base=old pin new=<SHA>) to keep localEdits",
+      "decision": "2026-11-16 installed GLOBAL for Claude Code only (Codex parked, no ~/.agents/skills copy), owner asked via the ad-strategy skill hunt (cnlsneakers growth/check-2026-11-16/skill-hunt.md, install plan rows 1-2). Global because cnlsneakers (RapidSneakers ads) and ecommerce-workspace (Karpet24) both use them; conversion-tracking was installed nowhere although analytics and ads hand off to it. MIT, markdown plus two stdlib-only Python helpers in conversion-tracking/scripts (argparse/json/re/pathlib, no network). Copied with git archive at the pin, not npx, so nothing lands in ~/.agents/skills.",
+      "why": "Meta/Google/TikTok ad strategy, tracking proof before spend verdicts (106 clicks, 0 add-to-carts), offer design and attribution for both shops.",
+      "localEdits": "ad-creative SKILL.md: carries the ecommerce-workspace deliberate evidence-gathering rule (line 96: collect reviews/comments/public ads yourself before asking the user; unsupported concepts stay test hypotheses), three-way merged onto 1f83744 (no conflict). The workspace copy's accidental '.Codex/product-marketing.md' path was NOT carried: the global copy keeps upstream '.claude/product-marketing.md'. The carried rule names `customer-research`, which is only installed in ecommerce-workspace.",
+      "notes": "ads 2.7.4 -> 2.7.5 against the workspace copy; offers and attribution unchanged between 9d6d7ce and 1f83744. The ecommerce-workspace project copies of ads, ad-creative, offers and attribution (entry 'coreyhaines31/marketingskills', pin 9d6d7ce) stay in place and now duplicate these names there; project skills shadow or double-list the global ones in that workspace. Retire them there once the owner agrees. References mention `npx is-agentic`, `npx afdocs check`, remotion and API curl examples: third-party, review before running."
+    },
+    {
+      "name": "aaron-he-zhu/aaron-marketing-skills (global pair)",
+      "repo": "aaron-he-zhu/aaron-marketing-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "landing-experience-checker",
+          "path": "ad/orchestrate/landing-experience-checker",
+          "tree": "cd907fe571920e2351a2d4ea60ec7862bdebca60",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/landing-experience-checker"
+          ]
+        },
+        {
+          "name": "search-term-miner",
+          "path": "ad/research/search-term-miner",
+          "tree": "9dfb1179037293f07a19e5f875d9b757afcf74f9",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/search-term-miner"
+          ]
+        }
+      ],
+      "pin": "0d0dabf0d130cc77f66ff6bdebe698d36060335e",
+      "update": "T=$(mktemp -d) && git clone -q --filter=blob:none --no-checkout https://github.com/aaron-he-zhu/aaron-marketing-skills $T/r && mkdir $T/x && git -C $T/r archive <SHA> ad/orchestrate/landing-experience-checker ad/research/search-term-miner | tar -x -C $T/x && for p in ad/orchestrate/landing-experience-checker ad/research/search-term-miner; do n=${p##*/}; rm -rf ~/.claude/skills/$n && cp -Rp $T/x/$p ~/.claude/skills/$n; done",
+      "decision": "2026-11-16 installed GLOBAL for Claude Code only, owner asked via the ad-strategy skill hunt (install plan row 3). SKILL.md only (markdown), Apache-2.0. Pinned at the reviewed 0d0dabf: HEAD 7932adf has no change under either path. Not taken on purpose: scripts/connectors/firecrawl.py, every other connector, the repo hooks/ and the plugin.",
+      "why": "Ad-to-page preflight (message match, above the fold, speed, friction, mobile) for 'clicks but 0 add-to-cart'; n-gram negatives from bol / Amazon / Google search-term exports.",
+      "localEdits": "none",
+      "notes": "Partial install by design, like the workspace trio: links to repo-level files (references/skill-contract.md, roas-benchmark.md, CONNECTORS.md, SECURITY.md) and sibling skills (ad-account-auditor, campaign-architect, landing-optimizer, budget-optimizer, offer-claims-registry) do not resolve globally; the method is inline. landing-experience-checker's 'python3 ${CLAUDE_PLUGIN_ROOT}/scripts/connectors/firecrawl.py' line will fail (not installed): read the page with the browser or a fetch instead. 'Save results' writes memory/ad/... only after the user confirms."
+    },
+    {
+      "name": "anthropics/knowledge-work-plugins (ad-manager, global)",
+      "repo": "anthropics/knowledge-work-plugins",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "ad-manager",
+          "path": "small-business/skills/ad-manager",
+          "tree": "ef858ecf69547ed1e6940e025ffb93a168a8821d",
+          "scope": "global",
+          "installed": [
+            "~/.claude/skills/ad-manager"
+          ]
+        }
+      ],
+      "pin": "84d8efdb6e80e2b26898e5c3109d13eddde97761",
+      "files": {
+        "small-business/shared/voice-profile.md": "~/.claude/shared/voice-profile.md",
+        "small-business/shared/artifact-style.md": "~/.claude/shared/artifact-style.md",
+        "small-business/shared/untrusted-content.md": "~/.claude/shared/untrusted-content.md"
+      },
+      "update": "T=$(mktemp -d) && git clone -q --filter=blob:none --no-checkout https://github.com/anthropics/knowledge-work-plugins $T/r && mkdir $T/x && git -C $T/r archive <SHA> small-business/skills/ad-manager small-business/shared/voice-profile.md small-business/shared/artifact-style.md small-business/shared/untrusted-content.md | tar -x -C $T/x && rm -rf ~/.claude/skills/ad-manager && cp -Rp $T/x/small-business/skills/ad-manager ~/.claude/skills/ad-manager && cp artifact-style.md untrusted-content.md from $T/x/small-business/shared to ~/.claude/shared (keep voice-profile.md if a profile was written into it; diff first)",
+      "decision": "2026-11-16 installed GLOBAL for Claude Code only, owner asked via the ad-strategy skill hunt (install plan row 4). Skill folder plus the 3 shared files it links, copied with git archive. Apache-2.0, markdown only. NEVER the plugin or its .mcp.json (bundles remote MCP servers). Pinned at the reviewed 84d8efd: HEAD e91a134 has no change under these paths.",
+      "why": "Ads for an owner new to ads: minimum-data thresholds, a real 'No verdict' status, one approval per change with the money impact.",
+      "localEdits": "none",
+      "notes": "The skill links ../../shared/*.md (and reference/ad_copy.md links ../../../shared/), which resolve to ~/.claude/shared/ for the physical path; symlinks ~/.claude-team/shared and ~/.claude-max2/shared -> ~/.claude/shared make the textual path resolve under the other two config dirs. frontmatter allowed-tools: Read, WebFetch. Connector paths are TikTok MCP / Zapier build-connector and growth-pulse / canva-creator hand-offs that we do not have: feed it Meta Ads MCP reads or CSV exports. artifact-style.md mentions shared/reference/artifact-example.html (not installed, optional example). Amounts are written in USD in examples: say euros."
+    }
+  ],
+  "docs": [
+    {
+      "id": "claude-dev-blog",
+      "url": "https://claude.dev/blog/",
+      "kind": "index",
+      "reviewed": "2026-11-10",
+      "sha256": "610e7a84cfb08fbe4ac23ba7411dbc3d6f780bcdc2d6195394d34708d3edc33e",
+      "why": "Anthropic dev log: the 2026-09-23 dev-log pass read all eight posts; nebi-hillclimb, nebi-maintenance and nebi-orchestration methods and core §1, §3 and §6 lines rest on them",
+      "posts": [
+        "https://claude.dev/blog/automating-eval-design-and-hillclimbing/",
+        "https://claude.dev/blog/building-effective-agent-automations/",
+        "https://claude.dev/blog/building-with-claude-sonnet-5-5/",
+        "https://claude.dev/blog/claude-code-in-the-cloud/",
+        "https://claude.dev/blog/getting-started-with-claude-code-mods/",
+        "https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/",
+        "https://claude.dev/blog/solving-code-review-at-anthropic/",
+        "https://claude.dev/blog/spending-your-effort/",
+        "https://claude.dev/blog/what-a-task-costs-on-opus-5-5/",
+        "https://claude.dev/blog/which-claude-model-should-you-build-with/"
+      ]
+    },
+    {
+      "id": "claude-opus-5-5-prompting",
+      "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5.md",
+      "kind": "page",
+      "reviewed": "2026-09-23",
+      "sha256": "82fb579c1cde3e18eb16c9aa35d67e1f9c59ab19789577f1a9aae1fb25fb80c8",
+      "why": "Opus 5.5 playbook: the keep-going and ⏳ Working rules in both cores, the Claude effort bindings in core §1, the Stop-hook nudge"
+    },
+    {
+      "id": "openai-latest-model",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model.md",
+      "kind": "page",
+      "reviewed": "2026-09-23",
+      "sha256": "cbe4a3e8dc5036c430096745acdf93b07221201c8705e5ece28bf2104a4f1a75",
+      "why": "OpenAI's current model guide; it changes when a new model ships, which puts the Codex core §1 bindings up for review"
+    },
+    {
+      "id": "openai-gpt-6-prompting",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra.md",
+      "kind": "page",
+      "reviewed": "2026-09-23",
+      "sha256": "cbe4a3e8dc5036c430096745acdf93b07221201c8705e5ece28bf2104a4f1a75",
+      "why": "GPT-6 prompting best practices (the guide's own promptingGuide link) behind Codex core §2 first update, §3b pause-and-quote, §4 stop list and §6 testing"
+    },
+    {
+      "id": "codex-docs",
+      "url": "https://learn.chatgpt.com/docs/llms.txt",
+      "kind": "index",
+      "reviewed": "2026-09-23",
+      "sha256": "7f9fb167db321ea6d99a5ae512d24565f31f987c312db4a730462bce35153ac5",
+      "why": "Codex docs map: AGENTS.md discovery, hooks, subagents, skills and config pages behind the Codex core §9 and §10, the native role adapters and nebi-maintenance mechanics",
+      "posts": [
+        "https://learn.chatgpt.com/docs/administration.md",
+        "https://learn.chatgpt.com/docs/agent-approvals-security.md",
+        "https://learn.chatgpt.com/docs/agent-configuration/agents-md.md",
+        "https://learn.chatgpt.com/docs/agent-configuration/rules.md",
+        "https://learn.chatgpt.com/docs/agent-configuration/speed.md",
+        "https://learn.chatgpt.com/docs/agent-configuration/subagents.md",
+        "https://learn.chatgpt.com/docs/amazon-bedrock.md",
+        "https://learn.chatgpt.com/docs/app-server.md",
+        "https://learn.chatgpt.com/docs/app.md",
+        "https://learn.chatgpt.com/docs/appshots.md",
+        "https://learn.chatgpt.com/docs/artifacts-viewer.md",
+        "https://learn.chatgpt.com/docs/auth.md",
+        "https://learn.chatgpt.com/docs/automations.md",
+        "https://learn.chatgpt.com/docs/browser.md",
+        "https://learn.chatgpt.com/docs/build-plugins.md",
+        "https://learn.chatgpt.com/docs/build-skills.md",
+        "https://learn.chatgpt.com/docs/chrome-extension.md",
+        "https://learn.chatgpt.com/docs/cli-customization.md",
+        "https://learn.chatgpt.com/docs/cloud.md",
+        "https://learn.chatgpt.com/docs/cloud/internet-access.md",
+        "https://learn.chatgpt.com/docs/code-review.md",
+        "https://learn.chatgpt.com/docs/codex-manual.md",
+        "https://learn.chatgpt.com/docs/codex-sdk.md",
+        "https://learn.chatgpt.com/docs/codex/cli.md",
+        "https://learn.chatgpt.com/docs/codex/ide.md",
+        "https://learn.chatgpt.com/docs/computer-use.md",
+        "https://learn.chatgpt.com/docs/config-file/config-advanced.md",
+        "https://learn.chatgpt.com/docs/config-file/config-basic.md",
+        "https://learn.chatgpt.com/docs/config-file/config-reference.md",
+        "https://learn.chatgpt.com/docs/config-file/config-sample.md",
+        "https://learn.chatgpt.com/docs/config-file/environment-variables.md",
+        "https://learn.chatgpt.com/docs/configuration.md",
+        "https://learn.chatgpt.com/docs/custom-prompts.md",
+        "https://learn.chatgpt.com/docs/customization/computer-history.md",
+        "https://learn.chatgpt.com/docs/customization/memories.md",
+        "https://learn.chatgpt.com/docs/customization/overview.md",
+        "https://learn.chatgpt.com/docs/cyber-safety.md",
+        "https://learn.chatgpt.com/docs/cyber-safety/recommended-configuration.md",
+        "https://learn.chatgpt.com/docs/developer-commands.md",
+        "https://learn.chatgpt.com/docs/developer-settings.md",
+        "https://learn.chatgpt.com/docs/developers.md",
+        "https://learn.chatgpt.com/docs/enterprise/access-tokens.md",
+        "https://learn.chatgpt.com/docs/enterprise/admin-plugin.md",
+        "https://learn.chatgpt.com/docs/enterprise/admin-setup.md",
+        "https://learn.chatgpt.com/docs/enterprise/analytics-api.md",
+        "https://learn.chatgpt.com/docs/enterprise/apps-and-connectors.md",
+        "https://learn.chatgpt.com/docs/enterprise/chatgpt-work-cloud-security.md",
+        "https://learn.chatgpt.com/docs/enterprise/chatgpt-work-local-security.md",
+        "https://learn.chatgpt.com/docs/enterprise/chatgpt-work-overview.md",
+        "https://learn.chatgpt.com/docs/enterprise/chatgpt-work-usage-and-cost.md",
+        "https://learn.chatgpt.com/docs/enterprise/compliance-api.md",
+        "https://learn.chatgpt.com/docs/enterprise/governance.md",
+        "https://learn.chatgpt.com/docs/enterprise/gpts-and-sharing.md",
+        "https://learn.chatgpt.com/docs/enterprise/groups-and-provisioning.md",
+        "https://learn.chatgpt.com/docs/enterprise/manage-app-updates.md",
+        "https://learn.chatgpt.com/docs/enterprise/managed-configuration.md",
+        "https://learn.chatgpt.com/docs/enterprise/plugin-management.md",
+        "https://learn.chatgpt.com/docs/enterprise/prisma-airs.md",
+        "https://learn.chatgpt.com/docs/enterprise/roles-and-workspace-permissions.md",
+        "https://learn.chatgpt.com/docs/enterprise/service-accounts.md",
+        "https://learn.chatgpt.com/docs/enterprise/skills.md",
+        "https://learn.chatgpt.com/docs/enterprise/usage-insights.md",
+        "https://learn.chatgpt.com/docs/enterprise/usage-limits.md",
+        "https://learn.chatgpt.com/docs/enterprise/user-lifecycle.md",
+        "https://learn.chatgpt.com/docs/enterprise/windows-deployment.md",
+        "https://learn.chatgpt.com/docs/enterprise/work-admin-faq.md",
+        "https://learn.chatgpt.com/docs/enterprise/workspace-analytics.md",
+        "https://learn.chatgpt.com/docs/enterprise/workspace-model-availability.md",
+        "https://learn.chatgpt.com/docs/environments/cloud-environment.md",
+        "https://learn.chatgpt.com/docs/environments/git-worktrees.md",
+        "https://learn.chatgpt.com/docs/environments/local-environment.md",
+        "https://learn.chatgpt.com/docs/environments/modes.md",
+        "https://learn.chatgpt.com/docs/extend/mcp.md",
+        "https://learn.chatgpt.com/docs/extend/record-and-replay.md",
+        "https://learn.chatgpt.com/docs/feature-maturity.md",
+        "https://learn.chatgpt.com/docs/features.md",
+        "https://learn.chatgpt.com/docs/features/codex-micro.md",
+        "https://learn.chatgpt.com/docs/features/voice.md",
+        "https://learn.chatgpt.com/docs/get-started-with-work.md",
+        "https://learn.chatgpt.com/docs/github-action.md",
+        "https://learn.chatgpt.com/docs/glossary.md",
+        "https://learn.chatgpt.com/docs/hooks.md",
+        "https://learn.chatgpt.com/docs/image-generation.md",
+        "https://learn.chatgpt.com/docs/image-inputs.md",
+        "https://learn.chatgpt.com/docs/import.md",
+        "https://learn.chatgpt.com/docs/integrated-terminal.md",
+        "https://learn.chatgpt.com/docs/linux/linux-app.md",
+        "https://learn.chatgpt.com/docs/llms-full.txt",
+        "https://learn.chatgpt.com/docs/long-running-work.md",
+        "https://learn.chatgpt.com/docs/mcp-server.md",
+        "https://learn.chatgpt.com/docs/model-selection.md",
+        "https://learn.chatgpt.com/docs/models.md",
+        "https://learn.chatgpt.com/docs/non-interactive-mode.md",
+        "https://learn.chatgpt.com/docs/notifications.md",
+        "https://learn.chatgpt.com/docs/open-source.md",
+        "https://learn.chatgpt.com/docs/permission-modes.md",
+        "https://learn.chatgpt.com/docs/permissions.md",
+        "https://learn.chatgpt.com/docs/personalize.md",
+        "https://learn.chatgpt.com/docs/pets.md",
+        "https://learn.chatgpt.com/docs/plugins.md",
+        "https://learn.chatgpt.com/docs/pricing.md",
+        "https://learn.chatgpt.com/docs/projects.md",
+        "https://learn.chatgpt.com/docs/prompting.md",
+        "https://learn.chatgpt.com/docs/quickstart.md",
+        "https://learn.chatgpt.com/docs/reference/commands.md",
+        "https://learn.chatgpt.com/docs/reference/settings.md",
+        "https://learn.chatgpt.com/docs/reference/troubleshooting.md",
+        "https://learn.chatgpt.com/docs/remote-connections.md",
+        "https://learn.chatgpt.com/docs/remote.md",
+        "https://learn.chatgpt.com/docs/sandboxing.md",
+        "https://learn.chatgpt.com/docs/sandboxing/auto-review.md",
+        "https://learn.chatgpt.com/docs/security-administration.md",
+        "https://learn.chatgpt.com/docs/security.md",
+        "https://learn.chatgpt.com/docs/security/cli.md",
+        "https://learn.chatgpt.com/docs/security/cli/bulk-scans.md",
+        "https://learn.chatgpt.com/docs/security/cli/ci.md",
+        "https://learn.chatgpt.com/docs/security/cli/ci/gitlab.md",
+        "https://learn.chatgpt.com/docs/security/cli/faq.md",
+        "https://learn.chatgpt.com/docs/security/cli/reference.md",
+        "https://learn.chatgpt.com/docs/security/faq.md",
+        "https://learn.chatgpt.com/docs/security/plugin.md",
+        "https://learn.chatgpt.com/docs/security/plugin/changelog.md",
+        "https://learn.chatgpt.com/docs/security/plugin/code-changes.md",
+        "https://learn.chatgpt.com/docs/security/plugin/deep-scans.md",
+        "https://learn.chatgpt.com/docs/security/plugin/export-findings.md",
+        "https://learn.chatgpt.com/docs/security/plugin/fix-findings.md",
+        "https://learn.chatgpt.com/docs/security/plugin/scans.md",
+        "https://learn.chatgpt.com/docs/security/plugin/security-hardening.md",
+        "https://learn.chatgpt.com/docs/security/plugin/triage-backlog.md",
+        "https://learn.chatgpt.com/docs/security/plugin/vulnerability-reports.md",
+        "https://learn.chatgpt.com/docs/security/plugin/workbench.md",
+        "https://learn.chatgpt.com/docs/security/sdk.md",
+        "https://learn.chatgpt.com/docs/security/security-review.md",
+        "https://learn.chatgpt.com/docs/security/setup.md",
+        "https://learn.chatgpt.com/docs/security/threat-model.md",
+        "https://learn.chatgpt.com/docs/sites.md",
+        "https://learn.chatgpt.com/docs/skills-and-plugins.md",
+        "https://learn.chatgpt.com/docs/third-party/github.md",
+        "https://learn.chatgpt.com/docs/third-party/gitlab.md",
+        "https://learn.chatgpt.com/docs/third-party/linear.md",
+        "https://learn.chatgpt.com/docs/third-party/slack.md",
+        "https://learn.chatgpt.com/docs/use-chatgpt.md",
+        "https://learn.chatgpt.com/docs/visualizations.md",
+        "https://learn.chatgpt.com/docs/web-search.md",
+        "https://learn.chatgpt.com/docs/web.md",
+        "https://learn.chatgpt.com/docs/webmcp.md",
+        "https://learn.chatgpt.com/docs/whats-new.md",
+        "https://learn.chatgpt.com/docs/windows/windows-app.md",
+        "https://learn.chatgpt.com/docs/windows/windows-sandbox.md",
+        "https://learn.chatgpt.com/docs/windows/wsl.md"
+      ]
+    },
+    {
+      "id": "codex-changelog",
+      "url": "https://learn.chatgpt.com/docs/changelog/rss.xml",
+      "kind": "index",
+      "reviewed": "2026-09-23",
+      "sha256": "7dd3447bcd519da31bde8257d3931995826269295498780432a9a8ac0c474ce2",
+      "why": "Codex CLI releases: new models, config keys and hook changes feed the Codex core §1 bindings, config.toml advice and the deployer",
+      "posts": [
+        "https://developers.openai.com/codex/changelog/#codex-2025-05-19",
+        "https://developers.openai.com/codex/changelog/#codex-2025-05-22",
+        "https://developers.openai.com/codex/changelog/#codex-2025-06-03",
+        "https://developers.openai.com/codex/changelog/#codex-2025-06-13",
+        "https://developers.openai.com/codex/changelog/#codex-2025-08-21",
+        "https://developers.openai.com/codex/changelog/#codex-2025-08-27",
+        "https://developers.openai.com/codex/changelog/#codex-2025-09-15",
+        "https://developers.openai.com/codex/changelog/#codex-2025-09-23",
+        "https://developers.openai.com/codex/changelog/#codex-2025-10-06",
+        "https://developers.openai.com/codex/changelog/#codex-2025-10-22",
+        "https://developers.openai.com/codex/changelog/#codex-2025-10-30",
+        "https://developers.openai.com/codex/changelog/#codex-2025-11-06",
+        "https://developers.openai.com/codex/changelog/#codex-2025-11-07",
+        "https://developers.openai.com/codex/changelog/#codex-2025-11-13",
+        "https://developers.openai.com/codex/changelog/#codex-2025-11-18",
+        "https://developers.openai.com/codex/changelog/#codex-2025-11-24",
+        "https://developers.openai.com/codex/changelog/#codex-2025-12-04",
+        "https://developers.openai.com/codex/changelog/#codex-2025-12-18",
+        "https://developers.openai.com/codex/changelog/#codex-2025-12-19",
+        "https://developers.openai.com/codex/changelog/#codex-2026-01-14",
+        "https://developers.openai.com/codex/changelog/#codex-2026-01-22",
+        "https://developers.openai.com/codex/changelog/#codex-2026-01-23",
+        "https://developers.openai.com/codex/changelog/#codex-2026-01-28",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-02",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-03-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-04-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-05",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-05-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-06-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-08-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-09",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-10-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-12",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-12-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-17-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-26-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-27-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-02-28-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-03-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-04-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-05",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-05-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-11-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-12-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-16-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-17",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-18-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-19-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-20-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-24-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-25",
+        "https://developers.openai.com/codex/changelog/#codex-2026-03-25-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-01-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-07",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-09-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-10-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-12-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-16-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-20-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-23",
+        "https://developers.openai.com/codex/changelog/#codex-2026-04-24-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-05",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-05-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-06",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-07",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-08-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-11",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-13-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-18-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-21",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-25-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-26",
+        "https://developers.openai.com/codex/changelog/#codex-2026-05-28-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-01",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-01-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-02",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-02-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-04-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-09-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-09-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-11-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-15-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-16-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-18-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-22-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-06-25",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-06-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-09-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-13-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-20-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-23-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-27-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-29",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-30-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-31",
+        "https://developers.openai.com/codex/changelog/#codex-2026-07-31-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-03-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-10-daybreak",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-11-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-13-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-17-admin-csv",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-17-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-19-gitlab",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-20-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-24",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-25-browser",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-25-event-triggers",
+        "https://developers.openai.com/codex/changelog/#codex-2026-08-25-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-02-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-05",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-08-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-11-app",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-14-codex-spark-deprecation",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-14-gpt-55-retirement",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-18-mobile",
+        "https://developers.openai.com/codex/changelog/#codex-2026-09-22-gpt-6-sol-luna",
+        "https://developers.openai.com/codex/changelog/#github-release-380164108",
+        "https://developers.openai.com/codex/changelog/#github-release-380862087",
+        "https://developers.openai.com/codex/changelog/#github-release-381669913",
+        "https://developers.openai.com/codex/changelog/#github-release-382330424",
+        "https://developers.openai.com/codex/changelog/#github-release-382394608",
+        "https://developers.openai.com/codex/changelog/#github-release-382954374",
+        "https://developers.openai.com/codex/changelog/#github-release-383061770",
+        "https://developers.openai.com/codex/changelog/#github-release-385887902",
+        "https://developers.openai.com/codex/changelog/#github-release-386577294",
+        "https://developers.openai.com/codex/changelog/#github-release-386594900",
+        "https://developers.openai.com/codex/changelog/#github-release-391114314",
+        "https://developers.openai.com/codex/changelog/#github-release-391752266",
+        "https://developers.openai.com/codex/changelog/#github-release-394061815",
+        "https://developers.openai.com/codex/changelog/#github-release-394258789"
+      ]
+    },
+    {
+      "id": "claude-fold-subagents",
+      "url": "https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop",
+      "kind": "page",
+      "why": "Anthropic, 2026-10-22: skills hold how work is done, tools take actions and read live data, sub-agents only for context isolation, parallel fresh contexts or tool conflicts; fold one at a time against a 10+ task eval. Basis for the 2026-11-16 fleet audit (single-loop/) and the nebi-orchestration fold rule.",
+      "reviewed": "2026-11-16",
+      "sha256": "2346a723c0bc6148c6d7d0bcd9dc2b29b7549c41e8bb73b15160476b6b1174d4"
+    },
+    {
+      "id": "claude-code-code-mode",
+      "url": "https://code.claude.com/docs/en/code-mode.md",
+      "kind": "page",
+      "why": "Code Mode (experimental, 2.1.323+): tools called from model-written JavaScript through one REPL tool. Interactive only, and refused while a mod hooks tool calls; it also drops Remote Control, Claude in Chrome and computer use. Measured 2026-11-16 on three 2-5-call read-only tasks: tokens -18 to -30% (cache reads), cost flat (about -4% warm), so left off for the mods and limits, not for cost (SOURCES.md).",
+      "reviewed": "2026-11-16",
+      "sha256": "e0fb6ccc4b2f7add0b6b7274d11f833147326f95bfc4240769afb5ae017f5939"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "nebi-wispr",
+  "version": "0.3.0",
+  "description": "Fixes words dictation gets wrong (scapling becomes Scrapling) from a glossary you keep. Optional: tells Claude when a word sounds like one of your tools or projects.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "guesses": {
+      "type": "string",
+      "title": "Sound-alike guesses",
+      "description": "off: only your glossary changes words. on: also tell Claude when a word sounds like one of this machine's tools or projects. Over a month of real prompts about two guesses in three were ordinary words (theres, waiting, requires), so it starts off.",
+      "options": [
+        "off",
+        "on"
+      ],
+      "default": "off"
+    }
+  }
+}

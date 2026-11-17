@@ -1,0 +1,9 @@
+{
+  "name": "nebi-aside",
+  "version": "0.1.0",
+  "description": "Side questions that never touch the running turn: start a prompt with ?? or run /aside, and the answer lands in the Aside pane.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}

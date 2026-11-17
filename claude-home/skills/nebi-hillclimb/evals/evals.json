@@ -1,0 +1,44 @@
+{
+ "skill_name": "nebi-hillclimb",
+ "evals": [
+  {
+   "id": 1,
+   "name": "prove-the-proxy",
+   "prompt": "Decide the next step only; do not execute. We raised the landing page's Lighthouse performance score from 71 to 93, but field Core Web Vitals for real mobile users have not moved in two weeks.",
+   "expected_output": "Treat Lighthouse as an unproven proxy: check whether it tracks the field number on this page, find what users actually wait on, and stop climbing the lab score until a proxy is shown to move the field metric.",
+   "files": [],
+   "expectations": [
+    "Names Lighthouse as a proxy and field Core Web Vitals as the user number",
+    "Does not recommend pushing the lab score higher as the next step",
+    "Proposes showing that a proxy moves the field number before climbing it",
+    "Does not declare the work done"
+   ]
+  },
+  {
+   "id": 2,
+   "name": "target-hit-open-goal",
+   "prompt": "Decide what to do next only; do not execute. The owner said 'make the store feel fast'. We set a target of 1.5 s to usable on the product page and just hit 1.4 s. Two further ideas remain: inlining critical CSS (estimated 200 ms) and a custom build plugin to precompile templates (estimated 4 ms, about 900 lines to maintain).",
+   "expected_output": "Keep going on the open-ended goal with the critical-CSS change, lock the win with a ratchet, and drop the build plugin because 4 ms is not worth its complexity.",
+   "files": [],
+   "expectations": [
+    "Does not stop just because the target was hit",
+    "Picks the critical-CSS change",
+    "Rejects the build plugin on complexity versus gain",
+    "Mentions locking the gain with a check that fails on regression"
+   ]
+  },
+  {
+   "id": 3,
+   "name": "visible-tradeoff",
+   "prompt": "Decide how to ship only; do not execute. Showing a loading skeleton immediately makes the collection page feel faster in the lab but adds a visible flash on fast connections; delaying it 300 ms removes the flash but feels slower on 3G.",
+   "expected_output": "Make a best call, ship it behind a flag or staged rollout, and show the owner before and after for both connection speeds so they can rule on the taste trade-off.",
+   "files": [],
+   "expectations": [
+    "Makes a default call instead of only asking",
+    "Shows before and after for the user to rule on",
+    "Uses a flag or staged rollout for the user-visible change",
+    "Does not treat the lab number alone as the decision"
+   ]
+  }
+ ]
+}

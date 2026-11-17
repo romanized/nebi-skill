@@ -1,0 +1,48 @@
+{
+  "name": "nebi-mods",
+  "owner": {
+    "name": "nebi"
+  },
+  "plugins": [
+    {
+      "name": "nebi-beacon",
+      "source": "./nebi-beacon"
+    },
+    {
+      "name": "nebi-constellation",
+      "source": "./nebi-constellation"
+    },
+    {
+      "name": "nebi-quiet",
+      "source": "./nebi-quiet"
+    },
+    {
+      "name": "nebi-replies",
+      "source": "./nebi-replies"
+    },
+    {
+      "name": "nebi-receipt",
+      "source": "./nebi-receipt"
+    },
+    {
+      "name": "nebi-browser",
+      "source": "./nebi-browser"
+    },
+    {
+      "name": "nebi-session-guard",
+      "source": "./nebi-session-guard"
+    },
+    {
+      "name": "nebi-red-button",
+      "source": "./nebi-red-button"
+    },
+    {
+      "name": "nebi-model-lock",
+      "source": "./nebi-model-lock"
+    },
+    {
+      "name": "nebi-wispr",
+      "source": "./nebi-wispr"
+    }
+  ]
+}

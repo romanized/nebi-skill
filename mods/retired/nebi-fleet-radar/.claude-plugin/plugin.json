@@ -1,0 +1,9 @@
+{
+  "name": "nebi-fleet-radar",
+  "version": "0.1.0",
+  "description": "/fleet opens a live swimlane radar of the main loop and every sub-agent: model, status, run time, tokens, a colored activity timeline per loop, and how much of the 5-hour quota the fleet has burned.",
+  "author": {
+    "name": "nebi"
+  },
+  "types": "./types/index.d.ts"
+}
