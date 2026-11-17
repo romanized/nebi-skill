@@ -68,6 +68,8 @@ Every entry comes from a dated record: my failure log (177 lines, kept private),
 
 ### 4. Confirmation gates that shift week to week
 
+The problem here is inconsistency, not the gates themselves. I want confirmation and safety gates to be predictable, so both the agent and I can trust them.
+
 - **Seen:** 2026-09-23 to 2026-11-16, 12 times.
 - **What the agent did:**
   - **09-23:** in auto mode, a classifier refused real-world transactions without ever prompting me.

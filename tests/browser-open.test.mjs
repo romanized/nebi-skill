@@ -14,7 +14,7 @@ const test = process.platform === 'win32' ? nodeTest.skip : nodeTest;
 const root = fileURLToPath(new URL('../', import.meta.url));
 const router = path.join(root, 'claude-home/nebi/browser-open');
 const temp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-browser-open-')));
-test.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+nodeTest.after(() => fs.rmSync(temp, { recursive: true, force: true }));
 
 const URL_A = 'https://example.com/page?x=1';
 const q = (arg) => (/^[\w@%+=:,./-]+$/.test(arg) ? arg : `'${arg}'`);
