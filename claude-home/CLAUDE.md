@@ -26,25 +26,25 @@ When I'm in Ultracode or another multi-agent workflow, think in **roles**, not f
 - **Scouts.** Handle genuinely heavy or independent reading and return compact findings.
 - **Checkers.** Review combined work when the change has multiple writers or a shared surface, is high-risk, ambiguous, release-critical, or I request one.
 
-**Claude Code bindings: config, not doctrine.** Model names live only in harness cores; skills stay role-based. Refresh this table and its date when the available models change. Bindings as of **2026-10-03**:
+**Claude Code bindings: config, not doctrine.** Model names live only in harness cores; skills stay role-based. Refresh this table and its date when the available models change. Bindings as of **2026-11-19**:
 
 | Role | Claude Code model |
 |------|-------------------|
 | Helm / default builder | Opus 5.5 (`settings.json` uses `model: opus`) |
 | Heavy builder / complex build | Opus 5.5 |
-| Highest-capability thinking / audit | Opus 5.5 |
+| Highest-capability thinking / audit | Mythos where the account has it, else Fable 5.2 |
 | Scout / online research | Opus 5.5 (Sonnet 5.5 when usage is low) |
 | Fast scan / cheap grunt | Sonnet 5.5 |
 | Checker (fresh context) | Opus 5.5 |
 
-Only Opus 5.5 and Sonnet 5.5 are in use: default to Opus 5.5, move work to Sonnet 5.5 when I say usage is low, and don't use Haiku or Fable unless I name them or Fable stands in for Mythos (below).
+Default to Opus 5.5, and move work to Sonnet 5.5 when I say usage is low. The Fable family (Mythos where the account has it, otherwise Fable) is yours to pick for the lead's own hard work or a sub-agent whose job needs a better model: code or a review that can't have mistakes, a careful look, a long task, or work where getting it right the first time saves the tokens a redo would cost. That is the lead's call, job by job; say in a line when you pick it. No Haiku unless I name it.
 
-**Mythos is the exception.** When the account you run on has Mythos access (the team account does; another Claude account may), never hold back from Mythos sub-agents for improving any project, and treat this line as standing permission to run a workflow for them. Wherever Mythos and Fable are both options, use Mythos. With access, it is the bigger model in §5's order: use it there instead of asking me. A model I name still wins (§0).
+**Mythos over Fable.** When the account you run on has Mythos access (the team account does; another Claude account may), use Mythos wherever you would pick Fable, never hold back from Mythos sub-agents for improving any project, and treat this line as standing permission to run a workflow for them. With access, it is the bigger model in §5's order: use it there instead of asking me. A model I name still wins (§0).
 
 - The id is `claude-mythos-<version>`, with the same version number as the newest Fable the CLI knows. The bare alias `mythos` is rejected, so a probe on a guessed id or the alias proves nothing.
 - Check access once with `claude -p "hi" --model <id>`. An answer of "you may not have access" means this account has none.
 - Dispatch it through a workflow agent's `model` option, or through headless `claude -p --model <id>`. The Agent tool's model list has no Mythos entry, and the model-lock mod does not know it, so you enforce it.
-- Without access, Fable stands in only where I named Mythos (the same model with extra safeguards); say so once. Everywhere else, sub-agents use the table above.
+- Without access, use Fable for those jobs (the same model with extra safeguards).
 
 **Effort:** the helm runs at what I set for the session (`medium` is Opus 5.5's default; Ultracode runs at `xhigh` by my choice). For sub-agents, you pick the effort for each dispatch from the work and pass it: the Agent tool's `effort` parameter, or `effort` in a workflow agent's options. Don't leave it to inheritance, which hands every agent the session's level whatever its job. Effort buys checking and edge-case hunting, so spend it where a wrong result costs most:
 

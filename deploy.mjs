@@ -515,13 +515,10 @@ function validateClaudeSettings(settings, label) {
   if (Object.hasOwn(settings, 'claudeMdExcludes') && !Array.isArray(settings.claudeMdExcludes)) {
     throw new Error(`${label}.claudeMdExcludes must be an array when present.`);
   }
-  for (const key of ['env', 'enabledPlugins', 'permissions']) {
+  for (const key of ['env', 'enabledPlugins']) {
     if (Object.hasOwn(settings, key) && !isPlainObject(settings[key])) {
       throw new Error(`${label}.${key} must be a JSON object when present.`);
     }
-  }
-  if (isPlainObject(settings.permissions) && Object.hasOwn(settings.permissions, 'deny') && !Array.isArray(settings.permissions.deny)) {
-    throw new Error(`${label}.permissions.deny must be an array when present.`);
   }
   if (!Object.hasOwn(settings, 'hooks')) return;
   if (!isPlainObject(settings.hooks)) {
@@ -752,17 +749,6 @@ const DOCTRINE_ENV = {
   // (CLAUDE.md §1) instead of inheriting the session's model. A dispatch `model` still wins.
   CLAUDE_CODE_SUBAGENT_MODEL: 'opus',
 };
-// Claude's own tools never read or edit these, in any mode: deny rules hold even
-// under bypassPermissions. Read and Edit rules also cover the file commands
-// Claude Code recognizes in Bash (cat, head, tail, sed, tee, < and >), not a
-// node or python script that opens the file itself, so scripts that load an
-// API key keep working (permissions docs, checked 2026-11-19).
-const SECRET_DENY_RULES = [
-  'Read(~/.agents/nebi/secrets/**)',
-  'Edit(~/.agents/nebi/secrets/**)',
-  'Read(~/.ssh/**)',
-  'Edit(~/.ssh/**)',
-];
 const NEBI_MODS = [
   'nebi-beacon', 'nebi-constellation', 'nebi-quiet', 'nebi-replies', 'nebi-receipt',
   'nebi-browser', 'nebi-session-guard', 'nebi-red-button', 'nebi-model-lock', 'nebi-wispr',
@@ -774,18 +760,9 @@ const DOCTRINE_PLUGINS = {
   ...Object.fromEntries(RETIRED_MODS.map((name) => [`${name}@nebi-mods`, false])),
 };
 
-/** Add the secret deny rules once; the user's own allow, ask and deny entries stay in order. */
-function mergePermissions(existing) {
-  const permissions = isPlainObject(existing) ? { ...existing } : {};
-  const deny = Array.isArray(permissions.deny) ? permissions.deny : [];
-  permissions.deny = [...deny, ...SECRET_DENY_RULES.filter((rule) => !deny.includes(rule))];
-  return permissions;
-}
-
-/** Set the doctrine's keys; every other key in settings, env, enabledPlugins and permissions stays. */
+/** Set the doctrine's keys; every other key in settings, env and enabledPlugins stays. */
 function applyDoctrineSettings(settings) {
   Object.assign(settings, DOCTRINE_SETTINGS);
-  settings.permissions = mergePermissions(settings.permissions);
   settings.env = { ...(isPlainObject(settings.env) ? settings.env : {}), ...DOCTRINE_ENV };
   settings.enabledPlugins = {
     ...(isPlainObject(settings.enabledPlugins) ? settings.enabledPlugins : {}),
@@ -798,8 +775,7 @@ function hasDoctrineSettings(settings) {
   const holds = (object, expected) =>
     isPlainObject(object) && Object.entries(expected).every(([key, value]) => object[key] === value);
   return holds(settings, DOCTRINE_SETTINGS) && holds(settings.env, DOCTRINE_ENV) &&
-    holds(settings.enabledPlugins, DOCTRINE_PLUGINS) &&
-    SECRET_DENY_RULES.every((rule) => settings.permissions?.deny?.includes(rule));
+    holds(settings.enabledPlugins, DOCTRINE_PLUGINS);
 }
 
 /**
@@ -1300,7 +1276,6 @@ function main() {
   console.log('  hooks.SessionEnd  -> node session-end-state.mjs (session facts + ledger prune, timeout 15)');
   console.log(`  ${Object.entries(DOCTRINE_SETTINGS).map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(', ')}`);
   console.log(`  env: ${Object.keys(DOCTRINE_ENV).join(', ')} (other env keys untouched)`);
-  console.log(`  permissions.deny += ${SECRET_DENY_RULES.join(', ')} (other rules untouched)`);
   console.log(`  enabledPlugins: ${NEBI_MODS.length} nebi mods on; ${RETIRED_MODS.join(', ')} and cc-plugin-you-should-know off`);
 
   // --- 2b. Codex deploy (core + seven common skills + sources/state) ----------

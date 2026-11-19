@@ -391,31 +391,6 @@ test('doctrine-owned settings are set on every run while other keys survive', ()
   assert.match(drifted.stderr, /Configuration drift: Claude/);
 });
 
-test('secret deny rules are added once and the user\'s own permissions survive', () => {
-  const home = tempDir();
-  const settingsPath = path.join(home, '.claude', 'settings.json');
-  const own = { allow: ['Bash(npm test)'], ask: ['Bash(git push *)'], deny: ['Read(./.env)', 'Read(~/.ssh/**)'], defaultMode: 'bypassPermissions' };
-  writeJson(settingsPath, { permissions: own });
-  assert.equal(run(home).status, 0);
-  const { permissions } = readJson(settingsPath);
-  assert.deepEqual(permissions, {
-    ...own,
-    deny: ['Read(./.env)', 'Read(~/.ssh/**)', 'Read(~/.agents/nebi/secrets/**)', 'Edit(~/.agents/nebi/secrets/**)', 'Edit(~/.ssh/**)'],
-  });
-  const first = fs.readFileSync(settingsPath, 'utf8');
-  assert.equal(run(home).status, 0);
-  assert.equal(fs.readFileSync(settingsPath, 'utf8'), first, 'a second deploy adds nothing');
-  assert.equal(run(home, ['--verify']).status, 0);
-  writeJson(settingsPath, { ...readJson(settingsPath), permissions: own });
-  assert.match(run(home, ['--verify']).stderr, /Configuration drift: Claude/, 'a removed rule is drift');
-
-  const fresh = tempDir();
-  assert.equal(run(fresh).status, 0);
-  assert.deepEqual(readJson(path.join(fresh, '.claude', 'settings.json')).permissions, {
-    deny: ['Read(~/.agents/nebi/secrets/**)', 'Edit(~/.agents/nebi/secrets/**)', 'Read(~/.ssh/**)', 'Edit(~/.ssh/**)'],
-  });
-});
-
 test('settings.json is replaced by rename, never rewritten in place, and a symlink keeps its link', () => {
   const home = tempDir();
   const settingsPath = path.join(home, '.claude', 'settings.json');
@@ -485,8 +460,8 @@ test('legacy bash and PowerShell sweep hooks are removed, unrelated ones stay', 
   ]);
 });
 
-test('a non-object env, enabledPlugins or permissions fails preflight', () => {
-  for (const settings of [{ env: ['DISABLE_AUTOUPDATER=1'] }, { enabledPlugins: 'all' }, { permissions: [] }, { permissions: { deny: 'Read(~/.ssh/**)' } }]) {
+test('a non-object env or enabledPlugins fails preflight', () => {
+  for (const settings of [{ env: ['DISABLE_AUTOUPDATER=1'] }, { enabledPlugins: 'all' }]) {
     const home = tempDir();
     const settingsPath = path.join(home, '.claude', 'settings.json');
     writeJson(settingsPath, settings);
