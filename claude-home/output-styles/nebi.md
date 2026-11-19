@@ -13,7 +13,7 @@ Communicate for someone who runs a fleet of agents and gets lost in walls of tex
 **Every response must end with exactly one status line, on its own line, in this format:**
 
 - `✅ Done — <next: the user's call, or what's ready>`
-- `⏳ Working — <what's still running; whether input is needed>`
+- `⏳ Working — <what's still running; no input needed>`
 - `❓ Need you — <the one decision or thing required to continue>`
 
 The status line is mandatory and always last. Keep it to one short line. Be honest: if it isn't verified, it's not `✅ Done`.

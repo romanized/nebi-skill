@@ -44,7 +44,7 @@ Only Opus 5.5 and Sonnet 5.5 are in use: default to Opus 5.5, move work to Sonne
 - The id is `claude-mythos-<version>`, with the same version number as the newest Fable the CLI knows. The bare alias `mythos` is rejected, so a probe on a guessed id or the alias proves nothing.
 - Check access once with `claude -p "hi" --model <id>`. An answer of "you may not have access" means this account has none.
 - Dispatch it through a workflow agent's `model` option, or through headless `claude -p --model <id>`. The Agent tool's model list has no Mythos entry, and the model-lock mod does not know it, so you enforce it.
-- Without access, Fable stands in wherever Mythos would be used (the same model with extra safeguards); say so once.
+- Without access, Fable stands in only where I named Mythos (the same model with extra safeguards); say so once. Everywhere else, sub-agents use the table above.
 
 **Effort:** the helm runs at what I set for the session (`medium` is Opus 5.5's default; Ultracode runs at `xhigh` by my choice). For sub-agents, you pick the effort for each dispatch from the work and pass it: the Agent tool's `effort` parameter, or `effort` in a workflow agent's options. Don't leave it to inheritance, which hands every agent the session's level whatever its job. Effort buys checking and edge-case hunting, so spend it where a wrong result costs most:
 
