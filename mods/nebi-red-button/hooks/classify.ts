@@ -92,7 +92,8 @@ export function destructiveSql(sql: string): { rule: string; label: string; shor
 
 const SQL_CLIENTS = new Set(['psql', 'supabase', 'sqlite', 'sqlite3'])
 // `cmd <<EOF`, `cmd <<-'EOF'`: the body runs only when cmd is a shell or a database client.
-const HEREDOC = /<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/
+// Matched where `heredocAt` finds a `<<` the shell reads as an operator.
+const HEREDOC = /^<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/
 // Words that can come before the real command without changing what it does.
 const PREFIXES = new Set(['command', 'exec', 'env', 'nohup', 'time', 'then', 'do', 'else', '!', 'xargs', 'npx', 'bunx', 'pnpx'])
 const SHELLS = new Set(['bash', 'sh', 'zsh', 'dash', 'ksh'])
@@ -278,29 +279,64 @@ function expand(word: string, vars: ReadonlyMap<string, string>): string {
 /**
  * The script with every heredoc body taken out, and each body with the command
  * that reads it. A body is data unless that command is a shell or a database client.
+ * A heredoc whose end line never comes is not taken out: its lines stay script.
  */
 function splitHeredocs(script: string): { script: string; bodies: { cmd: string; text: string }[] } {
   const lines = script.split('\n')
   const kept: string[] = []
   const bodies: { cmd: string; text: string }[] = []
+  let quote: string | null = null
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i] ?? ''
     kept.push(line)
-    const match = HEREDOC.exec(line)
-    if (!match) continue
-    const isIndented = match[1] === '-'
-    const end = match[3] ?? ''
-    const head = splitCommands(line.slice(0, match.index)).pop() ?? ''
-    const body: string[] = []
-    for (i += 1; i < lines.length; i += 1) {
-      const next = lines[i] ?? ''
-      if ((isIndented ? next.trim() : next) === end) break
-      body.push(next)
-    }
-    bodies.push({ cmd: commandName(head), text: body.join('\n') })
+    const scan = heredocAt(line, quote)
+    quote = scan.quote
+    const found = scan.heredoc
+    if (found === null) continue
+    const close = lines.findIndex((next, j) => j > i && (found.isIndented ? next.trim() : next) === found.end)
+    if (close === -1) continue
+    const head = splitCommands(line.slice(0, found.at)).pop() ?? ''
+    bodies.push({ cmd: commandName(head), text: lines.slice(i + 1, close).join('\n') })
+    i = close
   }
 
   return { script: kept.join('\n'), bodies }
+}
+
+/**
+ * The first `<<` on a line that the shell reads as a heredoc, and the quote still open
+ * at the line's end. A here-string (`<<<`) is none, and neither is a `<<` inside quotes,
+ * after a `#` comment or in arithmetic (`$((1 << n))`). `quote` is the one the line starts in.
+ */
+function heredocAt(line: string, quote: string | null): { heredoc: { at: number; isIndented: boolean; end: string } | null; quote: string | null } {
+  let open = quote
+  let arithmetic = 0 // parentheses open inside (( … ))
+  for (let i = 0; i < line.length; i += 1) {
+    const c = line[i] ?? ''
+    if (c === '\\' && open !== "'") {
+      i += 1
+    } else if (open !== null) {
+      if (c === open) open = null
+    } else if (c === '"' || c === "'") {
+      open = c
+    } else if (arithmetic > 0) {
+      if (c === '(') arithmetic += 1
+      if (c === ')') arithmetic -= 1
+    } else if (c === '(' && line[i + 1] === '(') {
+      arithmetic = 2
+      i += 1
+    } else if (c === '#' && (i === 0 || /[\s;&|()]/.test(line[i - 1] ?? ''))) {
+      break
+    } else if (line.startsWith('<<<', i)) {
+      i += 2
+    } else if (line.startsWith('<<', i)) {
+      const match = HEREDOC.exec(line.slice(i))
+      if (match) return { heredoc: { at: i, isIndented: match[1] === '-', end: match[3] ?? '' }, quote: null }
+      i += 1
+    }
+  }
+
+  return { heredoc: null, quote: open }
 }
 
 /** One command's words: rm, git, find, a shell or eval running a string, a database reset. */
@@ -379,14 +415,18 @@ function findRisk(args: readonly string[], dir: string, ctx: Context, depth: num
   return { rule: 'find-delete', label: 'find -delete', short: 'find and delete files' }
 }
 
+// Git's own options that take the next word as their value: `git --git-dir /repo/.git push`.
+const GIT_VALUE_OPTIONS = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--config-env', '--super-prefix'])
+
 function gitRisk(args: readonly string[], dir: string): BashRisk | null {
-  // Git's own options come before the subcommand; -C moves where it runs.
+  // Git's own options come before the subcommand; -C and --git-dir move where it runs.
   let gitDir = dir
   let i = 0
   while (i < args.length && (args[i] ?? '').startsWith('-')) {
     const option = args[i] ?? ''
-    if (option === '-C') gitDir = joinPath(gitDir, args[i + 1] ?? '.')
-    i += option === '-C' || option === '-c' ? 2 : 1
+    if (option === '-C' || option === '--git-dir') gitDir = joinPath(gitDir, args[i + 1] ?? '.')
+    if (option.startsWith('--git-dir=')) gitDir = joinPath(gitDir, option.slice('--git-dir='.length))
+    i += GIT_VALUE_OPTIONS.has(option) ? 2 : 1
   }
   const sub = args[i]
   const rest = args.slice(i + 1)
@@ -396,13 +436,15 @@ function gitRisk(args: readonly string[], dir: string): BashRisk | null {
 
   if (sub === 'push') {
     const remote = positional[0] ?? 'origin'
-    const spec = positional[1] ?? ''
+    // Every refspec counts: `git push origin main :old` deletes old, `main +other` forces other.
+    const specs = positional.slice(1)
+    const spec = specs.find(s => s.startsWith('+')) ?? specs[0] ?? ''
     const branch = spec.replace(/^\+/, '').split(':').pop() ?? ''
-    if (has('--delete') || hasShort('d') || spec.startsWith(':')) {
+    if (has('--delete') || hasShort('d') || specs.some(s => s.startsWith(':'))) {
       return { rule: 'git-push-delete', label: 'git push --delete', short: `delete a remote branch on ${remote}` }
     }
     if (has('--mirror')) return { rule: 'git-push-force', label: 'git push --mirror', short: `mirror push to ${remote}` }
-    const isForced = has('--force', '--force-if-includes') || rest.some(a => a.startsWith('--force-with-lease')) || hasShort('f') || spec.startsWith('+')
+    const isForced = has('--force', '--force-if-includes') || rest.some(a => a.startsWith('--force-with-lease')) || hasShort('f') || specs.some(s => s.startsWith('+'))
     if (!isForced) return null
 
     return { rule: 'git-push-force', label: 'git push --force', short: `force push${branch ? ` to ${branch}` : ''}`, probe: { kind: 'push', dir: gitDir, remote, branch } }
@@ -628,8 +670,9 @@ export function isArtifact(target: string, dir: string, cwd: string): boolean {
  * A target that starts with a name which is either a known path or empty (`$S/out`),
  * with the path filled in, when the empty case is harmless: nothing after the name
  * (`rm -rf ""` deletes nothing) or a plain folder name that is not one of the disk's
- * own (`/out` does not exist). `$S/*`, `$S/`, `$S/usr` and `${S}x` come back unchanged
- * and stay a path in a variable.
+ * own (`/out` does not exist). `$S/*`, `$S/`, `$S/usr`, `${S}x` and any `..` after the
+ * name (`$S/x/../../C` climbs out of the real temp folder) come back unchanged and stay
+ * a path in a variable.
  */
 function settled(target: string, maybe?: ReadonlyMap<string, string>): string {
   const match = /^\$(?:\{([A-Za-z_][A-Za-z0-9_]*)\}|([A-Za-z_][A-Za-z0-9_]*))(?:\/(.*))?$/.exec(target)
@@ -638,7 +681,7 @@ function settled(target: string, maybe?: ReadonlyMap<string, string>): string {
   const rest = match[3]
   if (rest === undefined) return value
   const first = rest.split('/')[0] ?? ''
-  if (!/^[A-Za-z0-9._-]+$/.test(first) || first === '.' || first === '..' || ROOT_FOLDERS.has(first)) return target
+  if (!/^[A-Za-z0-9._-]+$/.test(first) || first === '.' || rest.split('/').includes('..') || ROOT_FOLDERS.has(first)) return target
 
   return `${value}/${rest}`
 }
@@ -666,7 +709,8 @@ export function classifyMcp(tool: string, input: Readonly<Record<string, unknown
   const match = /^mcp__(.+?)__(.+)$/.exec(tool)
   if (!match) return null
   const server = (match[1] ?? '').replace(/^claude_ai_/, '')
-  const name = (match[2] ?? '').toLowerCase().replace(/-/g, '_')
+  // `sendEmail` and `send-email` read as `send_email`.
+  const name = (match[2] ?? '').replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase().replace(/-/g, '_')
   if (HARMLESS.has(name)) return null
 
   if (name === 'execute_sql' || name === 'apply_migration') {

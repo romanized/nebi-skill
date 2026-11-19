@@ -71,6 +71,22 @@ const TABLE: readonly [string, Record<string, unknown>, string | null][] = [
   ['Bash', { command: 'cd .. && rm -rf node_modules' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf /Users/nebi/node_modules' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf node_modules src' }, 'rm-recursive'],
+  // A `<<` that starts no heredoc, or one that never ends, hides nothing after it (F01)
+  ['Bash', { command: 'echo $((1 << n))\nrm -rf ~/Documents' }, 'rm-recursive'],
+  ['Bash', { command: 'x=$((1<<n))\ngit push --force origin main' }, 'git-push-force'],
+  ['Bash', { command: '# note <<EOF\nrm -rf ~/Documents' }, 'rm-recursive'],
+  ['Bash', { command: "echo 'a <<EOF'\nrm -rf ~/Documents" }, 'rm-recursive'],
+  ['Bash', { command: 'echo "a <<EOF"\nrm -rf ~/Documents' }, 'rm-recursive'],
+  ['Bash', { command: 'git commit -m "first\n<<EOF\nlast"\nrm -rf ~/Documents\nEOF' }, 'rm-recursive'],
+  ['Bash', { command: 'cat <<<EOF\nrm -rf ~/Documents' }, 'rm-recursive'],
+  ['Bash', { command: 'cat <<EOF\nrm -rf ~/Documents' }, 'rm-recursive'],
+  ['Bash', { command: 'cat <<EOF\nhello\nEOF\nrm -rf ~/Documents' }, 'rm-recursive'],
+  // Every refspec and git's own options with a value (F12)
+  ['Bash', { command: 'git push origin main :secret-branch' }, 'git-push-delete'],
+  ['Bash', { command: 'git push origin main +other' }, 'git-push-force'],
+  ['Bash', { command: 'git --git-dir /repo/.git push --force' }, 'git-push-force'],
+  ['Bash', { command: 'git --git-dir=/repo/.git push --force' }, 'git-push-force'],
+  ['Bash', { command: 'git --work-tree /repo push --force' }, 'git-push-force'],
   // Bash that runs
   ['Bash', { command: 'rm -rf /tmp/x' }, null],
   ['Bash', { command: 'rm -rf /private/tmp/claude-501/scratch' }, null],
@@ -109,6 +125,9 @@ const TABLE: readonly [string, Record<string, unknown>, string | null][] = [
   ['Bash', { command: 'git stash pop' }, null],
   ['Bash', { command: 'git checkout -b feature' }, null],
   ['Bash', { command: 'git commit -m "rm -rf old; drop table cleanup"' }, null],
+  ['Bash', { command: 'git push origin main feature' }, null],
+  ['Bash', { command: 'cat <<-EOF\n\trm -rf ~/old\n\tEOF' }, null],
+  ['Bash', { command: "git commit -F - <<'EOF'\nrm -rf ~/old is gone\nEOF\ngit status" }, null],
   // MCP tools
   ['mcp__claude_ai_Gmail__search_threads', { query: 'from:me' }, null],
   ['mcp__claude_ai_Gmail__send_message', { to: 'a@b.c', subject: 'Hi' }, 'mcp:Gmail:send'],
@@ -137,6 +156,11 @@ const TABLE: readonly [string, Record<string, unknown>, string | null][] = [
   ['mcp__claude_ai_Supabase__merge_branch', { branch_id: 'b1' }, 'mcp:Supabase:merge'],
   ['mcp__claude_ai_Supabase__reset_branch', { branch_id: 'b1' }, 'mcp:Supabase:reset'],
   ['mcp__claude_ai_Supabase__list_tables', {}, null],
+  // camelCase names read as their snake_case form (F12)
+  ['mcp__gmail__sendEmail', { to: 'a@b.c' }, 'mcp:gmail:send'],
+  ['mcp__github__deleteRepo', { repo: 'x' }, 'mcp:github:delete'],
+  ['mcp__github__getStatus', {}, null],
+  ['mcp__claude_ai_Higgsfield__removeBackground', { image: 'i1' }, null],
   // Tools Red Button never holds
   ['Read', { file_path: '/etc/hosts' }, null],
   ['Edit', { file_path: 'a.ts', old_string: 'a', new_string: 'b' }, null],
@@ -305,6 +329,10 @@ describe('nebi-red-button', () => {
       'cd repo && S=/tmp/a; cd "$S" && rm -rf src',
       'rm -rf /tmp/x/$v',
       'rm -rf /private/tmp/job/scratchpad/$v/../../../x',
+      // A `..` after the name climbs out of the real temp folder, or reaches / when it is empty (F12).
+      'd=$(mktemp -d); rm -rf "$d/foo/../../../C"',
+      'd=$(mktemp -d); rm -rf "$d/foo/.."',
+      'cd repo && S=/tmp/a; rm -rf $S/x/../../usr',
     ]) {
       expect(classifyCall('Bash', { command }, CWD, TMPDIR)?.rule, command).toBe('rm-recursive')
     }

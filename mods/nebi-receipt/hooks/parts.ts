@@ -31,9 +31,11 @@ export function clean(text: string, max: number): string {
 // had: the word must stand alone, so a path such as tests/beacon.test.ts is
 // no check. Two changes from that port: `node --test`, the runner this repo's
 // own tests use, counts; and the words are read per part of the command with
-// any `cd` part left out, so `cd tests && ls` is no check.
+// any `cd` part left out, so `cd tests && ls` is no check. Also counted: a node
+// script named for a check (`node scripts/verify.mjs`), a `--verify` flag (not
+// `--no-verify`), `ruff check` and `mypy`.
 const CHECK =
-  /(?<![\w./-])(test|tests|vitest|jest|pytest|tsc|lint|eslint|validate|build|verify)(?![\w./-])|cargo test|go test|plugin test|\bnode\b[^|;&\n]*\s--test(?![\w-])/
+  /(?<![\w./-])(test|tests|vitest|jest|pytest|tsc|lint|eslint|validate|build|verify|mypy)(?![\w./-])|cargo test|go test|plugin test|ruff check|\s--verify(?![\w-])|\bnode\b[^|;&\n]*\s--test(?![\w-])|\bnode\b[^|;&\n]*\s(?:\S*\/)?(?:test|tests|lint|validate|build|verify)\.[cm]?[jt]s(?![\w.-])/
 
 export const EDIT_TOOLS: ReadonlySet<string> = new Set(['Edit', 'MultiEdit', 'Write', 'NotebookEdit'])
 

@@ -81,6 +81,15 @@ const COMMANDS: readonly [string, boolean][] = [
   ['echo "claude-nebi ~/x"', false],
   ['git commit -m "open -a Ghostty"', false],
   ['screen -dmS paint claude', false],
+  // A `<<` that starts no heredoc, or one that never ends, hides nothing after it (F01)
+  ['echo $((1 << n))\nopen -a Ghostty', true],
+  ['echo $((1 << n))\nclaude-nebi', true],
+  ['# note <<EOF\nopen -a Ghostty', true],
+  ["echo 'a <<EOF'\nopen -a Ghostty", true],
+  ['echo "a <<EOF"\nclaude-nebi', true],
+  ['cat <<<EOF\nopen -a Ghostty', true],
+  ['cat <<EOF\nopen -a Ghostty', true],
+  ['cat <<EOF\nhello\nEOF\nclaude-nebi', true],
 ]
 
 // [prompt text, whether it asks for a terminal, tab, window, split or session]

@@ -38,14 +38,21 @@ function upstreamRepo(name) {
 }
 
 function run(label, register, ...extra) {
+  const env = typeof extra[0] === 'object' ? extra.shift() : {};
   const file = path.join(temp, `register-${label}.json`);
   fs.writeFileSync(file, JSON.stringify(register));
   const result = spawnSync(process.execPath, [script, '--register', file, '--json', ...extra], {
-    encoding: 'utf8', env: { ...process.env, NEBI_UPSTREAM_CACHE: path.join(temp, 'cache') },
+    encoding: 'utf8', env: { ...process.env, NEBI_UPSTREAM_CACHE: path.join(temp, 'cache'), ...env },
   });
   assert.equal(result.status, 0, result.stderr);
   return JSON.parse(result.stdout);
 }
+
+// Project locks may name only GitHub or http(s) sources; git's own url rewrite points a
+// GitHub name at the local test repo, so nothing reaches the network.
+const githubAlias = (url, name) => ({
+  GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: `url.${url}.insteadOf`, GIT_CONFIG_VALUE_0: `https://github.com/${name}.git`,
+});
 
 test('local tree hash equals the git tree id of the same folder', () => {
   const { url } = upstreamRepo('hash');
@@ -128,14 +135,34 @@ test('project locks under lockRoots are checked and one-client installs are flag
   fs.symlinkSync('../../.agents/skills/beta', path.join(project, '.claude/skills/beta'), 'junction');
   fs.cpSync(path.join(fileURLToPath(up.url), 'skills/alpha'), path.join(project, '.agents/skills/alpha'), { recursive: true });
   fs.writeFileSync(path.join(project, 'skills-lock.json'), JSON.stringify({ skills: {
-    alpha: { source: up.url, skillPath: 'skills/alpha/SKILL.md' },
-    beta: { source: up.url, skillPath: 'skills/beta/SKILL.md', ref: up.pin },
+    alpha: { source: 'test/projects', skillPath: 'skills/alpha/SKILL.md' },
+    beta: { source: 'test/projects', skillPath: 'skills/beta/SKILL.md', ref: up.pin },
   } }));
-  const out = run('projects', { lockRoots: [root], sources: [] });
+  const out = run('projects', { lockRoots: [root], sources: [] }, githubAlias(up.url, 'test/projects'));
   assert.equal(out.projects.locks, 1);
   const rows = Object.fromEntries(out.projects.rows.map((r) => [r.item, r.status]));
   assert.match(rows.alpha, /^unpinned; matches upstream HEAD; Codex only/);
   assert.match(rows.beta, /^current; matches pin$/);
+});
+
+test('a project lock cannot pass git an option, use a local transport or name a path (F03)', () => {
+  const up = upstreamRepo('hostile');
+  const root = path.join(temp, 'hostile-root');
+  const project = path.join(root, 'evil');
+  const marker = path.join(temp, 'hostile-PWNED');
+  fs.mkdirSync(path.join(project, '.agents/skills'), { recursive: true });
+  fs.writeFileSync(path.join(project, 'skills-lock.json'), JSON.stringify({ skills: {
+    demo: { source: 'test/hostile', skillPath: 'skills/alpha/SKILL.md', ref: `--upload-pack=touch ${marker};git-upload-pack` },
+    local: { source: up.url, skillPath: 'skills/beta/SKILL.md', ref: up.pin },
+    '../../../../etc': { source: 'test/hostile', ref: up.pin },
+  } }));
+  const out = run('hostile', { lockRoots: [root], sources: [] }, githubAlias(up.url, 'test/hostile'));
+  const rows = Object.fromEntries(out.projects.rows.map((r) => [r.item, r.status]));
+  assert.match(rows.demo, /^pin refused: not a commit or ref name/);
+  assert.equal(fs.existsSync(marker), false, 'the ref ran as --upload-pack');
+  assert.match(rows.local, /^local source file:/);
+  assert.equal(fs.existsSync(path.join(temp, 'cache', up.url.replace(/[^A-Za-z0-9._-]+/g, '__'))), false, 'a file:// project source was cloned');
+  assert.equal(rows['../../../../etc'], 'refused: skill name has a path separator or ..');
 });
 
 test('offline mode checks installs only and never touches the network', () => {

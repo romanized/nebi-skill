@@ -1,7 +1,9 @@
 // Nebi Model Lock: when the person names a model for sub-agents in a prompt
 // ("sonnet scouts", "a fable checker", "all agents on haiku"), every later
 // spawn of that role gets it on the Agent call's own `model` parameter, so an
-// agent type's default model can no longer silently win. While a lock holds,
+// agent type's default model can no longer silently win. A later prompt adds to
+// the lock; one for the whole fleet ("all agents on opus") replaces the role
+// locks before it, so older "sonnet scouts" no longer wins. While a lock holds,
 // one footer label says so (`🔒 sonnet scouts`); /lock prints it in full.
 //
 // No-mod fallback: CLAUDE.md §0, which tells the lead to pass the named model
@@ -11,7 +13,7 @@ import { atom, read, update } from 'claude-code'
 import type { AgentSpawnInput, EngineInterface, Register } from 'claude-code'
 
 import type { Lock, LockModel } from '../types'
-import { describeLock, hasLock, lockLabel, parseLock, roleOf } from './parse'
+import { describeLock, hasLock, lockAfter, lockLabel, parseLock, roleOf } from './parse'
 
 const NAME = 'nebi-model-lock'
 
@@ -73,8 +75,7 @@ export const register: Register = on => {
     const isPersons = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
     if (!isPersons || (await isKilled($))) return next(e)
 
-    const named = parseLock(e.text)
-    if (hasLock(named)) await setLock($, current => ({ ...current, ...named }))
+    if (hasLock(parseLock(e.text))) await setLock($, current => lockAfter(current, e.text))
 
     return next(e)
   })
@@ -98,7 +99,7 @@ export const register: Register = on => {
     if (args) {
       const named = parseLock(args)
       if (!hasLock(named)) return { text: `No role and model found in "${clean(args).slice(0, 60)}". ${USAGE}` }
-      await setLock($, current => ({ ...current, ...named }))
+      await setLock($, current => lockAfter(current, args))
     }
 
     const current = await read($, lock)

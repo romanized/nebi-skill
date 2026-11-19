@@ -25,6 +25,11 @@ const MODEL_FOR_ROLE = new RegExp(
 )
 // "a sonnet for my agents" is a poem, not a lock.
 const ARTICLE_BEFORE = /\b(?:a|an|the|this|that|my|your|our)\s+$/
+// "all agents on opus", "opus for every agent": the whole fleet, which drops the older
+// role locks. "opus for everyone else", "the other agents" or "the rest" keep them.
+const WHOLE_BEFORE = /\b(?:all|every)(?:\s+(?:the|my|our))?\s+$/
+const WHOLE_INSIDE = /\b(?:all|every)\b/
+const NOT_WHOLE = /\b(?:other|others|else|rest)\b/
 const NEGATED_BEFORE = /\b(?:don't|dont|do not|never|not|no|avoid|stop|without)\b(?:\s+\S+){0,2}\s*$/
 // Talk about models, not an instruction: comparisons, prices, questions.
 const SIDE_TALK = /\b(?:cheap\w*|cost\w*|pric\w*|than|vs|versus|compar\w*|expensive)\b/
@@ -71,9 +76,25 @@ function instructions(said: string): string[] {
  * when the text binds none (a bare "use haiku", "the sonnet poem").
  */
 export function parseLock(text: string): Lock {
+  return bindings(text).lock
+}
+
+/**
+ * The lock once `text` is said on top of `current`: its bindings win, and one for the
+ * whole fleet ("all agents on opus") drops the older role locks, so scouts follow it too.
+ */
+export function lockAfter(current: Lock, text: string): Lock {
+  const { lock, isWhole } = bindings(text)
+
+  return { ...(isWhole ? {} : current), ...lock }
+}
+
+/** What `text` binds, later mentions winning, and whether a whole-fleet binding dropped the roles before it. */
+function bindings(text: string): { lock: Lock; isWhole: boolean } {
   const result: Lock = {}
+  let isWhole = false
   for (const clause of instructions(normalize(text))) {
-    const found: { at: number; role: LockRole; model: LockModel }[] = []
+    const found: { at: number; role: LockRole; model: LockModel; isWhole: boolean }[] = []
     const take = (pattern: RegExp, modelAt: 1 | 2, isGuarded: boolean) => {
       for (const match of clause.matchAll(pattern)) {
         const at = match.index ?? 0
@@ -82,16 +103,25 @@ export function parseLock(text: string): Lock {
         if (isGuarded && ARTICLE_BEFORE.test(before)) continue
         const model = match[modelAt] as LockModel | undefined
         const word = match[modelAt === 1 ? 2 : 1]
-        if (model && word) found.push({ at, role: roleOfWord(word), model })
+        if (!model || !word) continue
+        const role = roleOfWord(word)
+        const isAll = WHOLE_BEFORE.test(before) || (pattern === MODEL_FOR_ROLE && WHOLE_INSIDE.test(match[0]))
+        found.push({ at, role, model, isWhole: role === 'all' && isAll && !NOT_WHOLE.test(clause.slice(at)) })
       }
     }
     take(MODEL_ROLE, 1, false)
     take(ROLE_MODEL, 2, false)
     take(MODEL_FOR_ROLE, 1, true)
-    for (const { role, model } of found.sort((a, b) => a.at - b.at)) result[role] = model
+    for (const binding of found.sort((a, b) => a.at - b.at)) {
+      if (binding.isWhole) {
+        for (const role of ROLES) delete result[role]
+        isWhole = true
+      }
+      result[binding.role] = binding.model
+    }
   }
 
-  return result
+  return { lock: result, isWhole }
 }
 
 /** The role an agent type belongs to; a plugin's `plugin:name` reads by its name. */

@@ -28,6 +28,15 @@ const CHECKS: readonly [string, boolean][] = [
   ['git status', false],
   ['node scripts/check-pack.mjs', false],
   ['npm install vitest-dom', false],
+  // Checks the first port missed (F12)
+  ['node scripts/verify.mjs', true],
+  ['node deploy.mjs --verify', true],
+  ['ruff check .', true],
+  ['mypy src/', true],
+  ['git commit --no-verify -m x', false],
+  ['cat scripts/verify.mjs', false],
+  ['ruff format .', false],
+  ['cat mypy.ini', false],
 ]
 
 // [command, the label the receipt shows]

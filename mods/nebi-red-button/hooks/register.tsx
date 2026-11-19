@@ -8,6 +8,10 @@
 // pane opens only when Nebi types a bare `/redbutton` (CONTRACT, Panes); while
 // that pane is up it carries the hold and the band yields to it.
 //
+// NEBI_VERIFY=1 marks a verification session (nebi-mod-verify's paint check,
+// with nobody at the terminal): a hold still draws and waits, but no push goes
+// out and no hold file is written, so neither Nebi nor other sessions see it.
+//
 // Holding: a hook has a budget of its own time, but a `$` call in flight is
 // free, so the hold waits on `$.process.run(['sleep', '0.25'])` until a button
 // writes the choice into `$.state` (the pattern Blast Radius uses).
@@ -41,6 +45,8 @@ const choices = new Map<string, RedButtonChoice>()
 let heldId: string | null = null
 // CONTRACT kill switch, read once per module load: NEBI_MODS_OFF=all or a list naming this mod.
 let isKilled: boolean | undefined
+// NEBI_VERIFY=1, read once per module load: a verification session.
+let isVerifyCached: boolean | undefined
 // userConfig `push`: one phone push per hold.
 let isPushOn = true
 
@@ -55,7 +61,7 @@ export const register: Register = (on, options) => {
     // A hold left in state by a module that reloaded mid-hold is dead: nothing waits on it.
     if (!isBusy) {
       await update($, hold, () => null)
-      const file = await holdPath($).catch(() => null)
+      const file = (await isVerify($)) ? null : await holdPath($).catch(() => null)
       if (file !== null) await $.process.run(['rm', '-f', file]).catch(() => undefined)
     }
     await $.command.register({
@@ -174,9 +180,10 @@ export async function holdCall($: EngineInterface, risk: Risk, signal: AbortSign
     const change = risk.probe ? await probe($, risk.probe) : []
     // The hold draws its band row and nothing more: it never opens a pane.
     await update($, hold, () => ({ id, tool: risk.tool, what: risk.what, rule: risk.rule, ruleLabel: risk.label, change, choice: null }))
-    file = await writeHoldFile($, risk)
+    const isVerifying = await isVerify($)
+    file = isVerifying ? null : await writeHoldFile($, risk)
     // One push per hold, over Remote Control; the engine skips it while the person is at the terminal.
-    if (isPushOn) void $.tool.call({ tool: 'PushNotification', message: clean(`Claude needs approval: ${risk.short}`, 190), status: 'proactive' }).catch(() => undefined)
+    if (isPushOn && !isVerifying) void $.tool.call({ tool: 'PushNotification', message: clean(`Claude needs approval: ${risk.short}`, 190), status: 'proactive' }).catch(() => undefined)
 
     const startedAt = await $.clock.now()
     for (;;) {
@@ -234,6 +241,13 @@ async function killed($: EngineInterface): Promise<boolean> {
   }
 
   return isKilled
+}
+
+// NEBI_VERIFY=1: a verification session that must never reach Nebi or his other sessions.
+async function isVerify($: EngineInterface): Promise<boolean> {
+  if (isVerifyCached === undefined) isVerifyCached = (await $.env.get('NEBI_VERIFY').catch(() => undefined)) === '1'
+
+  return isVerifyCached
 }
 
 /** `<HOME>/.claude/nebi/beacons/<sessionId>.hold.json`, or null when HOME is unknown. */

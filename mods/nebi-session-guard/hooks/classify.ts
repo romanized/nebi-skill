@@ -20,7 +20,8 @@ const SHELLS = new Set(['bash', 'sh', 'zsh', 'dash', 'ksh'])
 const RUNTIMES = new Set(['node', 'bun', 'deno'])
 // Words that can come before the real command without changing what it does.
 const PREFIXES = new Set(['command', 'exec', 'env', 'nohup', 'time', 'then', 'do', 'else', '!', 'xargs'])
-const HEREDOC = /<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/
+// Matched where `heredocAt` finds a `<<` the shell reads as an operator.
+const HEREDOC = /^<<(-?)\s*(['"]?)([A-Za-z_][A-Za-z0-9_]*)\2/
 const ASSIGNMENT = /^[A-Za-z_][A-Za-z0-9_]*=/
 const SHORT_FLAGS = /^-[A-Za-z]+$/
 const REDIRECT_ALONE = /^(?:\d*|&)(?:>>?|<<?<?|>&|<&|>\|)$/
@@ -142,29 +143,66 @@ function commandName(segment: string): string {
   return baseName((commandWords(segment)[0] ?? '').replace(/^\\/, ''))
 }
 
-/** The script with heredoc bodies taken out, and each body with the command that reads it. */
+/**
+ * The script with heredoc bodies taken out, and each body with the command that reads it.
+ * A heredoc whose end line never comes is not taken out: its lines stay script.
+ */
 function splitHeredocs(script: string): { script: string; bodies: { cmd: string; text: string }[] } {
   const lines = script.split('\n')
   const kept: string[] = []
   const bodies: { cmd: string; text: string }[] = []
+  let quote: string | null = null
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i] ?? ''
     kept.push(line)
-    const match = HEREDOC.exec(line)
-    if (!match) continue
-    const isIndented = match[1] === '-'
-    const end = match[3] ?? ''
-    const head = splitCommands(line.slice(0, match.index)).pop() ?? ''
-    const body: string[] = []
-    for (i += 1; i < lines.length; i += 1) {
-      const next = lines[i] ?? ''
-      if ((isIndented ? next.trim() : next) === end) break
-      body.push(next)
-    }
-    bodies.push({ cmd: commandName(head), text: body.join('\n') })
+    const scan = heredocAt(line, quote)
+    quote = scan.quote
+    const found = scan.heredoc
+    if (found === null) continue
+    const close = lines.findIndex((next, j) => j > i && (found.isIndented ? next.trim() : next) === found.end)
+    if (close === -1) continue
+    const head = splitCommands(line.slice(0, found.at)).pop() ?? ''
+    bodies.push({ cmd: commandName(head), text: lines.slice(i + 1, close).join('\n') })
+    i = close
   }
 
   return { script: kept.join('\n'), bodies }
+}
+
+/**
+ * The first `<<` on a line that the shell reads as a heredoc, and the quote still open
+ * at the line's end. A here-string (`<<<`) is none, and neither is a `<<` inside quotes,
+ * after a `#` comment or in arithmetic (`$((1 << n))`). `quote` is the one the line starts in.
+ */
+function heredocAt(line: string, quote: string | null): { heredoc: { at: number; isIndented: boolean; end: string } | null; quote: string | null } {
+  let open = quote
+  let arithmetic = 0 // parentheses open inside (( … ))
+  for (let i = 0; i < line.length; i += 1) {
+    const c = line[i] ?? ''
+    if (c === '\\' && open !== "'") {
+      i += 1
+    } else if (open !== null) {
+      if (c === open) open = null
+    } else if (c === '"' || c === "'") {
+      open = c
+    } else if (arithmetic > 0) {
+      if (c === '(') arithmetic += 1
+      if (c === ')') arithmetic -= 1
+    } else if (c === '(' && line[i + 1] === '(') {
+      arithmetic = 2
+      i += 1
+    } else if (c === '#' && (i === 0 || /[\s;&|()]/.test(line[i - 1] ?? ''))) {
+      break
+    } else if (line.startsWith('<<<', i)) {
+      i += 2
+    } else if (line.startsWith('<<', i)) {
+      const match = HEREDOC.exec(line.slice(i))
+      if (match) return { heredoc: { at: i, isIndented: match[1] === '-', end: match[3] ?? '' }, quote: null }
+      i += 1
+    }
+  }
+
+  return { heredoc: null, quote: open }
 }
 
 /** The script cut at `&&`, `||`, `;`, `|`, `&`, newlines and parentheses outside quotes. */

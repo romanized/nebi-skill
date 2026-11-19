@@ -38,6 +38,45 @@ test('allows the specific kills sessions used safely today', () => {
   assert.match(check("cat <<EOF > notes.txt\nhi\nEOF\npkill -f node"), /too broad/);
 });
 
+test('finds a pkill that quotes, escapes, paths or substitutions used to hide (F02)', () => {
+  for (const cmd of [
+    `echo "don't" && pkill -f cat && echo "can't"`,
+    'echo "`pkill -f cat`"',
+    '`pkill -f cat`',
+    'echo "$(pkill -f cat)"',
+    '/usr/bin/pkill -f cat',
+    '\\pkill -f cat',
+    'command pkill -f cat',
+    'timeout 5 pkill -f cat',
+    "bash -c 'pkill -f cat'",
+    'eval "pkill -f cat"',
+    'bash <<EOF\npkill -f cat\nEOF',
+    'echo $((1 << 2))\npkill -f cat',
+    'cat <<EOF\npkill -f cat',
+    'cat <<< "x"; pkill -f cat',
+  ]) assert.match(check(cmd) ?? '', /Blocked pkill: .*too broad/, cmd);
+  for (const cmd of ['kill `pgrep -f cat`', 'kill $(pgrep -f cat)', 'kill -9 "`pgrep -f cat`"']) {
+    assert.match(check(cmd) ?? '', /Blocked pgrep: .*too broad/, cmd);
+  }
+  assert.match(check('pkill -f "my-specific-server.mjs" -n 2>&1'), /"-n" comes after the pattern/);
+});
+
+test('redirections are not patterns (F02)', () => {
+  for (const cmd of [
+    'pkill -f "my-specific-server.mjs" 2>&1',
+    'pkill -f "my-specific-server.mjs" > /dev/null',
+    'pkill -f "my-specific-server.mjs" 2>/dev/null',
+    'pkill -f "my-specific-server.mjs" >/dev/null 2>&1',
+    'pkill -f "my-specific-server.mjs" &>/dev/null',
+    'pkill -f "my-specific-server.mjs" || true',
+    'pkill -f "my-specific-server.mjs"',
+    'kill $(pgrep -f "my-specific-server.mjs") 2>/dev/null',
+    "echo 'pkill -f cat' > notes.txt",
+    'cat <<< "pkill -f cat"',
+    '# pkill -f cat\nls',
+  ]) assert.equal(check(cmd), null, cmd);
+});
+
 test('hook denies through the PreToolUse JSON contract and passes other tools', () => {
   const run = (input) => spawnSync('node', [HOOK], { input: JSON.stringify(input), encoding: 'utf8' });
   const denied = run({ tool_name: 'Bash', tool_input: { command: 'pkill -f "recv.py" -n -o' } });

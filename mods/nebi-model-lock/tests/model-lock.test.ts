@@ -1,7 +1,7 @@
 import { describe, expect, mock, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { describeLock, lockLabel, parseLock, roleOf } from '../hooks/parse'
+import { describeLock, lockAfter, lockLabel, parseLock, roleOf } from '../hooks/parse'
 
 const CASES: [string, Record<string, string>][] = [
   ['use sonnet for scouts', { scout: 'sonnet' }],
@@ -105,6 +105,18 @@ describe('nebi-model-lock', () => {
     expect(describeLock({ scout: 'sonnet', checker: 'fable' })).toBe('scouts→sonnet · checker→fable')
   })
 
+  test('a lock for all agents replaces the older role locks; one for the rest adds to them (F12)', () => {
+    const scouts = lockAfter({}, 'scouts on sonnet')
+    expect(scouts).toEqual({ scout: 'sonnet' })
+    expect(lockAfter(scouts, 'all agents on opus')).toEqual({ all: 'opus' })
+    expect(lockAfter({ scout: 'sonnet', checker: 'fable' }, 'use opus for every agent')).toEqual({ all: 'opus' })
+    expect(lockAfter(scouts, 'all agents on opus, haiku scouts')).toEqual({ all: 'opus', scout: 'haiku' })
+    expect(lockAfter({}, 'sonnet scouts, then all agents on opus')).toEqual({ all: 'opus' })
+    expect(lockAfter(scouts, 'use opus sub-agents for the rest')).toEqual({ scout: 'sonnet', all: 'opus' })
+    expect(lockAfter(scouts, 'opus for everyone else')).toEqual({ scout: 'sonnet', all: 'opus' })
+    expect(lockAfter(scouts, 'fable checker')).toEqual({ scout: 'sonnet', checker: 'fable' })
+  })
+
   test('the footer label is one short phrase of at most 20 cells', () => {
     expect(lockLabel({})).toBe('')
     expect(lockLabel({ scout: 'sonnet' })).toBe('🔒 sonnet scouts')
@@ -167,6 +179,18 @@ describe('nebi-model-lock', () => {
 
       // Setting, holding and clearing never raised a toast.
       expect(toasts).toEqual([])
+    })
+
+    test(`after "scouts on sonnet", "all agents on opus" moves nebi-scout to opus, on ${surface}`, async ($, on) => {
+      const { spawned } = engine(on)
+      await $.session.start({ surface, isInteractive: true, cwd: '/work' } as any)
+      await $.prompt.submit(say('scouts on sonnet'))
+      await $.agent.spawn({ ...SPAWN } as any)
+      await $.prompt.submit(say('all agents on opus'))
+      await $.agent.spawn({ ...SPAWN } as any)
+      await $.agent.spawn({ ...SPAWN, subagentType: 'nebi-checker' } as any)
+      expect(spawned).toEqual(['sonnet', 'opus', 'opus'])
+      expect((await $.command.run({ command: 'lock', args: '' } as any)).text).toBe('Model Lock: agents→opus')
     })
 
     test(`the lock is one footer label while it holds, and no hint tail, on ${surface}`, async ($, on) => {

@@ -52,6 +52,13 @@ function git(cwd, ...gitArgs) {
 }
 
 const isRemote = (repo) => /^[\w.-]+\/[\w.-]+$/.test(repo) || /^(?:https?|file):\/\//.test(repo);
+// A project's skills-lock.json is the project's text, not Nebi's: its sources may only be
+// GitHub `owner/repo` or http(s), never file:// or another transport that runs locally.
+const isProjectRemote = (repo) => /^[\w.-]+\/[\w.-]+$/.test(repo) || /^https?:\/\/[^\s]+$/.test(repo);
+// A pin git can only read as a commit or ref name: never an option (`--upload-pack=…`).
+const SAFE_REF = /^(?!.*\.\.)[A-Za-z0-9_][\w./-]{0,199}$/;
+// A project lock's skill name becomes a folder name: no separators and no `..`.
+const isSafeName = (name) => name !== '' && !/[/\\]|\.\./.test(name);
 const repoUrl = (repo) => (/^[\w.-]+\/[\w.-]+$/.test(repo) ? `https://github.com/${repo}.git` : repo);
 
 /** Blobless bare cache per repo: trees are enough to compare skill folders. */
@@ -59,16 +66,17 @@ function cacheFor(repo) {
   const dir = path.join(cacheRoot, repo.replace(/[^A-Za-z0-9._-]+/g, '__'));
   if (!fs.existsSync(path.join(dir, 'HEAD'))) {
     fs.mkdirSync(cacheRoot, { recursive: true });
-    git(cacheRoot, 'clone', '-q', '--bare', '--depth=1', '--filter=blob:none', repoUrl(repo), dir);
+    git(cacheRoot, 'clone', '-q', '--bare', '--depth=1', '--filter=blob:none', '--', repoUrl(repo), dir);
   }
   return dir;
 }
 
 function fetchCommit(dir, ref) {
+  if (!SAFE_REF.test(ref)) throw new Error(`refused ref ${JSON.stringify(ref.slice(0, 40))}`);
   if (ref !== 'HEAD') {
     try { git(dir, 'cat-file', '-e', `${ref}^{commit}`); return ref; } catch { /* not cached yet */ }
   }
-  git(dir, 'fetch', '-q', '--depth=1', '--filter=blob:none', 'origin', ref);
+  git(dir, 'fetch', '-q', '--depth=1', '--filter=blob:none', '--', 'origin', ref);
   return git(dir, 'rev-parse', 'FETCH_HEAD').trim();
 }
 
@@ -178,7 +186,7 @@ function checkSkill(repo, skill, sourcePin, label) {
   let pinError = null;
   const ref = skill.pin ?? sourcePin;
   if (repo?.dir && ref) {
-    try { pin = fetchCommit(repo.dir, ref); } catch { pinError = `pin ${ref.slice(0, 12)} not fetchable upstream`; }
+    try { pin = fetchCommit(repo.dir, ref); } catch { pinError = SAFE_REF.test(ref) ? `pin ${ref.slice(0, 12)} not fetchable upstream` : 'pin refused: not a commit or ref name'; }
   }
   const pinTree = skill.tree ?? (pin ? treeAt(repo.dir, pin, skill.path) : null);
   const headTree = repo?.head ? treeAt(repo.dir, repo.head, skill.path) : null;
@@ -255,6 +263,11 @@ function checkProjects(register) {
   for (const file of locks) {
     const project = path.dirname(file);
     for (const [name, entry] of Object.entries(readLock(file)?.skills ?? {})) {
+      const source = entry.source ?? '?';
+      if (!isSafeName(name)) {
+        rows.push({ project: tilde(project), item: name, source, status: 'refused: skill name has a path separator or ..' });
+        continue;
+      }
       const places = ['.agents/skills', '.claude/skills'].map((base) => path.join(project, base, name));
       const skill = {
         name, path: path.posix.dirname(entry.skillPath ?? `${name}/SKILL.md`).replace(/^\.$/, ''),
@@ -262,8 +275,7 @@ function checkProjects(register) {
       };
       const [codex, claude] = places.map((p) => fs.existsSync(p));
       const reach = codex && claude ? '' : codex ? '; Codex only (no .claude/skills link)' : claude ? '; Claude Code only' : '';
-      const source = entry.source ?? '?';
-      const status = isRemote(source) ? checkSkill(openRepo(source), skill, null, 'pin') : `local source ${source}; ${installState(skill)}`;
+      const status = isProjectRemote(source) ? checkSkill(openRepo(source), skill, null, 'pin') : `local source ${source}; ${installState(skill)}`;
       // The project column already names the folder; keep only the client-relative path.
       rows.push({ project: tilde(project), item: name, source, status: `${status}${reach}`.replaceAll(`${tilde(project)}/`, '') });
     }
