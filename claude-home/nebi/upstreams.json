@@ -510,11 +510,27 @@
             "~/.claude/skills/gestures",
             "~/Documents/GitHub/MeiMei-website/.claude/skills/gestures"
           ]
+        },
+        {
+          "name": "ask-emil",
+          "path": "skills/ask-emil",
+          "tree": "7da3d47af274c796c2f9f599db70619e1a3a734f",
+          "installed": [
+            "~/.claude/skills/ask-emil"
+          ]
+        },
+        {
+          "name": "learn-taste",
+          "path": "skills/learn-taste",
+          "tree": "4d26b3fcff1c91b4fa82709839ca2f7f3e479c93",
+          "installed": [
+            "~/.claude/skills/learn-taste"
+          ]
         }
       ],
-      "pin": "715c1807e08c497cfd1dc4feb450a2a3300ef2a9",
+      "pin": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add emilkowalski/skills#<SHA> -s \"*\" -g -a claude-code -y",
-      "decision": "2026-11-07 owner named the whole set (MeiMei shop rebuild, \"be broad with them\"): all 17 skills installed global for Claude Code at c8a7962. MIT, Markdown only, no scripts. 2026-11-11 (MeiMei finish-the-site brief: \"all of it, for every motion decision\"): updated to 715c180, global and the MeiMei-website project copy. The diff from c8a7962 is one new skill, gestures (Markdown only), and a README line.",
+      "decision": "2026-11-07 owner named the whole set (MeiMei shop rebuild, \"be broad with them\"): all 17 skills installed global for Claude Code at c8a7962. MIT, Markdown only, no scripts. 2026-11-11 (MeiMei finish-the-site brief: \"all of it, for every motion decision\"): updated to 715c180, global and the MeiMei-website project copy. The diff from c8a7962 is one new skill, gestures (Markdown only), and a README line. 2026-11-19 (Printvisie v3 build, lead's skill-install brief): updated all 18 global copies to 64eb3de and added ask-emil and learn-taste (both disable-model-invocation, Markdown only). The diff from 715c180 is Markdown only: API fixes, cross-skill contradictions removed, shorter descriptions. Global copies matched 715c180 exactly before the update (no local edits); backup in that session's scratchpad. The MeiMei-website project copy of gestures was left at 715c180 (outside this brief).",
       "why": "Motion and interaction polish for landing pages and apps."
     },
     {
@@ -1035,7 +1051,9 @@
           "name": "web-design-guidelines",
           "path": "skills/web-design-guidelines",
           "tree": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
-          "installed": []
+          "installed": [
+            "~/.claude/skills/web-design-guidelines"
+          ]
         },
         {
           "name": "vercel-react-best-practices",
@@ -1043,13 +1061,62 @@
           "installed": [
             "~/.agents/skills/vercel-react-best-practices",
             "~/.claude/skills/vercel-react-best-practices"
+          ],
+          "tree": "343db72180d05814949fef7d46be96b5c6ee86b3"
+        },
+        {
+          "name": "vercel-composition-patterns",
+          "path": "skills/composition-patterns",
+          "tree": "bf90d0a4b83ea054653350f9c67f6de235d3a368",
+          "installed": [
+            "~/.claude/skills/vercel-composition-patterns"
+          ]
+        },
+        {
+          "name": "vercel-react-view-transitions",
+          "path": "skills/react-view-transitions",
+          "tree": "b490379f71eee822cf207605ce4fceaff6e10330",
+          "installed": [
+            "~/.claude/skills/vercel-react-view-transitions"
+          ]
+        },
+        {
+          "name": "writing-guidelines",
+          "path": "skills/writing-guidelines",
+          "tree": "17d954cadfb8dec50bf0c707c9e7634be9ae9fe8",
+          "installed": [
+            "~/.claude/skills/writing-guidelines"
+          ]
+        },
+        {
+          "name": "vercel-optimize",
+          "path": "skills/vercel-optimize",
+          "tree": "0901aa3667db7a6e5cc40b213327290bf6556373",
+          "installed": [
+            "~/.claude/skills/vercel-optimize"
+          ]
+        },
+        {
+          "name": "deploy-to-vercel",
+          "path": "skills/deploy-to-vercel",
+          "tree": "772d5a08126c09869c642416c824cfdeeb4104b3",
+          "installed": [
+            "~/.claude/skills/deploy-to-vercel"
+          ]
+        },
+        {
+          "name": "vercel-cli-with-tokens",
+          "path": "skills/vercel-cli-with-tokens",
+          "tree": "279c8760375cb6a47a4a8a312b652b0745c6d776",
+          "installed": [
+            "~/.claude/skills/vercel-cli-with-tokens"
           ]
         }
       ],
-      "pin": "063bee94c3f4df8453406c830b0a7df0f2860278",
-      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add vercel-labs/agent-skills#<SHA> --skill vercel-react-best-practices -g -a claude-code codex -y",
-      "decision": "installed: vercel-react-best-practices, global (React/Next sites)",
-      "notes": "web-design-guidelines is in the lock but not installed. Shortlist: vercel-react-view-transitions."
+      "pin": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add vercel-labs/agent-skills#<SHA> --skill vercel-react-best-practices -g -a claude-code codex -y ; DISABLE_TELEMETRY=1 npx skills@1.7.6 add vercel-labs/agent-skills#<SHA> --skill vercel-composition-patterns vercel-react-view-transitions web-design-guidelines writing-guidelines vercel-optimize deploy-to-vercel vercel-cli-with-tokens -g -a claude-code -y",
+      "decision": "installed: vercel-react-best-practices, global (React/Next sites). 2026-11-19 (Printvisie v3 build, lead's skill-install brief): re-pinned to 1a2c79d (the react-best-practices folder is unchanged from 063bee9, so no reinstall) and installed composition-patterns, react-view-transitions, web-design-guidelines, writing-guidelines, vercel-optimize, deploy-to-vercel and vercel-cli-with-tokens global for Claude Code. react-native-skills skipped: no native app.",
+      "notes": "MIT. Reviewed at 1a2c79d: web-design-guidelines and writing-guidelines are 39-line routers that WebFetch their rules at run time from the unpinned main branch of vercel-labs/web-interface-guidelines and vercel-labs/writing-guidelines (read 2026-11-19), so their rules can change without a pin change. writing-guidelines targets Vercel docs (meta.contentType, TL;DR openers), not marketing copy; its AI-tells and no-em-dash sections transfer. deploy-to-vercel is outward: its no-auth fallback runs `npx vercel@latest deploy --temporary` (a public temporary production URL) without asking, and it links projects after a team pick; never run it without the user's go. vercel-cli-with-tokens reads VERCEL_TOKEN from env or .env and documents a paid Stripe-projects Vercel plan. vercel-optimize ships 150+ Node scripts; they shell out only to the `vercel` CLI (metrics, usage, api) and `rg` via execFile, and need a linked, logged-in deployed project. The skills CLI omits each folder's metadata.json."
     },
     {
       "name": "vercel-labs/skills",
@@ -1468,7 +1535,7 @@
       ],
       "pin": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add Leonxlnx/taste-skill#<SHA> --skill design-taste-frontend -g -a claude-code -y",
-      "decision": "2026-11-05 owner named it for the strafe.games overhaul: installed global, pin 12af471. Read SKILL.md and scripts: lint/inspect/draw run locally, assets.mjs only fetches open-license images when called. 2026-11-10: held at 12af471 on purpose. Upstream 2.5.1 (f6b7657) adds a Stop hook in SKILL.md frontmatter (the finish gate) that runs on every Stop for the rest of a session, can block stopping up to 30 times in 6 hours, and looks for gate.mjs in the project's own .claude/skills before the home copy. Reviewed otherwise safe (no data sent, argv-only spawns). To take 2.5.1: install it, then delete the `hooks:` block from the installed SKILL.md and register that as a local edit. 2026-11-11 (MeiMei finish-the-site brief: \"bring it up to date with its upstream\"): took 2.5.1 at f6b7657, global and the MeiMei-website project copy, with the Stop hook removed as planned above. The 12af471 copy is saved in that session scratchpad only; reinstall the pin to get it back.",
+      "decision": "2026-11-05 owner named it for the strafe.games overhaul: installed global, pin 12af471. Read SKILL.md and scripts: lint/inspect/draw run locally, assets.mjs only fetches open-license images when called. 2026-11-10: held at 12af471 on purpose. Upstream 2.5.1 (f6b7657) adds a Stop hook in SKILL.md frontmatter (the finish gate) that runs on every Stop for the rest of a session, can block stopping up to 30 times in 6 hours, and looks for gate.mjs in the project's own .claude/skills before the home copy. Reviewed otherwise safe (no data sent, argv-only spawns). To take 2.5.1: install it, then delete the `hooks:` block from the installed SKILL.md and register that as a local edit. 2026-11-11 (MeiMei finish-the-site brief: \"bring it up to date with its upstream\"): took 2.5.1 at f6b7657, global and the MeiMei-website project copy, with the Stop hook removed as planned above. The 12af471 copy is saved in that session scratchpad only; reinstall the pin to get it back. 2026-11-19 (Printvisie v3 build, lead's skill-install brief): re-verified, HEAD is still f6b7657 and the global SKILL.md has no `hooks:` block (finish gate stays removed); nothing to update. The repo holds one skill; the older styles moved to Leonxlnx/taste-skill-classics (see that entry).",
       "why": "Art direction, no-slop house rules and a real-browser inspector for public pages.",
       "localEdits": "Global copy and the MeiMei-website project copy (both .claude and .agents), identical: (1) SKILL.md frontmatter `hooks:` block (the Stop finish gate) deleted; (2) eight reviewed edits from the 2026-11-11 skill review (MeiMei-website docs/briefs/research/finish/taste-skill.md section 3): a route for projects with their own tokens and motion library, catalogues as tall as their rows, shops with product pages, card loops on tech only, when no pause control is needed (references/motion.md), two languages and CJK type (references/system.md), a living subject, the look round. The whole local diff against f6b7657 is MeiMei-website docs/briefs/taste-skill-local-edits.patch (157 lines): after an update, re-apply it with patch -p1 in the skill folder and resolve by hand what no longer matches. ~/.agents/skills/design-taste-frontend is still the old 12af471 copy (Codex parked).",
       "notes": "The MeiMei-website project copy is gitignored for its size (40 MB); restore it with npx skills experimental_install, then delete the hooks block again."
@@ -1501,12 +1568,43 @@
           "installed": [
             "~/.claude/skills/shader-programming"
           ]
+        },
+        {
+          "name": "game-ui-ux",
+          "path": "skills/disciplines/game-ui-ux",
+          "pin": "1f95dde45c02909028345755af11fe0c170bda3c",
+          "tree": "02b1367ba8a13aded8f4f75536787e2543221804",
+          "installed": [
+            "~/.claude/skills/game-ui-ux"
+          ]
         }
       ],
       "pin": "4cce500ce1a779b12fdd824be581c7d2ab4e7ba2",
-      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add gamedev-skills/awesome-gamedev-agent-skills#<SHA> --skill create-game-assets game-feel shader-programming -g -a claude-code -y",
-      "decision": "2026-11-05 find for the strafe.games overhaul (owner asked for game art, feel and shader best practice): global, pin 19d93f9. Only 3 of 78 skills, engine-neutral. create-game-assets ships local QA scripts (Pillow), no network.",
-      "why": "Game art pipeline, juice and shader method. Beat cloudai-x/threejs-skills and pixijs/pixijs-skills for this job: the overhaul does not touch engine internals."
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add gamedev-skills/awesome-gamedev-agent-skills#<SHA> --skill create-game-assets game-feel shader-programming game-ui-ux -g -a claude-code -y",
+      "decision": "2026-11-05 find for the strafe.games overhaul (owner asked for game art, feel and shader best practice): global, pin 19d93f9. Only 3 of 78 skills, engine-neutral. create-game-assets ships local QA scripts (Pillow), no network. 2026-11-18: game-ui-ux added global at its own pin 1f95dde (the latest commit touching that folder), approved by the lead after a source review. Apache-2.0; SKILL.md plus one reference, markdown only, no scripts, hooks, allowed-tools or network calls of its own. Its verify step names Godot `--resolution WxH`/`xvfb-run` launches, run only if an agent follows them; the patterns are Godot and Unity, so on web games use the layout, focus, screen-stack, event-driven HUD and accessibility rules.",
+      "why": "Game art pipeline, juice and shader method. Beat cloudai-x/threejs-skills and pixijs/pixijs-skills for this job: the overhaul does not touch engine internals. game-ui-ux adds engine-neutral HUD and menu rules (safe areas, gamepad focus, screen stack, text size and contrast minimums).",
+      "localEdits": "game-ui-ux: added the upstream root LICENSE (Apache-2.0) byte for byte; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update."
+    },
+    {
+      "name": "majidmanzarpour/threejs-game-skills",
+      "repo": "majidmanzarpour/threejs-game-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "threejs-game-ui-designer",
+          "path": "skills/threejs-game-ui-designer",
+          "tree": "aaaefe2d6b776e8c4d9812378d4b8f7624223df5",
+          "installed": [
+            "~/.claude/skills/threejs-game-ui-designer"
+          ]
+        }
+      ],
+      "pin": "8286774b22a2566bf894dbc825825c16921866af",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add majidmanzarpour/threejs-game-skills#<SHA> --skill threejs-game-ui-designer -g -a claude-code -y ; then re-apply localEdits",
+      "decision": "2026-11-18: lead-approved after a source review; ONLY threejs-game-ui-designer installed global at 8286774 (the latest commit touching that folder). MIT. Read SKILL.md and references/ui-patterns.md in full: markdown only, no scripts, hooks, allowed-tools or network calls. Codex parked, so claude-code only.",
+      "why": "Three.js game HUD, menu, overlay, touch-control and responsive-layout method, with a list of web-page defaults that read as generic in a game.",
+      "localEdits": "(1) agents/openai.yaml deleted (Codex UI metadata). (2) SKILL.md: the line telling the agent to load the sibling `threejs-image-generator` / `threejs-3d-generator` skills replaced with a pointer to the installed `create-game-assets`. (3) references/ui-patterns.md: the 'Generated 2D assets' section rewritten as '2D assets', same asset list, generator pointers replaced with `create-game-assets`. (4) Added the upstream root LICENSE (MIT, Majid Manzarpour) byte for byte. Redo all four after an update.",
+      "notes": "Left out on purpose: the 8 sibling skills (threejs-image-generator, threejs-3d-generator, threejs-audio-generator, threejs-game-director, threejs-aaa-graphics-builder, threejs-gameplay-systems, threejs-debug-profiler, threejs-qa-release; the lead's review found image generators and a credentials probe among them), plus the repo's install.sh and scripts/."
     },
     {
       "name": "CloudAI-X/threejs-skills",
@@ -1552,14 +1650,43 @@
           "installed": [
             "~/.claude/skills/threejs-loaders"
           ]
+        },
+        {
+          "name": "threejs-shaders",
+          "path": "skills/threejs-shaders",
+          "tree": "218c683a0d871e7087193ff42dcaf99ca93a4637",
+          "installed": [
+            "~/.claude/skills/threejs-shaders"
+          ]
         }
       ],
       "pin": "0e181866f095b5f06d005133876e926515390d95",
-      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add CloudAI-X/threejs-skills#<SHA> --skill threejs-animation threejs-postprocessing threejs-asset-pipeline threejs-performance threejs-loaders -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
-      "decision": "2026-11-07 (Deadlight M2-T19, Q12 default): 5 of 13 skills installed global at pin 0e18186 (MIT, written for three r186; Deadlight is on 0.187.0). Reviewed SKILL.md of all five at the pin: markdown only, no scripts, hooks or allowed-tools, no network of their own. threejs-asset-pipeline's text tells the agent to run `npx @gltf-transform/cli ...` and `npx gltfjsx`, which fetch packages only if an agent follows it. ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has them too.",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add CloudAI-X/threejs-skills#<SHA> --skill threejs-animation threejs-postprocessing threejs-asset-pipeline threejs-performance threejs-loaders threejs-shaders -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
+      "decision": "2026-11-07 (Deadlight M2-T19, Q12 default): 5 of 13 skills installed global at pin 0e18186 (MIT, written for three r186; Deadlight is on 0.187.0). Reviewed SKILL.md of all five at the pin: markdown only, no scripts, hooks or allowed-tools, no network of their own. threejs-asset-pipeline's text tells the agent to run `npx @gltf-transform/cli ...` and `npx gltfjsx`, which fetch packages only if an agent follows it. ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has them too. 2026-11-19 (2025-portfolio, lead's skill-install brief, pre-approved clear win): added threejs-shaders global at the same pin 0e18186 (folder tree 218c683, already reviewed for the 2025-portfolio-hero project copy): markdown only, no scripts, hooks or allowed-tools, no network. Fetched by git clone + checkout of the pin into a scratch dir and copied, not via the skills CLI.",
       "why": "Version-current three.js method for Deadlight M2: clip blending and additive layers (T40), post-processing (T62, T64), glTF compression and loaders (T63, T86), performance (T91).",
-      "localEdits": "Added the upstream root LICENSE (MIT, CloudAI-X) byte for byte into each of the five skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
-      "notes": "Left out on purpose: the other 8 skills (fundamentals, geometry, lighting, materials, shaders, textures, interaction, react-three-fiber). B6 section 3 gap: threejs-animation's additive example rebases on the clip's own frame 0 and never shows referenceClip; Deadlight hit reactions need makeClipAdditive(clip, 0, locomotionClip)."
+      "localEdits": "Added the upstream root LICENSE (MIT, CloudAI-X) byte for byte into each of the six skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
+      "notes": "Left out on purpose: the other 7 skills (fundamentals, geometry, lighting, materials, textures, interaction, react-three-fiber). B6 section 3 gap: threejs-animation's additive example rebases on the clip's own frame 0 and never shows referenceClip; Deadlight hit reactions need makeClipAdditive(clip, 0, locomotionClip)."
+    },
+    {
+      "name": "MengTo/Skills (build-threejs-scroll-worlds)",
+      "repo": "MengTo/Skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "build-threejs-scroll-worlds",
+          "path": "agent-skills/web-design/build-threejs-scroll-worlds",
+          "tree": "2822a2cc5f7179f4fd3126929a1a8a189309ecfa",
+          "installed": [
+            "~/.claude/skills/build-threejs-scroll-worlds"
+          ]
+        }
+      ],
+      "pin": "1a32b45a57f435f1564544e7267a71fc3b180a7a",
+      "update": "git clone https://github.com/MengTo/Skills.git <scratch> && git -C <scratch> checkout <SHA>; copy agent-skills/web-design/build-threejs-scroll-worlds/{SKILL.md,references/} and the repo root LICENSE into ~/.claude/skills/build-threejs-scroll-worlds (leave out demo/ and agents/)",
+      "decision": "2026-11-19 (2025-portfolio, lead's skill-install brief, pre-approved clear win): installed global at repo commit 1a32b45 (2026-11-18); the skill folder last changed at 21d998f (2026-08-08). MIT (Meng To). Read SKILL.md, all four references and references/scroll-conductor.js at the pin: markdown plus one browser-side vanilla JS module (scroll/resize/visibility listeners and requestAnimationFrame only, no network, no telemetry, runs nothing at load; agents copy it into a project). No hooks or allowed-tools. Fetched by git clone + checkout of the pin into a scratch dir and copied.",
+      "why": "One persistent three.js world driven by native scroll, with chapter ledgers, camera cinematography, progressive loading and QA: the method for scroll-driven 3D portfolio work.",
+      "localEdits": "(1) demo/ left out on purpose (~238 KB index.html, 608 KB three.min.js, ~2.6 MB of webp art, fonts.css, preview.jpg, PROMPT.md), so SKILL.md's link to demo/index.html and kage-anatomy.md's demo references dangle; read the demo upstream at the pin if needed. (2) agents/openai.yaml left out (Codex UI metadata; Codex parked). (3) Added the upstream root LICENSE (MIT, Meng To) byte for byte. No SKILL.md or reference change. The checker reports this as a local edit.",
+      "notes": "SKILL.md says to use the Codex browser for visual verification; in Claude Code use the browser tools from capability routing instead. It also routes to sibling skills (threejs, scroll-world-storytelling, scroll-scrubbed-visual-sequence, cinematic-scroll-storytelling) that are not installed."
     },
     {
       "name": "design.how",
@@ -1631,6 +1758,24 @@
       "update": "cd ~/Documents/GitHub/MeiMei-website && DISABLE_TELEMETRY=1 npx skills@1.7.6 add https://design.how/vault/swing-type -a claude-code --copy -y, then copy .claude/skills/swing-type to .agents/skills/swing-type (compare the digest in the index first)",
       "decision": "2026-11-12 Nebi named it (npx skills add https://design.how/vault/swing-type) for the MeiMei shop's moving MeiMei / ToleTole type. Project scope: one site uses it. Digest verified against the index; installed files identical to the reviewed archive. Contents: SKILL.md, references/perf.md, a Canvas 2D engine (engine.ts, framework-free), a React card wrapper and usePause helper, fonts.css, and scripts/check.mjs (Node, no packages, reads the given folder only, no network).",
       "notes": "Constraint the engine imposes: every cycled word needs the same letter count (MeiMei 6, ToleTole 8). The card is React; the MeiMei site uses custom-element islands, so only the card wrapper gets ported. It loops for ever, which needs a pause control under WCAG 2.2.2."
+    },
+    {
+      "name": "design.how vault: roll-type",
+      "repo": "https://design.how/vault/roll-type/.well-known/agent-skills/index.json",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "roll-type",
+          "digest": "sha256:be0b0d5f68164c718d90ba8e96a784cc0b49ea7eb90aa325e74c0f312457de6e",
+          "installed": [
+            "~/.claude/skills/roll-type"
+          ]
+        }
+      ],
+      "pin": "archive digest 2026-11-19 (well-known index under the vault page, no git SHA; page last updated 2026-11-18; no license file in the archive, design.how presents its vault as free)",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add https://design.how/vault/roll-type -g -a claude-code -y (compare the digest in the index first)",
+      "decision": "2026-11-19 Nebi named it (npx skills add https://design.how/vault/roll-type) for the Printvisie v3 mission section's rolling words. Global for Claude Code: the vault type skills are reused across sites, and the printvisie-v3 worktree is not the session cwd. Digest verified against the index; installed files identical to the reviewed archive. Contents: SKILL.md, references/perf.md, a Canvas 2D engine (engine.ts, framework-free), a React card wrapper and usePause helper, fonts.css, and scripts/check.mjs (Node, no packages, reads the given folder only, no network).",
+      "notes": "The card loops for ever, so a page that keeps it running needs a pause control (WCAG 2.2.2). Reduced motion draws the first phrase at rest."
     },
     {
       "name": "1nird/animations-cutscenes-skill",
@@ -2085,6 +2230,105 @@
       "why": "Ads for an owner new to ads: minimum-data thresholds, a real 'No verdict' status, one approval per change with the money impact.",
       "localEdits": "none",
       "notes": "The skill links ../../shared/*.md (and reference/ad_copy.md links ../../../shared/), which resolve to ~/.claude/shared/ for the physical path; symlinks ~/.claude-team/shared and ~/.claude-max2/shared -> ~/.claude/shared make the textual path resolve under the other two config dirs. frontmatter allowed-tools: Read, WebFetch. Connector paths are TikTok MCP / Zapier build-connector and growth-pulse / canva-creator hand-offs that we do not have: feed it Meta Ads MCP reads or CSV exports. artifact-style.md mentions shared/reference/artifact-example.html (not installed, optional example). Amounts are written in USD in examples: say euros."
+    },
+    {
+      "name": "vercel/next.js (skills)",
+      "repo": "vercel/next.js",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "next-bundle-optimizer",
+          "path": "skills/next-bundle-optimizer",
+          "tree": "d89b65de3d90fbc11b37a200486c084c781228f9",
+          "installed": [
+            "~/.claude/skills/next-bundle-optimizer"
+          ]
+        },
+        {
+          "name": "next-cache-components-adoption",
+          "path": "skills/next-cache-components-adoption",
+          "tree": "bf1e62f0e297f4992727fc546d3327b866f13472",
+          "installed": [
+            "~/.claude/skills/next-cache-components-adoption"
+          ]
+        },
+        {
+          "name": "next-partial-prefetching-adoption",
+          "path": "skills/next-partial-prefetching-adoption",
+          "tree": "7a2941666b296fa2a407b5ed038ec74ab4431f55",
+          "installed": [
+            "~/.claude/skills/next-partial-prefetching-adoption"
+          ]
+        }
+      ],
+      "pin": "5395cf44d1fcd1e257ad32365f8674a473c664ac",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add https://github.com/vercel/next.js/tree/<SHA>/skills --skill next-bundle-optimizer next-cache-components-adoption next-partial-prefetching-adoption -g -a claude-code -y",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): installed global from the canary branch (the Next.js skills moved here; next-best-practices is gone and Next 16.3+ ships version-matched docs in node_modules/next/dist/docs). printvisie-v3 runs Next 16.4.6 with cacheComponents and partialPrefetching on, so the two adoption skills cover the blocking-route and prefetch insights its builders hit; the bundle optimizer covers GSAP/Lenis/WebGL client weight via `next analyze`. Skipped: next-dev-loop (hard floor on agent-browser >= 0.31.1, which this register does not adopt), next-cache-components-optimizer and next-partial-prefetching-optimizer (they encode each goal as a failing @next/playwright instant() e2e test).",
+      "why": "Official Next.js agent skills for App Router sites on Cache Components and Partial Prefetching.",
+      "notes": "Markdown only (SKILL.md plus references), MIT (license.md). next-cache-components-adoption tells the agent to install next-dev-loop and agent-browser without asking and to run `npx @next/codemod@latest cache-components-instant-false`; the partial-prefetching one runs `npx @next/codemod@canary remove-partial-prefetch`. Both codemods refuse a dirty tree. A tree URL install clones the canary repo (about a minute)."
+    },
+    {
+      "name": "blader/humanizer",
+      "repo": "blader/humanizer",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "humanizer",
+          "path": "",
+          "tree": "1fe9a61991dfc2b8906f88bedc0f32f1ef074234",
+          "installed": [
+            "~/.claude/skills/humanizer"
+          ]
+        }
+      ],
+      "pin": "b48c832f0f809c1b5658edbb838c2521b72f2413",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add blader/humanizer#<SHA> --skill humanizer -g -a claude-code -y",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): owner asked for the best anti-AI-slop skill for website copy. Installed global at v4.0.0 (released 2026-11-09). Compared by source with stop-slop (8da1f03, unchanged since 2026-03), no-ai-slop (000650b) and writing-guidelines: humanizer is the newest and most complete (26 patterns ranked by strength, weak-alone weighting, a fact-preservation check, prompt-injection guard, formatting tells such as bold labels, title case and emoji headings). It adds to stop-slop and no-ai-slop; it does not replace them in the writing rule (that is a doctrine change for the owner).",
+      "why": "Final pass on site copy so it does not read as AI-written.",
+      "notes": "MIT, 70k stars. Markdown only; scripts/validate-package.py is the repo's CI check and the skill never calls it. The CLI copies the whole repo root (README, CHANGELOG, .github, plugin manifests). SOURCES.md already lists it as inspiration for the writing rule. Its §21 calls curly quotes a weak tell, while web-design-guidelines and better-typography require them in rendered UI text."
+    },
+    {
+      "name": "jakubkrehel/skills",
+      "repo": "jakubkrehel/skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "better-typography",
+          "path": "skills/better-typography",
+          "tree": "0c729e28894ea217fb240896627cc79b72672a1c",
+          "installed": [
+            "~/.claude/skills/better-typography"
+          ]
+        }
+      ],
+      "pin": "547d415dc10a23e66088eba5aa6664e6e772432c",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add jakubkrehel/skills#<SHA> --skill better-typography -g -a claude-code -y",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): find-skills hunt (Apple-like typography). Installed better-typography global: measured rules (unitless line-height by role, tracking by size in em, 60-75ch measure, tabular-nums, text-wrap, optical sizing left on auto, font synthesis, lang) plus a finish table of greppable mistakes. Nothing installed covered type at this depth. The repo's other skills (better-ui, better-layout, better-writing, interface-review, ...) overlap emil, taste-skill and impeccable: shortlist only.",
+      "why": "Typography craft for type-led, Apple-like pages.",
+      "notes": "MIT, 12k stars, pushed 2026-11-19. Markdown only plus Codex agents/openai.yaml. Its punctuation table maps `--` to an em dash, which the copy skills forbid in prose."
+    },
+    {
+      "name": "uizze/uizze",
+      "repo": "uizze/uizze",
+      "kind": "reference",
+      "pin": "fc401e9e654cbafe427b0c98142fc8bccd0c4e7e",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): owner named uizze.com. It is a paid reference library of web and iOS screens for agents (MCP at https://uizze.com/mcp, Bearer token or OAuth; tools find_ui_references and find_ui_materials; $9/month, $85/year, $199 lifetime; no free MCP tier found) plus a free skill, anti-ui-slop. Not installed: anti-ui-slop v1.3.1 is a 234-line Markdown adaptation of impeccable 4.4.0 (its MANIFEST pins impeccable commits) with routing to the paid MCP, and impeccable itself is installed at a newer pin. No account, no payment.",
+      "notes": "MIT repo (skill folder Apache-2.0 via impeccable), 118 stars, created 2026-07. Also mirrored in github/awesome-copilot as anti-ui-slop."
+    },
+    {
+      "name": "miqdadbadjuber/anti-slop",
+      "repo": "miqdadbadjuber/anti-slop",
+      "kind": "reference",
+      "pin": "1969b459f843603ba2efbbb24e8e1bf963c889b3",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): reviewed for anti-AI UI formatting, not installed. antislop-ui is the most precise catalogue of UI tells found (eyebrow badge above the H1, decorative status dot, emoji bullets, arrow on every button, capsule AI badges, copy-paste feature cards, three-step How it works, wide-tracked uppercase labels, fake logo bar), but it must load with the 701-line core, which blocks UI work until the user answers a during/after mode question, asks before creating any asset (R-23), and with no direction falls back to ENERGY 1 / RHYTHM 1 / MOTION 1. That stalls unattended builders and fights an animation-led brief. Revisit for an attended audit (mode after).",
+      "notes": "MIT, 9.5k stars, active (2026-11-18). Ships an npx installer and a settings file at ~/.config/antislop/settings.json; antislop-human runs Python contrast checks."
+    },
+    {
+      "name": "Leonxlnx/taste-skill-classics",
+      "repo": "Leonxlnx/taste-skill-classics",
+      "kind": "reference",
+      "pin": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): reviewed, not installed. The pre-2.5 taste styles moved here (opt-in, disable-model-invocation). industrial-brutalist-ui prescribes ASCII-framed uppercase meta labels, CRT scanlines and noise overlays, which are the eyebrow and decoration tells the owner wants gone, and minimalist-ui bans fonts and icon sets outright; both contradict design-taste-frontend 2.5.1, which supersedes them."
     }
   ],
   "docs": [
