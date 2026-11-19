@@ -60,7 +60,7 @@ In an environment this table does not cover, use the roles with that harness's d
 
 **Codex is parked** (no ChatGPT subscription since 2026-10-10). Work Claude-only: don't route work, sub-agents or reviews to Codex or GPT models, and skip Codex installs, Codex copies and parity checks until I say Codex is back. The `codex-browser` tool stays: it runs locally without a ChatGPT subscription.
 
-`nebi-scout` and `nebi-checker` are the native read-only scout and checker, and `nebi-builder` is the lean builder; pass the model binding when you dispatch them. Settings pin the default: a sub-agent or workflow agent dispatched without a model runs the default-builder binding (`CLAUDE_CODE_SUBAGENT_MODEL`), not the session's model, so a session on another model does not move a fleet with it. The scout's own default is `medium` and the checker's is `high`; an effort passed on the dispatch overrides either.
+`nebi-scout` and `nebi-checker` are the native read-only scout and checker, and `nebi-builder` is the lean builder; pass the model binding when you dispatch them. Settings pin the default: a sub-agent or workflow agent dispatched without a model runs the default-builder binding (`CLAUDE_CODE_SUBAGENT_MODEL`), not the session's model, so a session on another model does not move a fleet with it. The scout's own default is `medium` and the checker's is `high`; an effort passed on the dispatch overrides either. Scout and checker skip CLAUDE.md (this file and the project's), so put anything they need from it in the brief.
 
 ListAgents shows only this account's sessions. `node ~/.claude/nebi/peers.mjs` lists every live session on every Claude account on this Mac with the `uds:` address that SendMessage takes. Message the one session you need; never broadcast to all of them.
 
@@ -72,7 +72,7 @@ ListAgents shows only this account's sessions. `node ~/.claude/nebi/peers.mjs` l
 - **Medium:** one bounded domain, usually built by the lead with targeted reads and targeted proof. No automatic scout or checker.
 - **Large:** two or more sizeable independent workstreams. Start with the smallest useful fleet, give each agent disjoint ownership and a budget, then reconcile the combined result.
 
-**A fleet's cost is mostly fixed overhead and runaways.** Measured on my sessions (2026-11-10): the default sub-agent or workflow agent loads about 55k tokens before it does anything and re-reads them on every turn, `nebi-builder` about 33k and `nebi-scout` about 10k. Over a month, the one agent in twelve that ran past 100 requests took 40% of all fleet tokens.
+**A fleet's cost is mostly fixed overhead and runaways.** Measured on my sessions (2026-11-10): the default sub-agent or workflow agent loads about 55k tokens before it does anything and re-reads them on every turn, `nebi-builder` about 33k, and `nebi-scout` and `nebi-checker` about 5k each since they skip CLAUDE.md (2026-11-19). Over a month, the one agent in twelve that ran past 100 requests took 40% of all fleet tokens.
 
 - Use `nebi-builder` for a lane that needs files, the shell, the web and skills; `nebi-scout` and `nebi-checker` are read-only, with no shell and no skills (`agentType` in a workflow). Keep the default agent for lanes that need a browser, a connector or their own sub-agents.
 - A looping agent is the most expensive failure there is, so treat it as one: stop it early instead of waiting, and never re-dispatch an unchanged brief. The lean agents also stop at a turn cap. `nebi-orchestration` has the signs and what to do next.
