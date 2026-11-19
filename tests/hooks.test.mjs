@@ -319,7 +319,7 @@ function testSessionStartNamesTheProjectBrowser() {
 
 function testSessionStartRoutesToCodexBrowserFromAnyAccount() {
   const { home, plain, sneakers } = routeFixture('start-codex');
-  const codexId = 'a2ecff6d-98ef-462e-b499-5e053713a0e3';
+  const codexId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
   writeFileSync(path.join(sneakers, '.claude', 'browser.json'), JSON.stringify({ version: 1, ...SNEAKERS_CHROME, codexBrowserId: codexId, claudeAccount: 'b' }));
   const context = (cwd, env) => JSON.parse(runHook('claude-home/hooks/session-start.mjs', home, { cwd, session_id: 'start' }, env))
     .hookSpecificOutput.additionalContext;

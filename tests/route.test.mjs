@@ -18,7 +18,7 @@ const temp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-route-'
 test.after(() => fs.rmSync(temp, { recursive: true, force: true }));
 
 const MAIN = { label: 'Main Chrome', chromeProfile: 'Default', deviceId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', codexBrowserId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' };
-const RAPID = { label: 'RapidSneakers Chrome', chromeProfile: 'Profile 3', deviceId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', codexBrowserId: 'a2ecff6d-98ef-462e-b499-5e053713a0e3' };
+const RAPID = { label: 'RapidSneakers Chrome', chromeProfile: 'Profile 3', deviceId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', codexBrowserId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' };
 const PROJECT_B = { version: 1, ...RAPID, claudeAccount: 'b' };
 
 let count = 0;

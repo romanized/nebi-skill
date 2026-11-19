@@ -77,7 +77,7 @@ A mod either makes **done / working / needs you** clearer or makes something **q
 
 ## Route: which Chrome and which Claude account a project uses
 
-- Project file, wins: `<git root>/.claude/browser.json` = `{ "version": 1, "label": "RapidSneakers Chrome", "chromeProfile": "Profile 3", "deviceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "codexBrowserId": "a2ecff6d-98ef-462e-b499-5e053713a0e3", "claudeAccount": "b" }`. `codexBrowserId` is the ChatGPT extension instance in that profile, which the codex-browser skill selects; it is optional.
+- Project file, wins: `<git root>/.claude/browser.json` = `{ "version": 1, "label": "RapidSneakers Chrome", "chromeProfile": "Profile 3", "deviceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", "codexBrowserId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc", "claudeAccount": "b" }`. `codexBrowserId` is the ChatGPT extension instance in that profile, which the codex-browser skill selects; it is optional.
 - Account defaults: `~/.claude/nebi/browsers.json` = `{ "version": 1, "accounts": { "a": { "label", "chromeProfile", "deviceId", "codexBrowserId" }, "b": { … } } }`.
 - Current account: `CLAUDE_CONFIG_DIR` unset or `~/.claude` → `"a"`; a path containing `.claude-max2` → `"b"`; anything else → `null`.
 - The Team account (`claude-team`) has no browser route on purpose: its account is `null`, so it gets no account default, and browser work there falls back to codex-browser.
