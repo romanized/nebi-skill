@@ -31,7 +31,8 @@ const MAX_DEPTH = 4;
  * The simple commands in a shell command, each a word list with quotes and escapes
  * removed and redirections dropped. What runs inside $( … ), backticks and <( … ) comes
  * back as commands of its own, and so does a heredoc body fed to a shell; a command
- * whose words held $( … ) or backticks has `hasSubstitution` set. `closer` ends a
+ * whose words held $( … ) or backticks has `hasSubstitution` set, and `quoted` marks
+ * each word that had quotes in it. `closer` ends a
  * substitution; `isMath` reads $(( … )), where `<<` and `>` are operators, not redirections.
  */
 function scan(text, start = 0, closer = '', isMath = false) {
@@ -40,19 +41,23 @@ function scan(text, start = 0, closer = '', isMath = false) {
   let words = [];
   let word = '';
   let isWord = false;
+  let isQuoted = false; // the word has quotes in it
+  let quoted = [];
   let isTarget = false; // the next word is a redirection's target
   let hasSub = false;
   let parens = 0;
   const endWord = () => {
-    if (isWord && !isTarget) words.push(word);
+    if (isWord && !isTarget) { words.push(word); quoted.push(isQuoted); }
     if (isWord) isTarget = false;
     word = '';
     isWord = false;
+    isQuoted = false;
   };
   const endCommand = () => {
     endWord();
-    if (words.length) cmds.push(Object.assign(words, { hasSubstitution: hasSub }));
+    if (words.length) cmds.push(Object.assign(words, { hasSubstitution: hasSub, quoted }));
     words = [];
+    quoted = [];
     hasSub = false;
   };
   // $( … ) or backticks from `from` (just inside) to `close`: its commands, its text kept in the word.
@@ -76,12 +81,15 @@ function scan(text, start = 0, closer = '', isMath = false) {
       const stop = end < 0 ? text.length : end;
       word += text.slice(i + 1, stop);
       isWord = true;
+      isQuoted = true;
       i = stop;
     } else if (ch === '$' && text[i + 1] === "'") {
       for (i += 2; i < text.length && text[i] !== "'"; i++) word += text[i] === '\\' ? (text[++i] ?? '') : text[i];
       isWord = true;
+      isQuoted = true;
     } else if (ch === '"') {
       isWord = true;
+      isQuoted = true;
       for (i++; i < text.length && text[i] !== '"'; i++) {
         if (text[i] === '\\') word += text[++i] ?? '';
         else if (text[i] === '`') i = substitute(i, i + 1, '`');
@@ -112,7 +120,7 @@ function scan(text, start = 0, closer = '', isMath = false) {
       const isIndented = text[j] === '-';
       if (isIndented) j++;
       while (text[j] === ' ' || text[j] === '\t') j++;
-      const tag = /^(['"]?)(\w+)\1/.exec(text.slice(j));
+      const tag = /^(['"]?)([\w-]+)\1/.exec(text.slice(j));
       if (tag) heredocs.push({ end: tag[2], isIndented, reader: words });
       i = tag ? j + tag[0].length - 1 : i + 1;
     } else if (ch === '<' || ch === '>' || (ch === '&' && text[i + 1] === '>')) {
@@ -163,7 +171,7 @@ function invocation(words) {
       while ((words[i] ?? '').startsWith('-')) i += ['-u', '-g'].includes(words[i]) ? 2 : 1;
     }
   }
-  return { name: baseName(words[i] ?? ''), args: words.slice(i + 1) };
+  return { at: i, name: baseName(words[i] ?? ''), args: words.slice(i + 1) };
 }
 
 const baseName = (word) => word.split('/').pop();
@@ -215,14 +223,16 @@ export function check(command, depth = 0) {
   // `kill $(pgrep …)`, kill `pgrep …` and `pgrep … | xargs kill`: pgrep picks what dies.
   const feedsKill = cmds.some((words) => has(words, 'kill') && (words.hasSubstitution || has(words, 'xargs')));
   for (const words of cmds) {
-    // Any word counts, so `timeout 5 pkill …` and `env -i pkill …` are read too.
+    const { at: start, name, args } = invocation(words);
+    // Any unquoted word counts, so `timeout 5 pkill …` and `env -i pkill …` are read too;
+    // a quoted one only as the command itself, so `grep -rn "pkill" .` searches for a word.
     for (const [at, word] of words.entries()) {
+      if (words.quoted[at] && at !== start) continue;
       const name = baseName(word);
       if (name !== 'pkill' && !(name === 'pgrep' && feedsKill)) continue;
       const problem = problemWith(words.slice(at + 1));
       if (problem) return `Blocked ${name}: ${problem}`;
     }
-    const { name, args } = invocation(words);
     const inner = depth < MAX_DEPTH ? innerScript(name, args) : null;
     const reason = inner === null ? null : check(inner, depth + 1);
     if (reason) return reason;

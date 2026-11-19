@@ -298,11 +298,18 @@ function nodeCommand(script) {
  */
 function writeJsonAndVerify(file, value, label) {
   const expected = `${JSON.stringify(value, null, 2)}\n`;
-  // A symlinked settings.json (a dotfiles repo) keeps its link: the rename lands on the real file.
-  const target = fs.existsSync(file) ? fs.realpathSync(file) : file;
+  // A symlinked settings.json (a dotfiles repo) keeps its link: the rename lands on the real file,
+  // or on the path a dangling link names.
+  const isLink = fs.lstatSync(file, { throwIfNoEntry: false })?.isSymbolicLink() ?? false;
+  const target = fs.existsSync(file)
+    ? fs.realpathSync(file)
+    : isLink ? path.resolve(path.dirname(file), fs.readlinkSync(file)) : file;
+  // The temp file takes the old file's mode, so a 0600 settings.json stays 0600.
+  const mode = fs.statSync(target, { throwIfNoEntry: false })?.mode;
   const temp = `${target}.${process.pid}.tmp`;
   try {
     fs.writeFileSync(temp, expected, 'utf8');
+    if (mode !== undefined && !IS_WINDOWS) fs.chmodSync(temp, mode & 0o7777);
     fs.renameSync(temp, target);
   } finally {
     fs.rmSync(temp, { force: true });

@@ -90,6 +90,11 @@ const COMMANDS: readonly [string, boolean][] = [
   ['cat <<<EOF\nopen -a Ghostty', true],
   ['cat <<EOF\nopen -a Ghostty', true],
   ['cat <<EOF\nhello\nEOF\nclaude-nebi', true],
+  // A heredoc inside "$( … )" is still a heredoc: the commit message is data
+  ["git commit -m \"$(cat <<'EOF'\nStop `open -a Ghostty` here\nEOF\n)\"", false],
+  ["git commit -m \"$(cat <<'EOF'\nOne \" and `claude-nebi`\nEOF\n)\"", false],
+  ["echo \"$(bash <<'EOF'\nopen -a Ghostty\nEOF\n)\"", true],
+  ["git commit -m \"$(cat <<'EOF'\nmsg\nEOF\n)\"\nclaude-nebi", true],
 ]
 
 // [prompt text, whether it asks for a terminal, tab, window, split or session]

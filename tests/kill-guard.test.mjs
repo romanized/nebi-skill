@@ -34,6 +34,10 @@ test('allows the specific kills sessions used safely today', () => {
     'git commit -m "Block pkill -f cat -U $HOME -x calls"',
     "claude --resume abc 'never pkill with a short pattern or options after it'",
     "git commit -F - <<'EOF'\nBlock pkill calls that take out every session\nEOF\ngit push",
+    // A quoted search term is data, not a command.
+    'grep -rn "pkill" .',
+    "rg 'pkill' mods",
+    "grep -rn 'pkill' --include=*.mjs .",
   ]) assert.equal(check(cmd), null, cmd);
   assert.match(check("cat <<EOF > notes.txt\nhi\nEOF\npkill -f node"), /too broad/);
 });
@@ -54,6 +58,8 @@ test('finds a pkill that quotes, escapes, paths or substitutions used to hide (F
     'echo $((1 << 2))\npkill -f cat',
     'cat <<EOF\npkill -f cat',
     'cat <<< "x"; pkill -f cat',
+    "cat <<'MY-EOF'\ndon't stop here\nMY-EOF\npkill -f cat",
+    'timeout 5 \\pkill -f cat',
   ]) assert.match(check(cmd) ?? '', /Blocked pkill: .*too broad/, cmd);
   for (const cmd of ['kill `pgrep -f cat`', 'kill $(pgrep -f cat)', 'kill -9 "`pgrep -f cat`"']) {
     assert.match(check(cmd) ?? '', /Blocked pgrep: .*too broad/, cmd);

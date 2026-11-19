@@ -81,6 +81,12 @@ const TABLE: readonly [string, Record<string, unknown>, string | null][] = [
   ['Bash', { command: 'cat <<<EOF\nrm -rf ~/Documents' }, 'rm-recursive'],
   ['Bash', { command: 'cat <<EOF\nrm -rf ~/Documents' }, 'rm-recursive'],
   ['Bash', { command: 'cat <<EOF\nhello\nEOF\nrm -rf ~/Documents' }, 'rm-recursive'],
+  // A heredoc inside "$( … )" is still a heredoc: the commit message is data
+  ['Bash', { command: "git commit -m \"$(cat <<'EOF'\nClose bypasses (F01)\n\nHold `rm -rf ~/Documents` after a fake heredoc.\nEOF\n)\"" }, null],
+  ['Bash', { command: "git commit -m \"$(cat <<'EOF'\nQuote \" once, then `rm -rf ~/Documents`\nEOF\n)\"" }, null],
+  ['Bash', { command: "git commit -m \"$(cat <<'A'\nfirst `rm -rf ~/x`\nA\n)\"\ngit commit -m \"$(cat <<'B'\nsecond `rm -rf ~/y`\nB\n)\"" }, null],
+  ['Bash', { command: "echo \"$(bash <<'EOF'\nrm -rf ~/Documents\nEOF\n)\"" }, 'rm-recursive'],
+  ['Bash', { command: "git commit -m \"$(cat <<'EOF'\nmsg\nEOF\n)\"\nrm -rf ~/Documents" }, 'rm-recursive'],
   // Every refspec and git's own options with a value (F12)
   ['Bash', { command: 'git push origin main :secret-branch' }, 'git-push-delete'],
   ['Bash', { command: 'git push origin main +other' }, 'git-push-force'],

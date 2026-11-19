@@ -439,6 +439,24 @@ test('settings.json is replaced by rename, never rewritten in place, and a symli
   assert.equal(readJson(real).outputStyle, 'Nebi');
 });
 
+test('settings.json keeps its file mode, and a dangling symlink keeps its link', { skip: process.platform === 'win32' }, () => {
+  const home = tempDir();
+  const settingsPath = path.join(home, '.claude', 'settings.json');
+  writeJson(settingsPath, { keep: 1 });
+  fs.chmodSync(settingsPath, 0o600);
+  assert.equal(run(home).status, 0);
+  assert.equal(fs.statSync(settingsPath).mode & 0o777, 0o600);
+
+  const linked = tempDir();
+  const real = path.join(linked, 'dotfiles', 'settings.json');
+  fs.mkdirSync(path.dirname(real), { recursive: true });
+  fs.mkdirSync(path.join(linked, '.claude'), { recursive: true });
+  fs.symlinkSync(real, path.join(linked, '.claude', 'settings.json'));
+  assert.equal(run(linked).status, 0);
+  assert.equal(fs.lstatSync(path.join(linked, '.claude', 'settings.json')).isSymbolicLink(), true);
+  assert.equal(readJson(real).outputStyle, 'Nebi');
+});
+
 test('legacy bash and PowerShell sweep hooks are removed, unrelated ones stay', () => {
   const home = tempDir();
   const settingsPath = path.join(home, '.claude', 'settings.json');

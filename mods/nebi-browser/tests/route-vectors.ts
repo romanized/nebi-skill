@@ -39,7 +39,7 @@ const RAPID = { label: 'RapidSneakers Chrome', chromeProfile: 'Profile 3', devic
 const SHIPPED = JSON.stringify({ version: 1, accounts: { a: MAIN, b: RAPID } })
 const PROJECT_B = JSON.stringify({ version: 1, ...RAPID, claudeAccount: 'b' })
 const SHOP = '/w/repos/cnlsneakers'
-const CODEX_ID = 'a2ecff6d-98ef-462e-b499-5e053713a0e3'
+const CODEX_ID = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'
 
 const onDefault = (account: 'a' | 'b'): VectorRoute => ({ ...(account === 'a' ? MAIN : RAPID), claudeAccount: account, account, source: 'account', mismatch: false })
 const fromShop = (account: 'a' | 'b' | null): VectorRoute => ({ ...RAPID, claudeAccount: 'b', account, source: 'project', mismatch: account !== 'b' })

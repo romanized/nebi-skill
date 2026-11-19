@@ -285,17 +285,17 @@ function splitHeredocs(script: string): { script: string; bodies: { cmd: string;
   const lines = script.split('\n')
   const kept: string[] = []
   const bodies: { cmd: string; text: string }[] = []
-  let quote: string | null = null
+  let open = ''
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i] ?? ''
     kept.push(line)
-    const scan = heredocAt(line, quote)
-    quote = scan.quote
+    const scan = heredocAt(line, open)
+    open = scan.open
     const found = scan.heredoc
     if (found === null) continue
     const close = lines.findIndex((next, j) => j > i && (found.isIndented ? next.trim() : next) === found.end)
     if (close === -1) continue
-    const head = splitCommands(line.slice(0, found.at)).pop() ?? ''
+    const head = splitCommands(line.slice(found.from, found.at)).pop() ?? ''
     bodies.push({ cmd: commandName(head), text: lines.slice(i + 1, close).join('\n') })
     i = close
   }
@@ -304,39 +304,52 @@ function splitHeredocs(script: string): { script: string; bodies: { cmd: string;
 }
 
 /**
- * The first `<<` on a line that the shell reads as a heredoc, and the quote still open
+ * The first `<<` on a line that the shell reads as a heredoc, and what is still open
  * at the line's end. A here-string (`<<<`) is none, and neither is a `<<` inside quotes,
- * after a `#` comment or in arithmetic (`$((1 << n))`). `quote` is the one the line starts in.
+ * after a `#` comment or in arithmetic (`$((1 << n))`). Inside `"`, a `$(` reads as
+ * unquoted until its `)`, the way bash reads it, heredocs included. `open` is what the
+ * line starts in: one character per quote or parenthesis, innermost last. `from` is
+ * where the heredoc's command starts: just inside the `$(` when it opened on this line.
  */
-function heredocAt(line: string, quote: string | null): { heredoc: { at: number; isIndented: boolean; end: string } | null; quote: string | null } {
-  let open = quote
+function heredocAt(line: string, open: string): { heredoc: { at: number; from: number; isIndented: boolean; end: string } | null; open: string } {
+  let stack = open
+  const starts: number[] = [] // where the text of each parenthesis opened on this line begins
   let arithmetic = 0 // parentheses open inside (( … ))
   for (let i = 0; i < line.length; i += 1) {
     const c = line[i] ?? ''
-    if (c === '\\' && open !== "'") {
+    const top = stack.at(-1)
+    if (c === '\\' && top !== "'") {
       i += 1
-    } else if (open !== null) {
-      if (c === open) open = null
+    } else if (top === '"' && line.startsWith('$(', i) && line[i + 2] !== '(') {
+      stack += '('
+      starts.push(i + 2)
+      i += 1
+    } else if (top === '"' || top === "'") {
+      if (c === top) stack = stack.slice(0, -1)
     } else if (c === '"' || c === "'") {
-      open = c
+      stack += c
     } else if (arithmetic > 0) {
       if (c === '(') arithmetic += 1
       if (c === ')') arithmetic -= 1
     } else if (c === '(' && line[i + 1] === '(') {
       arithmetic = 2
       i += 1
+    } else if (top === '(' && (c === '(' || c === ')')) {
+      if (c === '(') starts.push(i + 1)
+      else starts.pop()
+      stack = c === '(' ? stack + c : stack.slice(0, -1)
     } else if (c === '#' && (i === 0 || /[\s;&|()]/.test(line[i - 1] ?? ''))) {
       break
     } else if (line.startsWith('<<<', i)) {
       i += 2
     } else if (line.startsWith('<<', i)) {
       const match = HEREDOC.exec(line.slice(i))
-      if (match) return { heredoc: { at: i, isIndented: match[1] === '-', end: match[3] ?? '' }, quote: null }
+      if (match) return { heredoc: { at: i, from: starts.at(-1) ?? 0, isIndented: match[1] === '-', end: match[3] ?? '' }, open: stack }
       i += 1
     }
   }
 
-  return { heredoc: null, quote: open }
+  return { heredoc: null, open: stack }
 }
 
 /** One command's words: rm, git, find, a shell or eval running a string, a database reset. */
