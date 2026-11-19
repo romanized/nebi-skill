@@ -37,7 +37,8 @@ export function outputDir({ out, label, runsRoot, home, cwd, repoRoots = [] }) {
   if (out !== undefined && /^\s*\.{1,2}\/*\s*$/.test(out)) return { error: `--out ${out} names the working folder or its parent` }
   const dir = resolve(cwd, out ?? join(runsRoot, label))
   const guarded = [home, cwd, runsRoot, ...repoRoots].filter(Boolean).map(p => resolve(p))
-  const homeLike = /^\/(?:Users|home)\/[^/]+$/.test(dir) || dir === '/root'
+  const posix = dir.replace(/^[A-Za-z]:/, '').replace(/\\/g, '/')  // C:\Users\x reads as /Users/x
+  const homeLike = /^\/(?:Users|home)\/[^/]+\/?$/i.test(posix) || posix === '/root'
   if (dir === parse(dir).root || homeLike || guarded.some(p => isWithin(p, dir))) {
     return { error: `refusing ${dir}: it is, or holds, the filesystem root, a home, the working folder, a repository or the runs folder` }
   }
