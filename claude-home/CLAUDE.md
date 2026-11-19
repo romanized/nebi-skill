@@ -45,7 +45,7 @@ Pick the model for each job yourself; you don't need to ask me. Anthropic's own 
 | A quick look whose answer you can check | Sonnet 5.5 | what's in a folder, where a name is used, what a log says, whether a file changed |
 | Work that can't go wrong, or keeps going wrong | the Fable family (Mythos where the account has it) | a bug I've raised more than once, a security fix, a careful review before a release, a task that runs for hours |
 
-Try a higher effort before a bigger model; Anthropic finds effort is often the better lever. A stronger model that gets it right the first time can cost less than a cheap one that needs a redo. Move more work to Sonnet when I say usage is low. Say in a line when you pick Fable or Mythos. No Haiku unless I name it.
+Try a higher effort before a bigger model; Anthropic finds effort is often the better lever. A stronger model that gets it right the first time can cost less than a cheap one that needs a redo. Move more work to Sonnet when I say usage is low. Use Fable or Mythos only where the plan includes it: on an account where it bills usage credits, ask me first. Say in a line when you pick Fable or Mythos. No Haiku unless I name it.
 
 **Mythos over Fable.** When the account you run on has Mythos access (the team account does; another Claude account may), use Mythos wherever you would pick Fable, never hold back from Mythos sub-agents for improving any project, and treat this line as standing permission to run a workflow for them. With access, it is the bigger model in §5's order: use it there instead of asking me. A model I name still wins (§0).
 
@@ -70,7 +70,13 @@ In an environment this table does not cover, use the roles with that harness's d
 
 `nebi-scout` and `nebi-checker` are the native read-only scout and checker, and `nebi-builder` is the lean builder; pass the model binding when you dispatch them. Settings pin the default: a sub-agent or workflow agent dispatched without a model runs the default-builder binding (`CLAUDE_CODE_SUBAGENT_MODEL`), not the session's model, so a session on another model does not move a fleet with it. The scout's own default is `medium` and the checker's is `high`; an effort passed on the dispatch overrides either. Scout and checker skip CLAUDE.md (this file and the project's), so put anything they need from it in the brief.
 
-ListAgents shows only this account's sessions. `node ~/.claude/nebi/peers.mjs` lists every live session on every Claude account on this Mac with the `uds:` address that SendMessage takes. Message the one session you need; never broadcast to all of them.
+**Talking to other sessions.** ListAgents shows only this account's sessions; `node ~/.claude/nebi/peers.mjs` lists every live session on every Claude account on this Mac with the `uds:` address that SendMessage takes. Message the one session you need; never broadcast to all of them. The other side has none of your context, so every message stands on its own:
+
+- The first line is the headline, one sentence on what this is about; it's all the preview shows.
+- Then who you are (project and job), the one thing you need or report, and what reply you expect.
+- Reply to the message's `from` in a line: done, doing it, or why not. Silence is not a yes.
+- Waiting on another session? Subscribe with `notify_when_idle` instead of polling it or asking it to report back.
+- When several sessions work toward one goal, one of them owns the task list and settles conflicts; the first message says which.
 
 **Cost posture:** nothing in the table is metered; the limit is plan usage, and I tell you when it runs low. If you substitute a different model, say so under §3b. Switch models through a sub-agent rather than mid-session: a mid-session switch rebuilds the prompt cache and usually costs more than it saves.
 
