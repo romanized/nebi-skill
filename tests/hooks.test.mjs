@@ -522,3 +522,72 @@ test('an eval run (NEBI_EVAL=1) keeps the session-start context but records noth
     rmSync(home, { recursive: true, force: true });
   }
 });
+
+test('session start shows recent complaints from this project only', () => {
+  const home = path.join(fixtureRoot, 'complaints');
+  const shop = path.join(home, 'work', 'shop');
+  const other = path.join(home, 'work', 'other');
+  const notes = path.join(home, 'work', 'notes');
+  for (const dir of [path.join(shop, 'theme'), other, path.join(notes, 'sub')]) mkdirSync(dir, { recursive: true });
+  assert.equal(spawnSync('git', ['init', '-q', shop]).status, 0);
+  const inbox = path.join(home, '.agents', 'nebi', 'feedback', 'inbox.jsonl');
+  const hours = (n) => new Date(Date.now() - n * 3_600_000).toISOString();
+  const long = `you ignored the theme rules again and ${'kept rewriting the product grid without asking '.repeat(4)}`;
+  const entry = (ts, cwd, text, kind = 'complaint') => JSON.stringify({ ts, harness: 'claude', session: 's', cwd, kind, text });
+  mkdirSync(path.dirname(inbox), { recursive: true });
+  writeFileSync(inbox, [
+    entry(hours(24), shop, 'why did you skip the theme check'),
+    entry(hours(200), shop, 'too old to show'),
+    entry(hours(96), shop, 'fourth one, capped out'),
+    entry(hours(2), path.join(shop, 'theme'), long),
+    entry(hours(1), other, 'other project complaint'),
+    'not json{',
+    entry(hours(0.5), shop, 'it would be nice if the grid had filters', 'idea'),
+    entry(hours(0.2), shop, '<task-notification><result>You didn\'t run the tests</result></task-notification>'),
+    entry(hours(0.1), shop, '<task-notification><result>cut off mid block, why did you'),
+    entry(hours(72), shop, "that's not what I asked"),
+    entry(hours(3), notes, 'plain folder complaint'),
+    entry(hours(4), path.join(notes, 'sub'), 'nested folder complaint'),
+  ].join('\n') + '\n');
+  const context = (cwd, input = {}, env = {}) => {
+    const out = runHook('claude-home/hooks/session-start.mjs', home, { cwd, session_id: 'start', ...input }, { NEBI_FEEDBACK_CAPTURE: '', ...env });
+    return out && JSON.parse(out).hookSpecificOutput.additionalContext;
+  };
+  const heading = 'Recent complaints from Nebi in this project (some may be fixed; check before acting):';
+
+  const text = context(path.join(shop, 'theme'));
+  const lines = text.split('\n');
+  const at = lines.indexOf(heading);
+  assert.ok(at >= 0, text);
+  const shown = lines.slice(at + 1, at + 4);
+  assert.match(shown[0], new RegExp(`^- ${hours(2).slice(0, 10)}: you ignored the theme rules again and kept`));
+  const clipped = shown[0].slice(`- ${hours(2).slice(0, 10)}: `.length);
+  assert.ok(clipped.endsWith('…') && clipped.length <= 141, clipped);
+  assert.ok(long.startsWith(`${clipped.slice(0, -1)} `), `cut on a word boundary: ${clipped}`);
+  assert.equal(shown[1], `- ${hours(24).slice(0, 10)}: why did you skip the theme check`);
+  assert.equal(shown[2], `- ${hours(72).slice(0, 10)}: that's not what I asked`);
+  assert.doesNotMatch(text, /fourth one|too old|other project|filters|task-notification|run the tests|cut off|folder complaint/);
+
+  const plainText = context(notes);
+  assert.match(plainText, /plain folder complaint/);
+  assert.doesNotMatch(plainText, /nested folder complaint|theme check/, 'without a repo only the same cwd counts');
+
+  assert.doesNotMatch(context(shop, {}, { NEBI_FEEDBACK_CAPTURE: 'off' }), /Recent complaints/);
+  assert.doesNotMatch(context(home), /Recent complaints/, 'nothing to show, no heading');
+  // runHook stubs process.exit, so the sub-agent run keeps the real one.
+  const target = pathToFileURL(path.join(root, 'claude-home/hooks/session-start.mjs')).href;
+  const bootstrap = `import os from 'node:os'; import { syncBuiltinESMExports } from 'node:module'; os.homedir = () => ${JSON.stringify(home)}; syncBuiltinESMExports(); await import(${JSON.stringify(target)});`;
+  const sub = spawnSync(process.execPath, ['--input-type=module', '--eval', bootstrap], {
+    input: JSON.stringify({ cwd: shop, session_id: 'start', agent_id: 'agent-1' }), encoding: 'utf8',
+    env: { ...process.env, NEBI_FEEDBACK_CAPTURE: '', TE_SIDECALL: '' },
+  });
+  assert.equal(sub.status, 0, sub.stderr);
+  assert.equal(sub.stdout, '', 'a sub-agent gets nothing');
+
+  writeFileSync(inbox, '\u0000\u0001garbage{{{\n[1,2\n');
+  assert.match(context(shop), /Nebi claude runtime active/);
+  assert.doesNotMatch(context(shop), /Recent complaints/, 'a corrupt inbox is silent');
+  rmSync(inbox);
+  assert.match(context(shop), /Nebi claude runtime active/);
+  assert.doesNotMatch(context(shop), /Recent complaints/, 'a missing inbox is silent');
+});

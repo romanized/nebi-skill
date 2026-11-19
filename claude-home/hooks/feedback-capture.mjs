@@ -9,7 +9,7 @@
 // and a prompt is never blocked. Patterns come from the user's own transcripts
 // and stay tight so normal instructions do not turn the inbox into a message log.
 // Set NEBI_FEEDBACK_CAPTURE=off for probes and test runs.
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { EVAL_RUN, HARNESS, HARNESS_HOME, PLUGIN_SIDECALL } from './runtime.mjs';
@@ -56,9 +56,14 @@ const FILE_LIKE = /\.(?:[cm]?[jt]sx?|json|md|py|liquid|css|scss|html|ya?ml|toml|
 // Agent replies that concede a mistake almost always follow a real complaint.
 const CONCESSION = /^(?:you'?re (?:right|correct)|fair(?:\s*[—–.,:!-])|my (?:fault|mistake|bad)|that'?s on me|i was wrong|good catch)/i;
 
-/** Drop quoted lines and code so a pasted log or diff cannot trigger capture. */
+// Blocks the harness injects into a prompt (background task results, reminders) are not
+// the user's words. An unclosed block (cut off by truncation) runs to the end of the text.
+const HARNESS_BLOCK = /<(task-notification|system-reminder)\b[^>]*>[\s\S]*?(?:<\/\1>|$)/g;
+
+/** Drop harness blocks, quoted lines and code so a notification, pasted log or diff cannot trigger capture. */
 function ownWords(text) {
   return text
+    .replace(HARNESS_BLOCK, ' ')
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/<pasted_content[\s\S]*?<\/pasted_content[^>]*>/g, ' ')
     .split('\n')
@@ -130,6 +135,51 @@ export function recordConcession(input) {
   const message = typeof raw === 'string' ? raw.trim() : '';
   if (!CONCESSION.test(message)) return;
   append(input, 'concession', redact(message.split('\n')[0]).slice(0, 200));
+}
+
+const RECENT_DAYS = 7;
+const RECENT_LIMIT = 3;
+const RECENT_CHARS = 140;
+
+const resolved = (value) => { try { return realpathSync.native(path.resolve(value)); } catch { return path.resolve(value); } };
+
+/** One plain line, cut on a word boundary near `max` characters. */
+function clip(text, max = RECENT_CHARS) {
+  const flat = text.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/g, ' ').trim();
+  if (flat.length <= max) return flat;
+  const space = flat.lastIndexOf(' ', max);
+  return `${flat.slice(0, space > max / 2 ? space : max).replace(/[\s.,;:!?-]+$/, '')}…`;
+}
+
+/**
+ * For session start: the newest complaints of the last week whose cwd lies in `project`
+ * (inside its git checkout, or the same folder without a repo), as "date: text" lines.
+ * Old entries that were only harness noise are skipped. Fails open to [].
+ */
+export function recentComplaints(project, now = Date.now()) {
+  try {
+    if (!project?.checkout || !existsSync(INBOX)) return [];
+    const since = now - RECENT_DAYS * 86_400_000;
+    const inProject = (cwd) => {
+      const dir = resolved(cwd);
+      return dir === project.checkout || (project.isGit && dir.startsWith(`${project.checkout}${path.sep}`));
+    };
+    const found = [];
+    for (const line of readFileSync(INBOX, 'utf8').split('\n')) {
+      let entry;
+      try { entry = JSON.parse(line); } catch { continue; }
+      if (entry?.kind !== 'complaint' || typeof entry.text !== 'string' || typeof entry.cwd !== 'string') continue;
+      const time = Date.parse(entry.ts);
+      if (!(time >= since) || !inProject(entry.cwd)) continue;
+      const text = entry.text.replace(HARNESS_BLOCK, ' ').trim();
+      // Text that held a harness block must still read as a complaint on its own.
+      if (!text || (text !== entry.text.trim() && classify(text) !== 'complaint')) continue;
+      found.push({ time, line: `${new Date(time).toISOString().slice(0, 10)}: ${clip(text)}` });
+    }
+    return found.sort((a, b) => b.time - a.time).slice(0, RECENT_LIMIT).map((item) => item.line);
+  } catch {
+    return [];
+  }
 }
 
 function main() {

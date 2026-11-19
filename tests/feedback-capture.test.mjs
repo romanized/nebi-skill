@@ -150,3 +150,18 @@ test('a plugin sidecall (TE_SIDECALL=1) captures nothing', () => {
   submit(home, "that's not what I asked", { TE_SIDECALL: '1' });
   assert.equal(fs.existsSync(path.join(home, '.agents/nebi/feedback/inbox.jsonl')), false);
 });
+
+test('harness-injected notifications and reminders are not the user\'s words', () => {
+  const note = '<task-notification>\n<status>completed</status>\n<result>You didn\'t run the tests; why did you skip them?</result>\n</task-notification>';
+  const reminder = '<system-reminder>that\'s not what I asked, still broken</system-reminder>';
+  assert.equal(classify(note), null);
+  assert.equal(classify(`${note}\n${reminder}`), null);
+  assert.equal(classify(`${note}\nI already told you to keep the header`), 'complaint');
+  const home = path.join(temp, 'notification-home');
+  submit(home, note);
+  const inbox = path.join(home, '.agents/nebi/feedback/inbox.jsonl');
+  assert.equal(fs.existsSync(inbox), false, 'a pure notification is never captured');
+  submit(home, `${note}\nI already told you to keep the header`);
+  const [line] = fs.readFileSync(inbox, 'utf8').trim().split('\n').map(JSON.parse);
+  assert.equal(line.text, 'I already told you to keep the header');
+});
