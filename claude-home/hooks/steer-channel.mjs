@@ -6,24 +6,33 @@
 //     This is the ONE hook that intentionally blocks — it's the owner's hand
 //     on the wheel, not doctrine enforcement. Delete the file to resume.
 //   STEER.md  — mid-run steering note: injected once as additionalContext,
-//     then renamed to STEER.consumed.md so it can't inject twice.
+//     then renamed to STEER.consumed.md so it can't inject twice. Only the
+//     lead consumes it: a sub-agent's tool call (agent_id) leaves it in place.
 // Browser guard (Claude only, the no-mod twin of nebi-browser): when the
 // project has a route (mods/CONTRACT.md), switch_browser and select_browser
-// naming another device are denied with what to call instead, unless Nebi's
-// latest prompt asked to pair, switch or name a browser.
+// naming another device are denied with what to call instead. The same
+// allowances as the mod: Nebi's latest prompt asks to pair or switch (both
+// tools), or, for select_browser only, it names a browser or is his reply
+// after a select_browser refusal.
 // It also records skill loads for the usage report (../nebi/skill-usage.mjs).
 // Fast (existsSync on the hot path) and fail-safe: any error → exit 0.
 import { readFileSync, existsSync, renameSync, rmSync, openSync, readSync, fstatSync, closeSync } from 'node:fs';
 import path from 'node:path';
-import { EVAL_RUN, HARNESS, NEBI_DIR } from './runtime.mjs';
+import { EVAL_RUN, HARNESS, NEBI_DIR, PLUGIN_SIDECALL } from './runtime.mjs';
 
 const STOP_FILE = path.join(NEBI_DIR, 'AGENT_STOP');
 const STEER_FILE = path.join(NEBI_DIR, 'STEER.md');
 const CONSUMED_FILE = path.join(NEBI_DIR, 'STEER.consumed.md');
 
 const CHROME = 'mcp__claude-in-chrome__';
-// Same wording test as nebi-browser's: "pair the rapidsneakers browser", "switch chrome".
+// Same wording tests as mods/nebi-browser/hooks/register.tsx; keep them in step.
+// Asks to pair or switch: "pair the rapidsneakers browser", "switch chrome".
 const ASKS_TO_PAIR = /\b(re-?pair|pair|switch|re-?name|name|nam)(s|es|ed|ing)?\b[^.?!\n]{0,40}\b(browsers?|chromes?)\b|\b(browsers?|chromes?)\b[^.?!\n]{0,40}\b(re-?pair|pair|switch|re-?name|name|nam)(s|es|ed|ing)?\b/i;
+// Points at another browser: "nope wrong browser", "my main chrome", "use browser 2".
+const NAMES_A_BROWSER =
+  /\b(wrong|other|another|different|right|correct|main)\s+(\w+\s+)?(browsers?|chromes?)\b|\b(use|open|in|on|into|with|to)\s+(the\s+|my\s+)?(?!(the|a|an|this|that|your|my|our|same)\s)[\w-]+\s+(browsers?|chromes?)\b|\b(browsers?|chromes?)\s+\d\b/i;
+// A refused select_browser, from this hook or the mod, starts with this.
+const REFUSAL = /^\s*This project uses /;
 // Prompt origins that are Nebi typing (a task notification or a peer is not).
 const OWN_PROMPT = new Set(['human', 'composer', 'bridge']);
 const TRANSCRIPT_TAIL = 1024 * 1024;
@@ -36,9 +45,17 @@ function deny(reason) {
   );
 }
 
-/** The text of the transcript's latest prompt when Nebi typed it, else ''. */
+const textOf = (content) => (typeof content === 'string'
+  ? content
+  : Array.isArray(content) ? content.filter((b) => b?.type === 'text').map((b) => b.text).join('\n') : '');
+
+/**
+ * Nebi's prompt when it is the transcript's latest one, else null: its text,
+ * and whether it answers a select_browser refused since his previous prompt
+ * (the mod's switchGate going from `asked` to `open`).
+ */
 function latestOwnPrompt(transcriptPath) {
-  if (typeof transcriptPath !== 'string' || !transcriptPath) return '';
+  if (typeof transcriptPath !== 'string' || !transcriptPath) return null;
   const fd = openSync(transcriptPath, 'r');
   let tail;
   try {
@@ -50,16 +67,33 @@ function latestOwnPrompt(transcriptPath) {
     closeSync(fd);
   }
   const lines = tail.toString('utf8').split('\n');
+  let prompt = null;
+  const refused = new Set();
   for (let i = lines.length - 1; i >= 0; i -= 1) {
     let entry;
     try { entry = JSON.parse(lines[i]); } catch { continue; }
-    if (entry?.type !== 'user' || !entry.origin) continue;
-    if (!OWN_PROMPT.has(entry.origin.kind)) return '';
-    const content = entry.message?.content;
-    if (typeof content === 'string') return content;
-    return Array.isArray(content) ? content.filter((b) => b?.type === 'text').map((b) => b.text).join('\n') : '';
+    const content = entry?.message?.content;
+    if (entry?.type === 'user' && entry.origin) {
+      const isOwn = OWN_PROMPT.has(entry.origin.kind);
+      if (prompt === null) {
+        if (!isOwn) return null;
+        prompt = { text: textOf(content), answersRefusal: false };
+      } else if (isOwn) {
+        break;
+      }
+      continue;
+    }
+    if (prompt === null || !Array.isArray(content)) continue;
+    // Walking backwards, a tool result comes before the call it answers.
+    for (const block of content) {
+      if (block?.type === 'tool_result' && block.is_error && REFUSAL.test(textOf(block.content))) refused.add(block.tool_use_id);
+      if (block?.type === 'tool_use' && block.name === `${CHROME}select_browser` && refused.has(block.id)) {
+        prompt.answersRefusal = true;
+        return prompt;
+      }
+    }
   }
-  return '';
+  return prompt;
 }
 
 /** Why this Claude in Chrome call is refused, or null to let it pass. */
@@ -73,16 +107,18 @@ async function browserDenial(input) {
   if (!route?.deviceId) return null;
   const asked = String(input.tool_input?.deviceId ?? '').trim().toLowerCase();
   if (name === 'select_browser' && asked === route.deviceId.toLowerCase()) return null;
-  let isPairingAsked = false;
-  try { isPairingAsked = ASKS_TO_PAIR.test(latestOwnPrompt(input.transcript_path)); } catch { /* unread: stay strict */ }
-  if (isPairingAsked) return null;
+  let prompt = null;
+  try { prompt = latestOwnPrompt(input.transcript_path); } catch { /* unread: stay strict */ }
+  const text = prompt?.text ?? '';
+  if (ASKS_TO_PAIR.test(text)) return null;
+  if (name === 'select_browser' && (prompt?.answersRefusal || NAMES_A_BROWSER.test(text))) return null;
   // A route file can sit in a cloned repository: one short plain line per value.
   const plain = (value) => String(value ?? '').replace(/[\p{Cc}\p{Cf}]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 64);
   const device = plain(route.deviceId);
   const label = plain(route.label);
   return name === 'switch_browser'
     ? `switch_browser pops a pairing request in every Chrome. Call select_browser with deviceId ${device}${label ? ` (${label})` : ''} instead.`
-    : `This project uses ${label ? `${label} (${device})` : device}. Call select_browser with deviceId ${device} instead.`;
+    : `This project uses ${label ? `${label} (${device})` : device}. Call select_browser with deviceId ${device} instead. If Nebi wants another browser, ask him in one plain sentence: his reply lets you switch.`;
 }
 
 async function main(input) {
@@ -98,7 +134,7 @@ async function main(input) {
     return true;
   }
 
-  if (!existsSync(STEER_FILE)) return;
+  if (input.agent_id || PLUGIN_SIDECALL || !existsSync(STEER_FILE)) return;
   const note = readFileSync(STEER_FILE, 'utf8');
   if (!note.trim()) return;
 

@@ -8,6 +8,8 @@ export type VectorRoute = {
   label: string | null
   chromeProfile: string | null
   deviceId: string | null
+  // Present only when the file names one.
+  codexBrowserId?: string
   claudeAccount: 'a' | 'b' | null
   account: 'a' | 'b' | null
   source: 'project' | 'account'
@@ -37,6 +39,7 @@ const RAPID = { label: 'RapidSneakers Chrome', chromeProfile: 'Profile 3', devic
 const SHIPPED = JSON.stringify({ version: 1, accounts: { a: MAIN, b: RAPID } })
 const PROJECT_B = JSON.stringify({ version: 1, ...RAPID, claudeAccount: 'b' })
 const SHOP = '/w/repos/cnlsneakers'
+const CODEX_ID = 'a2ecff6d-98ef-462e-b499-5e053713a0e3'
 
 const onDefault = (account: 'a' | 'b'): VectorRoute => ({ ...(account === 'a' ? MAIN : RAPID), claudeAccount: account, account, source: 'account', mismatch: false })
 const fromShop = (account: 'a' | 'b' | null): VectorRoute => ({ ...RAPID, claudeAccount: 'b', account, source: 'project', mismatch: account !== 'b' })
@@ -147,4 +150,25 @@ export const ROUTE_VECTORS: readonly RouteVector[] = [
     files: { '/w/repos/label-only/.claude/browser.json': JSON.stringify({ label: 'Work Chrome', deviceId: '', claudeAccount: 'c' }), [DEFAULTS]: SHIPPED },
     expected: { label: 'Work Chrome', chromeProfile: null, deviceId: null, claudeAccount: null, account: 'a', source: 'project', mismatch: false },
   },
+  {
+    name: 'a project file carries its codexBrowserId',
+    home: HOME,
+    cwd: '/w/repos/codex',
+    gitDirs: ['/w/repos/codex'],
+    files: { '/w/repos/codex/.claude/browser.json': JSON.stringify({ version: 1, ...RAPID, codexBrowserId: CODEX_ID, claudeAccount: 'b' }), [DEFAULTS]: SHIPPED },
+    expected: { ...RAPID, codexBrowserId: CODEX_ID, claudeAccount: 'b', account: 'a', source: 'project', mismatch: true },
+  },
+  {
+    name: 'a project file naming only a codexBrowserId is a route',
+    home: HOME,
+    cwd: '/w/repos/codex-only',
+    gitDirs: ['/w/repos/codex-only'],
+    files: { '/w/repos/codex-only/.claude/browser.json': JSON.stringify({ codexBrowserId: CODEX_ID, deviceId: 7 }), [DEFAULTS]: SHIPPED },
+    expected: { label: null, chromeProfile: null, deviceId: null, codexBrowserId: CODEX_ID, claudeAccount: null, account: 'a', source: 'project', mismatch: false },
+  },
+  plain('an account default carries its codexBrowserId; an empty one is left out', `${HOME}/.claude-max2`,
+    { [DEFAULTS]: JSON.stringify({ version: 1, accounts: { a: { ...MAIN, codexBrowserId: '' }, b: { ...RAPID, codexBrowserId: CODEX_ID } } }) },
+    { ...RAPID, codexBrowserId: CODEX_ID, claudeAccount: 'b', account: 'b', source: 'account', mismatch: false }),
+  plain('an empty codexBrowserId is left out of the route', undefined,
+    { [DEFAULTS]: JSON.stringify({ version: 1, accounts: { a: { ...MAIN, codexBrowserId: '' } } }) }, onDefault('a')),
 ]

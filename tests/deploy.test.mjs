@@ -391,8 +391,84 @@ test('doctrine-owned settings are set on every run while other keys survive', ()
   assert.match(drifted.stderr, /Configuration drift: Claude/);
 });
 
-test('a non-object env or enabledPlugins fails preflight', () => {
-  for (const settings of [{ env: ['DISABLE_AUTOUPDATER=1'] }, { enabledPlugins: 'all' }]) {
+test('secret deny rules are added once and the user\'s own permissions survive', () => {
+  const home = tempDir();
+  const settingsPath = path.join(home, '.claude', 'settings.json');
+  const own = { allow: ['Bash(npm test)'], ask: ['Bash(git push *)'], deny: ['Read(./.env)', 'Read(~/.ssh/**)'], defaultMode: 'bypassPermissions' };
+  writeJson(settingsPath, { permissions: own });
+  assert.equal(run(home).status, 0);
+  const { permissions } = readJson(settingsPath);
+  assert.deepEqual(permissions, {
+    ...own,
+    deny: ['Read(./.env)', 'Read(~/.ssh/**)', 'Read(~/.agents/nebi/secrets/**)', 'Edit(~/.agents/nebi/secrets/**)', 'Edit(~/.ssh/**)'],
+  });
+  const first = fs.readFileSync(settingsPath, 'utf8');
+  assert.equal(run(home).status, 0);
+  assert.equal(fs.readFileSync(settingsPath, 'utf8'), first, 'a second deploy adds nothing');
+  assert.equal(run(home, ['--verify']).status, 0);
+  writeJson(settingsPath, { ...readJson(settingsPath), permissions: own });
+  assert.match(run(home, ['--verify']).stderr, /Configuration drift: Claude/, 'a removed rule is drift');
+
+  const fresh = tempDir();
+  assert.equal(run(fresh).status, 0);
+  assert.deepEqual(readJson(path.join(fresh, '.claude', 'settings.json')).permissions, {
+    deny: ['Read(~/.agents/nebi/secrets/**)', 'Edit(~/.agents/nebi/secrets/**)', 'Read(~/.ssh/**)', 'Edit(~/.ssh/**)'],
+  });
+});
+
+test('settings.json is replaced by rename, never rewritten in place, and a symlink keeps its link', () => {
+  const home = tempDir();
+  const settingsPath = path.join(home, '.claude', 'settings.json');
+  writeJson(settingsPath, { keep: 1 });
+  // A hard link shares the file's bytes: an in-place write would change it too.
+  const twin = path.join(home, 'settings.twin.json');
+  fs.linkSync(settingsPath, twin);
+  assert.equal(run(home).status, 0);
+  assert.deepEqual(readJson(twin), { keep: 1 }, 'the old file was not written in place');
+  assert.equal(readJson(settingsPath).keep, 1);
+  assert.deepEqual(fs.readdirSync(path.dirname(settingsPath)).filter((name) => name.endsWith('.tmp')), [], 'no temp file left behind');
+
+  if (process.platform === 'win32') return;
+  const linked = tempDir();
+  const real = path.join(linked, 'dotfiles', 'settings.json');
+  writeJson(real, { keep: 2 });
+  fs.mkdirSync(path.join(linked, '.claude'), { recursive: true });
+  fs.symlinkSync(real, path.join(linked, '.claude', 'settings.json'));
+  assert.equal(run(linked).status, 0);
+  assert.equal(fs.lstatSync(path.join(linked, '.claude', 'settings.json')).isSymbolicLink(), true);
+  assert.equal(readJson(real).outputStyle, 'Nebi');
+});
+
+test('legacy bash and PowerShell sweep hooks are removed, unrelated ones stay', () => {
+  const home = tempDir();
+  const settingsPath = path.join(home, '.claude', 'settings.json');
+  const sh = path.join(home, '.claude', 'nebi', 'session-start-sweep.sh');
+  const ps1 = path.join(home, '.claude', 'nebi', 'session-start-sweep.ps1');
+  const unrelated = [
+    { type: 'command', command: 'bash /tmp/elsewhere/session-start-sweep.sh' },
+    { type: 'command', command: `bash ${sh} --extra` },
+  ];
+  writeJson(settingsPath, {
+    hooks: {
+      SessionStart: [
+        { hooks: [{ type: 'command', command: 'bash', args: [sh], timeout: 20 }] },
+        { hooks: [{ type: 'command', command: `bash '${sh}'`, timeout: 20 }] },
+        { hooks: [{ type: 'command', command: `bash ${sh}` }, ...unrelated] },
+        { hooks: [{ type: 'command', command: `powershell.exe -NoProfile -ExecutionPolicy Bypass -File "${ps1}"` }] },
+        { hooks: [{ type: 'command', command: 'powershell.exe', args: ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ps1] }] },
+      ],
+    },
+  });
+  assert.equal(run(home).status, 0);
+  const hooks = readJson(settingsPath).hooks.SessionStart.flatMap((group) => group.hooks);
+  assert.deepEqual(hooks.map((hook) => hook.command), [
+    ...unrelated.map((hook) => hook.command),
+    nodeCommandForCurrentPlatform(path.join(home, '.claude', 'hooks', 'session-start.mjs')),
+  ]);
+});
+
+test('a non-object env, enabledPlugins or permissions fails preflight', () => {
+  for (const settings of [{ env: ['DISABLE_AUTOUPDATER=1'] }, { enabledPlugins: 'all' }, { permissions: [] }, { permissions: { deny: 'Read(~/.ssh/**)' } }]) {
     const home = tempDir();
     const settingsPath = path.join(home, '.claude', 'settings.json');
     writeJson(settingsPath, settings);

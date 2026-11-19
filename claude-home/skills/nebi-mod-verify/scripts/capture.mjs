@@ -20,16 +20,18 @@
 //   and Enter is pressed only when the input box visibly holds the typed text. meta.json `dialogs` logs each one.
 // - Settings guard: ~/.claude/settings.json (and the CLAUDE_CONFIG_DIR one) is snapshotted before launch. If the run
 //   changed `permissions` or `enabledPlugins`, those keys are put back and the run fails; other changed top-level
-//   keys are reported in meta.json `settingsGuard`, never touched.
+//   keys are reported in meta.json `settingsGuard`, never touched. Ctrl-C or SIGTERM stops claude and runs the
+//   same check before this script exits.
+// - The run folder is wiped first, so --out and --label go through outputDir() (guards.mjs) before any delete.
 import { spawn, execFileSync } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { mkdirSync, rmSync, writeFileSync, existsSync, readdirSync } from 'node:fs'
-import { join, dirname, resolve } from 'node:path'
+import { join, dirname } from 'node:path'
 import os from 'node:os'
 import { fileURLToPath } from 'node:url'
 import { CACHE, ensureDeps } from './deps.mjs'
 import { loadGhosttyTheme, screenText, fullText, screenHTML, pageSize, htmlToPng } from './render.mjs'
-import { KEYS, planDialog, readyToSubmit, settingsFiles, snapshotSettings, enforceSettings } from './guards.mjs'
+import { KEYS, planDialog, readyToSubmit, settingsFiles, snapshotSettings, enforceSettings, outputDir } from './guards.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const { Terminal } = ensureDeps()('@xterm/headless')
@@ -49,7 +51,11 @@ const opts = parseArgs(process.argv.slice(2))
 const LABEL = opts.label || (opts.safeMode ? 'baseline' : 'after')
 const COLS = +(opts.cols || 150)
 const ROWS = +(opts.rows || 46)
-const OUT = resolve(opts.out || join(CACHE, 'runs', LABEL))
+const gitRoot = cwd => { try { return execFileSync('git', ['-C', cwd, 'rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() } catch { return null } }
+const target = outputDir({ out: opts.out, label: LABEL, runsRoot: join(CACHE, 'runs'), home: os.homedir(), cwd: process.cwd(),
+  repoRoots: [gitRoot(process.cwd()), gitRoot(HERE)] })
+if (target.error) { console.error(target.error); process.exit(2) }
+const OUT = target.dir
 const DEMO = join(CACHE, 'demo')
 const BEACONS = join(os.homedir(), '.claude', 'nebi', 'beacons')
 
@@ -112,6 +118,19 @@ child.stdout.on('data', d => {
   term.write(d)
 })
 child.on('exit', code => { exited = code ?? 'signal'; log(`claude exited (${exited})`) })
+// Ctrl-C or a kill: stop claude first, so it cannot write settings after the guard has put them back; exiting runs it.
+let stopping = false
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.on(signal, async () => {
+    if (stopping) return
+    stopping = true
+    log(`${signal}: stopping claude, then checking settings`)
+    if (exited === null) child.kill('SIGTERM')
+    for (let i = 0; i < 30 && exited === null; i++) await sleep(100)
+    if (exited === null) child.kill('SIGKILL')
+    process.exit(signal === 'SIGINT' ? 130 : 143)
+  })
+}
 term.onData(d => { if (exited === null) child.stdin.write(d) }) // replies to terminal queries (DA, DSR, ...)
 
 const send = s => { if (exited === null) child.stdin.write(s) }

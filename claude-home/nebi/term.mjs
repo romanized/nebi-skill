@@ -8,6 +8,9 @@
 //   so it runs exactly as if the user typed it and the pane stays open as a normal shell when the command ends.
 //   --dry-run prints the AppleScript instead of running it; the read-only lookup of the session's window still runs.
 //   Example: node ~/.claude/nebi/term.mjs --dir ~/Documents/GitHub/karpet24 -- claude "audit the product pages"
+//   Several words after -- are a program and its arguments: each is shell-quoted, so "audit the product pages" stays
+//   one argument. A single word after -- is a shell line typed as is: -- "npm test && npm run build". A command
+//   holding a line break is refused, because the shell would run what comes before it on its own.
 //
 // Finding the calling session's window: Ghostty's AppleScript dictionary exposes each terminal's title and working
 // directory, not its tty. Claude Code titles its terminal "<spinner> <session name>" when Nebi named the session, and
@@ -29,7 +32,14 @@ import path from 'node:path';
 const argv = process.argv.slice(2);
 const sep = argv.indexOf('--');
 const opts = sep < 0 ? argv : argv.slice(0, sep);
-const command = sep < 0 ? '' : argv.slice(sep + 1).join(' ');
+// POSIX single quotes, left off a word that needs none.
+const shellQuote = (s) => (/^[\w@%+=:,./-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
+const words = sep < 0 ? [] : argv.slice(sep + 1);
+const command = words.length === 1 ? words[0] : words.map(shellQuote).join(' ');
+if (/[\r\n]/.test(command)) {
+  console.error('The command holds a line break; pass it on one line.');
+  process.exit(2);
+}
 const value = (flag) => { const i = opts.indexOf(flag); return i < 0 ? undefined : opts[i + 1]; };
 const home = process.env.HOME ?? os.homedir();
 const untilde = (p) => p.replace(/^~(?=$|\/)/, home);

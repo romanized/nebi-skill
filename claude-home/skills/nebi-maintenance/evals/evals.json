@@ -41,10 +41,10 @@
       "id": 4,
       "name": "authorized-integration",
       "prompt": "Decide the next action only; do not execute. The user named an MIT skill repo and asked to integrate it. Its code, permissions, provenance and update history are reviewed and nothing is unsafe. One small technique in it would also fit an existing Nebi skill.",
-      "expected_output": "Install the named skill from its pinned upstream for both clients and record it in the upstream register; do not replace the install with an adaptation. Borrowing the technique into a Nebi skill is optional and additional. Do not ask for the same authorization again.",
+      "expected_output": "Install the named skill from its pinned upstream where it loads in Claude Code (no Codex copy while Codex is parked) and record it in the upstream register; do not replace the install with an adaptation. Borrowing the technique into a Nebi skill is optional and additional. Do not ask for the same authorization again.",
       "files": [],
       "expectations": [
-        "Installs the named upstream pinned, for both clients",
+        "Installs the named upstream pinned, for Claude Code only while Codex is parked",
         "Records it in the upstream register with its update command",
         "Does not substitute an adaptation for the install",
         "Honors existing integration authorization without another approval loop"
@@ -66,7 +66,7 @@
       "id": 6,
       "name": "named-integration",
       "prompt": "Decide integration only; do not execute. The user names a browser-automation skill repo and asks to integrate it. Native browser control already handles today's task; the candidate adds a CLI, a local daemon and a browser extension. Source review found nothing unsafe.",
-      "expected_output": "Install the real upstream pinned to a commit, record it in the upstream register with install locations and update command, make it load in both harnesses, and route the overlap with the native browser. Any adapt/defer choice is announced with its reason instead of silently replacing the install.",
+      "expected_output": "Install the real upstream pinned to a commit, record it in the upstream register with install locations and update command, make it load in Claude Code (no Codex copy while Codex is parked), and route the overlap with the native browser. Any adapt/defer choice is announced with its reason instead of silently replacing the install.",
       "files": [],
       "expectations": [
         "Installs the named upstream rather than an original-wording adaptation",

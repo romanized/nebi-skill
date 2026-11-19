@@ -291,10 +291,22 @@ function nodeCommand(script) {
   return `node ${shellQuote(script)}`;
 }
 
-/** Write JSON, then confirm the exact bytes and parseable readback. */
+/**
+ * Write JSON atomically (a sibling temp file renamed over the target, so a
+ * crash or a concurrent reader never sees half a file), then confirm the
+ * exact bytes and parseable readback.
+ */
 function writeJsonAndVerify(file, value, label) {
   const expected = `${JSON.stringify(value, null, 2)}\n`;
-  fs.writeFileSync(file, expected, 'utf8');
+  // A symlinked settings.json (a dotfiles repo) keeps its link: the rename lands on the real file.
+  const target = fs.existsSync(file) ? fs.realpathSync(file) : file;
+  const temp = `${target}.${process.pid}.tmp`;
+  try {
+    fs.writeFileSync(temp, expected, 'utf8');
+    fs.renameSync(temp, target);
+  } finally {
+    fs.rmSync(temp, { force: true });
+  }
   const actual = fs.readFileSync(file, 'utf8');
   if (actual !== expected) throw new Error(`${label} readback did not match the written JSON.`);
   try {
@@ -312,10 +324,27 @@ function commandRunsScript(command, script) {
   if (typeof command !== 'string') return false;
   if (command === nodeCommand(script)) return true;
   const quoted = command.match(/^node\s+(?:"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)')\s*$/);
-  if (!quoted) return false;
-  const raw = quoted[1] ?? quoted[2];
-  const unescaped = raw.replace(/\\([\\"'])/g, '$1');
-  return unescaped === script;
+  if (quoted) {
+    const raw = quoted[1] ?? quoted[2];
+    const unescaped = raw.replace(/\\([\\"'])/g, '$1');
+    return unescaped === script;
+  }
+  return legacySweepRunsScript(command, script);
+}
+
+/**
+ * The old SessionStart sweep as one command string: bash/sh <script>, or
+ * powershell(.exe)/pwsh [flags] -File <script>, the script bare or quoted.
+ * Only .sh and .ps1 scripts, and only as the last word.
+ */
+function legacySweepRunsScript(command, script) {
+  if (!/\.(?:sh|ps1)$/.test(script)) return false;
+  const words = [...command.matchAll(/"((?:\\.|[^"\\])*)"|'([^']*)'|(\S+)/g)]
+    .map((m) => m[1]?.replace(/\\([\\"'])/g, '$1') ?? m[2] ?? m[3]);
+  if (words.length < 2 || words.at(-1) !== script) return false;
+  const program = path.basename(words[0]).toLowerCase();
+  if (program === 'bash' || program === 'sh') return words.length === 2;
+  return ['powershell', 'powershell.exe', 'pwsh', 'pwsh.exe'].includes(program) && words.at(-2).toLowerCase() === '-file';
 }
 
 /** Copy one file, creating parent directories. Returns true if copied. */
@@ -479,10 +508,13 @@ function validateClaudeSettings(settings, label) {
   if (Object.hasOwn(settings, 'claudeMdExcludes') && !Array.isArray(settings.claudeMdExcludes)) {
     throw new Error(`${label}.claudeMdExcludes must be an array when present.`);
   }
-  for (const key of ['env', 'enabledPlugins']) {
+  for (const key of ['env', 'enabledPlugins', 'permissions']) {
     if (Object.hasOwn(settings, key) && !isPlainObject(settings[key])) {
       throw new Error(`${label}.${key} must be a JSON object when present.`);
     }
+  }
+  if (isPlainObject(settings.permissions) && Object.hasOwn(settings.permissions, 'deny') && !Array.isArray(settings.permissions.deny)) {
+    throw new Error(`${label}.permissions.deny must be an array when present.`);
   }
   if (!Object.hasOwn(settings, 'hooks')) return;
   if (!isPlainObject(settings.hooks)) {
@@ -713,6 +745,17 @@ const DOCTRINE_ENV = {
   // (CLAUDE.md §1) instead of inheriting the session's model. A dispatch `model` still wins.
   CLAUDE_CODE_SUBAGENT_MODEL: 'opus',
 };
+// Claude's own tools never read or edit these, in any mode: deny rules hold even
+// under bypassPermissions. Read and Edit rules also cover the file commands
+// Claude Code recognizes in Bash (cat, head, tail, sed, tee, < and >), not a
+// node or python script that opens the file itself, so scripts that load an
+// API key keep working (permissions docs, checked 2026-11-19).
+const SECRET_DENY_RULES = [
+  'Read(~/.agents/nebi/secrets/**)',
+  'Edit(~/.agents/nebi/secrets/**)',
+  'Read(~/.ssh/**)',
+  'Edit(~/.ssh/**)',
+];
 const NEBI_MODS = [
   'nebi-beacon', 'nebi-constellation', 'nebi-quiet', 'nebi-replies', 'nebi-receipt',
   'nebi-browser', 'nebi-session-guard', 'nebi-red-button', 'nebi-model-lock', 'nebi-wispr',
@@ -724,9 +767,18 @@ const DOCTRINE_PLUGINS = {
   ...Object.fromEntries(RETIRED_MODS.map((name) => [`${name}@nebi-mods`, false])),
 };
 
-/** Set the doctrine's keys; every other key in settings, env and enabledPlugins stays. */
+/** Add the secret deny rules once; the user's own allow, ask and deny entries stay in order. */
+function mergePermissions(existing) {
+  const permissions = isPlainObject(existing) ? { ...existing } : {};
+  const deny = Array.isArray(permissions.deny) ? permissions.deny : [];
+  permissions.deny = [...deny, ...SECRET_DENY_RULES.filter((rule) => !deny.includes(rule))];
+  return permissions;
+}
+
+/** Set the doctrine's keys; every other key in settings, env, enabledPlugins and permissions stays. */
 function applyDoctrineSettings(settings) {
   Object.assign(settings, DOCTRINE_SETTINGS);
+  settings.permissions = mergePermissions(settings.permissions);
   settings.env = { ...(isPlainObject(settings.env) ? settings.env : {}), ...DOCTRINE_ENV };
   settings.enabledPlugins = {
     ...(isPlainObject(settings.enabledPlugins) ? settings.enabledPlugins : {}),
@@ -739,7 +791,8 @@ function hasDoctrineSettings(settings) {
   const holds = (object, expected) =>
     isPlainObject(object) && Object.entries(expected).every(([key, value]) => object[key] === value);
   return holds(settings, DOCTRINE_SETTINGS) && holds(settings.env, DOCTRINE_ENV) &&
-    holds(settings.enabledPlugins, DOCTRINE_PLUGINS);
+    holds(settings.enabledPlugins, DOCTRINE_PLUGINS) &&
+    SECRET_DENY_RULES.every((rule) => settings.permissions?.deny?.includes(rule));
 }
 
 /**
@@ -1240,6 +1293,7 @@ function main() {
   console.log('  hooks.SessionEnd  -> node session-end-state.mjs (session facts + ledger prune, timeout 15)');
   console.log(`  ${Object.entries(DOCTRINE_SETTINGS).map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(', ')}`);
   console.log(`  env: ${Object.keys(DOCTRINE_ENV).join(', ')} (other env keys untouched)`);
+  console.log(`  permissions.deny += ${SECRET_DENY_RULES.join(', ')} (other rules untouched)`);
   console.log(`  enabledPlugins: ${NEBI_MODS.length} nebi mods on; ${RETIRED_MODS.join(', ')} and cc-plugin-you-should-know off`);
 
   // --- 2b. Codex deploy (core + seven common skills + sources/state) ----------

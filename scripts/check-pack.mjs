@@ -6,7 +6,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseTriggers } from '../claude-home/nebi/run-trigger-evals.mjs';
 
-export function checkPack(root = fileURLToPath(new URL('../', import.meta.url))) {
+// Codex is parked (claude-home/CLAUDE.md §1), so codex-home/AGENTS.md may lag
+// claude-home/CLAUDE.md. Set this to false when Codex is back to enforce the
+// date and section parity between the two cores again.
+export const CODEX_PARKED = true;
+
+export function checkPack(root = fileURLToPath(new URL('../', import.meta.url)), { codexParked = CODEX_PARKED } = {}) {
   const errors = [];
   const metrics = [];
   const require = (condition, message) => { if (!condition) errors.push(message); };
@@ -49,11 +54,13 @@ export function checkPack(root = fileURLToPath(new URL('../', import.meta.url)))
     require(new Set(prompts).size === prompts.length, `${dir}: duplicate/conflicting trigger prompt`);
     metrics.push({ skill: dir, listingChars: dir.length + (fields.description?.length ?? 0), bodyLines: body.split('\n').length, triggers: prompts.length, behaviorCases: corpus.evals.length });
   }
-  const cores = ['claude-home/CLAUDE.md', 'codex-home/AGENTS.md'].map((file) => fs.readFileSync(path.join(root, file), 'utf8'));
-  const dates = cores.map((raw) => raw.match(/as of\s+\*\*(\d{4}-\d{2}-\d{2})\*\*/)?.[1]);
-  require(dates.every(Boolean) && new Set(dates).size === 1, 'Harness binding review dates differ or are missing');
-  const headings = cores.map((raw) => [...raw.matchAll(/^## (\d+[a-z]?)[.\s]/gm)].map((m) => m[1]).join(','));
-  require(new Set(headings).size === 1, 'Harness core section IDs differ');
+  if (!codexParked) {
+    const cores = ['claude-home/CLAUDE.md', 'codex-home/AGENTS.md'].map((file) => fs.readFileSync(path.join(root, file), 'utf8'));
+    const dates = cores.map((raw) => raw.match(/as of\s+\*\*(\d{4}-\d{2}-\d{2})\*\*/)?.[1]);
+    require(dates.every(Boolean) && new Set(dates).size === 1, 'Harness binding review dates differ or are missing');
+    const headings = cores.map((raw) => [...raw.matchAll(/^## (\d+[a-z]?)[.\s]/gm)].map((m) => m[1]).join(','));
+    require(new Set(headings).size === 1, 'Harness core section IDs differ');
+  }
   const template = fs.readFileSync(path.join(root, 'claude-home/nebi/current-work.template.md'), 'utf8');
   require(template.split('\n').slice(0, 4).every((line, i) => line.startsWith(['Project:', 'Goal:', 'Last state:', 'Next step:'][i])), 'Current-work template canonical fields differ');
   return { errors, metrics, listingChars: metrics.reduce((sum, s) => sum + s.listingChars, 0) };

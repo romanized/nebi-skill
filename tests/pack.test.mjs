@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkPack } from '../scripts/check-pack.mjs';
+import { CODEX_PARKED, checkPack } from '../scripts/check-pack.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 test('all masters, corpora, references, and harness invariants validate', () => {
   assert.deepEqual(checkPack(root).errors, []);
@@ -21,7 +21,18 @@ test('checker catches broken references, duplicate evals, invalid YAML and harne
   const otherSkill = path.join(temp, 'claude-home/skills/nebi-maintenance/SKILL.md');
   fs.writeFileSync(otherSkill, fs.readFileSync(otherSkill, 'utf8').replace(/^description:.*$/m, 'description: Invalid: unquoted YAML'));
   fs.appendFileSync(path.join(temp, 'codex-home/AGENTS.md'), '\n## 11. accidental drift\n');
-  const errors = checkPack(temp).errors.join('\n');
+  const errors = checkPack(temp, { codexParked: false }).errors.join('\n');
   assert.match(errors, /missing reference/); assert.match(errors, /duplicate case ID/);
   assert.match(errors, /YAML quoting/); assert.match(errors, /section IDs differ/);
+});
+test('Codex core parity is skipped while Codex is parked, and comes back with the flag', (t) => {
+  assert.equal(CODEX_PARKED, true);
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-parked-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  for (const dir of ['claude-home', 'codex-home']) fs.cpSync(path.join(root, dir), path.join(temp, dir), { recursive: true });
+  const core = path.join(temp, 'claude-home/CLAUDE.md');
+  fs.writeFileSync(core, fs.readFileSync(core, 'utf8').replace(/as of\s+\*\*\d{4}-\d{2}-\d{2}\*\*/, 'as of **2099-01-01**') + '\n## 99. Claude only\n');
+  assert.deepEqual(checkPack(temp).errors, [], 'parked: CLAUDE.md may move ahead of AGENTS.md');
+  const errors = checkPack(temp, { codexParked: false }).errors.join('\n');
+  assert.match(errors, /review dates differ/); assert.match(errors, /section IDs differ/);
 });

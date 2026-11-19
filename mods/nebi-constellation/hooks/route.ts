@@ -69,7 +69,8 @@ export function parseObject(text: string | null): Record<string, unknown> | null
   }
 }
 
-type Browser = Pick<BrowserRoute, 'label' | 'chromeProfile' | 'deviceId'>
+// codexBrowserId: the ChatGPT extension instance the codex-browser skill selects.
+type Browser = Pick<BrowserRoute, 'label' | 'chromeProfile' | 'deviceId'> & { codexBrowserId?: string }
 
 const text = (value: unknown) => (typeof value === 'string' && value ? value : null)
 
@@ -77,9 +78,12 @@ const text = (value: unknown) => (typeof value === 'string' && value ? value : n
 function browserOf(entry: unknown): Browser | null {
   if (!entry || typeof entry !== 'object') return null
   const fields = entry as Record<string, unknown>
-  const browser = { label: text(fields.label), chromeProfile: text(fields.chromeProfile), deviceId: text(fields.deviceId) }
+  const browser: Browser = { label: text(fields.label), chromeProfile: text(fields.chromeProfile), deviceId: text(fields.deviceId) }
+  // Only routes that name one carry it, so older route consumers see the same shape.
+  const codexBrowserId = text(fields.codexBrowserId)
+  if (codexBrowserId) browser.codexBrowserId = codexBrowserId
 
-  return browser.label || browser.chromeProfile || browser.deviceId ? browser : null
+  return browser.label || browser.chromeProfile || browser.deviceId || codexBrowserId ? browser : null
 }
 
 /** `<git root>/.claude/browser.json`, parsed: its route, or null to fall back to the account default. */

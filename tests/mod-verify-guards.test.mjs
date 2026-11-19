@@ -5,8 +5,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {
-  KEYS, planDialog, findOptions, inputBoxText, readyToSubmit, compareSettings, snapshotSettings, enforceSettings, settingsFiles,
+  KEYS, planDialog, findOptions, inputBoxText, readyToSubmit, compareSettings, snapshotSettings, enforceSettings, settingsFiles, outputDir,
 } from '../claude-home/skills/nebi-mod-verify/scripts/guards.mjs';
+import { checkRun } from '../claude-home/skills/nebi-mod-verify/scripts/check.mjs';
 
 const RULE = '─'.repeat(150);
 const BANNER = [
@@ -170,4 +171,56 @@ test('render: headless Chrome keeps the mock keychain and basic password store f
   for (const flag of ['--use-mock-keychain', '--password-store=basic']) {
     assert.ok(code.includes(`'${flag}'`), `${flag} is in the Chrome argument list`);
   }
+});
+
+test('run folder guard: refuses dot names, homes, repos and stray folders before any delete', (t) => {
+  const temp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-mod-verify-out-')));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const home = path.join(temp, 'home');
+  const repo = path.join(temp, 'repo');
+  const runsRoot = path.join(home, '.cache/nebi-mod-verify/runs');
+  const cwd = path.join(repo, 'src');
+  fs.mkdirSync(cwd, { recursive: true });
+  fs.mkdirSync(runsRoot, { recursive: true });
+  const at = (args) => outputDir({ runsRoot, home, cwd, repoRoots: [repo], ...args });
+
+  assert.deepEqual(at({ label: 'after' }), { dir: path.join(runsRoot, 'after') });
+  for (const label of ['.', '..', '../..', 'a/b', '', '...']) assert.ok(at({ label }).error, `label ${JSON.stringify(label)}`);
+  for (const out of ['.', '..', './', repo, cwd, home, temp, '/', runsRoot, path.dirname(runsRoot), '/Users/someone', '/home/someone']) {
+    assert.ok(at({ out, label: 'after' }).error, `out ${out}`);
+  }
+  const stray = path.join(temp, 'notes');
+  fs.mkdirSync(stray);
+  fs.writeFileSync(path.join(stray, 'todo.md'), 'keep me\n');
+  assert.match(at({ out: stray }).error, /not an earlier run/);
+  const earlier = path.join(temp, 'earlier-run');
+  fs.mkdirSync(earlier);
+  fs.writeFileSync(path.join(earlier, 'meta.json'), '{}');
+  assert.deepEqual(at({ out: earlier }), { dir: earlier });
+  assert.deepEqual(at({ out: path.join(temp, 'new-run') }), { dir: path.join(temp, 'new-run') });
+  assert.deepEqual(at({ out: 'here', label: 'after' }), { dir: path.join(cwd, 'here') }, 'a relative --out sits under the working folder');
+});
+
+test('check fails a run whose claude exited non-zero or whose session.full.txt is missing', (t) => {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-mod-verify-check-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const run = (name, { exit, full = 'scrollback\n' }) => {
+    const dir = path.join(temp, name);
+    fs.mkdirSync(dir);
+    fs.writeFileSync(path.join(dir, 'meta.json'), JSON.stringify({ safeMode: true, ...(exit === undefined ? {} : { exit }) }));
+    for (const scene of ['turn-end', 'mid-turn']) fs.writeFileSync(path.join(dir, `${scene}.txt`), '❓ Need you\n');
+    if (full !== null) fs.writeFileSync(path.join(dir, 'session.full.txt'), full);
+    return checkRun(dir).failures;
+  };
+  assert.deepEqual(run('clean', { exit: { code: 0 } }), []);
+  assert.deepEqual(run('crashed', { exit: { code: 1 } }), ['exit: claude exited with 1']);
+  assert.deepEqual(run('killed', { exit: { code: 'signal' } }), ['exit: claude exited with "signal"']);
+  assert.deepEqual(run('no-exit', {}), ['exit: meta.json has no exit record']);
+  assert.deepEqual(run('no-full', { exit: { code: 0 }, full: null }), ['session.full.txt is missing or unreadable']);
+  const unreadable = path.join(temp, 'dir-full');
+  fs.mkdirSync(unreadable);
+  fs.mkdirSync(path.join(unreadable, 'session.full.txt'));
+  fs.writeFileSync(path.join(unreadable, 'meta.json'), JSON.stringify({ safeMode: true, exit: { code: 0 } }));
+  for (const scene of ['turn-end', 'mid-turn']) fs.writeFileSync(path.join(unreadable, `${scene}.txt`), '❓\n');
+  assert.deepEqual(checkRun(unreadable).failures, ['session.full.txt is missing or unreadable']);
 });

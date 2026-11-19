@@ -12,7 +12,40 @@
 //   current setting or declines, or Esc when no option does.
 // - The settings guard restores only `permissions` and `enabledPlugins`. Other top-level keys are reported, never
 //   touched: another live session may have written them on purpose.
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+// - The run folder is deleted before every run, so outputDir() refuses any folder that is not plainly a run's.
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs'
+import { isAbsolute, join, parse, relative, resolve } from 'node:path'
+
+// ---- run folder guard ----
+
+/** True when `inner` is `outer` itself or lies inside it. */
+const isWithin = (inner, outer) => {
+  const rel = relative(outer, inner)
+  return rel === '' || (!rel.startsWith('..') && !isAbsolute(rel))
+}
+
+/**
+ * The folder a run deletes and refills, or { error } to refuse before anything is deleted.
+ * --label is one plain folder name under `runsRoot`. --out may sit elsewhere, but never at or above the filesystem
+ * root, a home folder, the working folder, a repository root or `runsRoot` itself; outside `runsRoot` it must be
+ * new, empty or an earlier run (it holds meta.json).
+ */
+export function outputDir({ out, label, runsRoot, home, cwd, repoRoots = [] }) {
+  if (out === undefined && (!/^[\w.-]+$/.test(label ?? '') || /^\.+$/.test(label))) {
+    return { error: `--label ${JSON.stringify(label)} must be one plain folder name` }
+  }
+  if (out !== undefined && /^\s*\.{1,2}\/*\s*$/.test(out)) return { error: `--out ${out} names the working folder or its parent` }
+  const dir = resolve(cwd, out ?? join(runsRoot, label))
+  const guarded = [home, cwd, runsRoot, ...repoRoots].filter(Boolean).map(p => resolve(p))
+  const homeLike = /^\/(?:Users|home)\/[^/]+$/.test(dir) || dir === '/root'
+  if (dir === parse(dir).root || homeLike || guarded.some(p => isWithin(p, dir))) {
+    return { error: `refusing ${dir}: it is, or holds, the filesystem root, a home, the working folder, a repository or the runs folder` }
+  }
+  if (!isWithin(dir, resolve(runsRoot)) && existsSync(dir) && readdirSync(dir).length > 0 && !existsSync(join(dir, 'meta.json'))) {
+    return { error: `refusing ${dir}: it is outside ${runsRoot} and is not an earlier run (no meta.json)` }
+  }
+  return { dir }
+}
 
 export const KEYS = { up: '\x1b[A', down: '\x1b[B', enter: '\r', esc: '\x1b' }
 

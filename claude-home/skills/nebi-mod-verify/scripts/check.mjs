@@ -9,6 +9,8 @@
 //   says "(1M context)" whatever the status line does.
 // - The beacon's one-row NEED YOU badge is allowed; NEED YOU with answer keys ("1: …  2: …  0: dismiss") is not.
 // - Absent strings are checked on the final screens and in the scrollback; present strings on the final screen.
+// - Every run, safe mode included, fails when claude did not exit with 0 (meta.json `exit.code`) or when
+//   session.full.txt is missing or unreadable.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -83,6 +85,10 @@ export function checkRun(dir, { present = [], absent = [] } = {}) {
     }
     result.scenes[scene] = row
   }
+  // capture.mjs's exit record and full scrollback: without them the run proves nothing.
+  const code = meta.exit?.code
+  if (code !== 0) result.failures.push(`exit: ${meta.exit ? `claude exited with ${JSON.stringify(code)}` : 'meta.json has no exit record'}`)
+  try { readFileSync(join(dir, 'session.full.txt'), 'utf8') } catch { result.failures.push('session.full.txt is missing or unreadable') }
   // capture.mjs's settings guard: a changed permissions/enabledPlugins fails every run, safe mode included.
   for (const f of meta.settingsGuard?.files ?? []) {
     for (const d of f.guardedDiff) result.failures.push(`settings: ${f.file}: ${d}${f.restored ? ' (restored from the snapshot)' : ''}`)

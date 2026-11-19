@@ -229,6 +229,22 @@ export function validateCases(cases, names) {
   }
 }
 
+/**
+ * Copy every skill folder with a SKILL.md (nebi-* and the rest, such as codex-browser and tikhub) into
+ * `staged`, leaving out evals/. Returns { skill: SKILL.md sha256 }.
+ */
+export function stageSkills(skillsDir, staged) {
+  const hashes = {};
+  for (const dir of fs.readdirSync(skillsDir)) {
+    const source = path.join(skillsDir, dir);
+    if (!fs.existsSync(path.join(source, 'SKILL.md'))) continue;
+    fs.cpSync(source, path.join(staged, dir), { recursive: true,
+      filter: (file) => !path.relative(source, file).split(path.sep).includes('evals') });
+    hashes[dir] = createHash('sha256').update(fs.readFileSync(path.join(source, 'SKILL.md'))).digest('hex');
+  }
+  return hashes;
+}
+
 function runHeadless(cases, timeoutMs, options) {
   const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-trigger-eval-'));
   try {
@@ -238,14 +254,7 @@ function runHeadless(cases, timeoutMs, options) {
   fs.writeFileSync(path.join(plugin, '.claude-plugin/plugin.json'), JSON.stringify({ name: 'nebi-eval', version: '1.0.0' }));
   const staged = path.join(plugin, 'skills');
   fs.mkdirSync(staged, { recursive: true });
-  const hashes = {};
-  for (const dir of fs.readdirSync(SKILLS_DIR).filter((name) => name.startsWith('nebi-'))) {
-    const source = path.join(SKILLS_DIR, dir);
-    if (!fs.existsSync(path.join(source, 'SKILL.md'))) continue;
-    fs.cpSync(source, path.join(staged, dir), { recursive: true,
-      filter: (file) => !path.relative(source, file).split(path.sep).includes('evals') });
-    hashes[dir] = createHash('sha256').update(fs.readFileSync(path.join(source, 'SKILL.md'))).digest('hex');
-  }
+  const hashes = stageSkills(SKILLS_DIR, staged);
   // Seed a minimal plausible project. Measured 2026-08-31: in a bare empty dir,
   // prompts that name concrete project nouns ("these three modules", "this app")
   // make the model glob for the missing thing instead of loading a skill, so rows

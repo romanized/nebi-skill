@@ -40,17 +40,17 @@ Deploy also turns on the ten Claude Code mods in `mods/`, among them browser rou
 
 ## How the repo is organised
 
-Portable source for the Nebi operating doctrine across Claude Code and Codex. The pack keeps seven shared workflow skills and a core for each harness. Edit the masters here; deploy deliberately after verification.
+Portable source for the Nebi operating doctrine across Claude Code and Codex. The pack keeps seven shared workflow skills, three Claude-only skills (`nebi-mod-verify`, `codex-browser`, `tikhub`) and a core for each harness. Edit the masters here; deploy deliberately after verification.
 
 ## What belongs where
 
 | Source | Purpose |
 |---|---|
 | `claude-home/CLAUDE.md`, `codex-home/AGENTS.md` | Standing preferences and harness-specific model bindings |
-| `claude-home/skills/nebi-*/SKILL.md` | Orchestration, debugging, hill-climbing, sessions, maintenance, prompting, and research |
+| `claude-home/skills/*/SKILL.md` | Shared: orchestration, debugging, hill-climbing, sessions, maintenance, prompting, and research. Claude only: mod paint check (`nebi-mod-verify`), any-browser control (`codex-browser`) and social search (`tikhub`) |
 | Each skill's `evals/` | Trigger cases, decision cases, and any supporting fixtures |
-| `claude-home/hooks/` | Shared native startup, feedback capture, operator steering, evidence ledger, completion feedback and state refresh for Claude and Codex |
-| `claude-home/agents/`, `codex-home/agents/` | Native scout/checker adapters with inherited model selection |
+| `claude-home/hooks/` | Seven handlers plus a shared runtime helper: startup, feedback capture, operator steering, kill guard (Claude only), evidence ledger, completion feedback and state refresh |
+| `claude-home/agents/`, `codex-home/agents/` | Claude: native scout, checker and lean builder, with no pinned model (the default-builder binding applies unless a dispatch names one). Codex: scout and checker adapters |
 | `claude-home/nebi/` | Shared project/task context helper, session sweeps, status line, trigger runner, source record and runtime seeds |
 | `claude-home/nebi/benchmarks/` | Historical and current evaluation records; never deployed |
 | `claude-home/rules/`, `commands/`, `output-styles/` | Claude rules/style and the shared `/sharpen` command |
@@ -113,7 +113,7 @@ Both checks are read-only. After reviewing a changed Nebi hook implementation, `
 
 | Harness | Deployment |
 |---|---|
-| Claude Code | Core, rules, eight skills (the seven shared ones plus `nebi-mod-verify`) and their resources, two native agents, command, style, hooks, tools, and handoff directory into `~/.claude/`. Merges `statusLine`, `outputStyle`, a `claudeMdExcludes` entry for `~/AGENTS.md` (the Codex pointer), a default `skillListingBudgetFraction` of 0.02, and Nebi hooks for SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, PostToolUseFailure, Stop, and SessionEnd. |
+| Claude Code | Core, rules, ten skills (the seven shared ones plus `nebi-mod-verify`, `codex-browser` and `tikhub`) and their resources, three native agents, command, style, hooks, tools, and handoff directory into `~/.claude/`. Merges `statusLine`, `outputStyle`, a `claudeMdExcludes` entry for `~/AGENTS.md` (the Codex pointer), a default `skillListingBudgetFraction` of 0.02, `permissions.deny` rules that keep Claude's tools out of `~/.ssh` and `~/.agents/nebi/secrets`, and Nebi hooks for SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, PostToolUseFailure, Stop, and SessionEnd. |
 | Codex | Core, two native agents, shared hook masters and source record into `~/.codex/`; seven skills and resources into `~/.agents/skills/`. Merges Nebi hooks for SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Stop and SessionEnd into `~/.codex/hooks.json`. Deployment leaves `config.toml` unchanged; the explicit activation helper only updates Nebi hook trust. |
 
 The deployer preflights required masters, rejects source symlinks, and validates the existing JSON shapes it will merge before any write. Only exact known Nebi script paths are replaced in hook lists. Unrelated hooks and settings survive. Skill resources are discovered recursively; other deployed files use an explicit manifest so stray runtime files are not installed.

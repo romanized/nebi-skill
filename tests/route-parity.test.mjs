@@ -9,6 +9,7 @@ import test from 'node:test';
 import { currentAccount, resolveRoute } from '../claude-home/nebi/route.mjs';
 // Node strips the types when it imports a .ts file, so the mod's vectors load as plain data.
 import { ACCOUNT_HOME, ACCOUNT_VECTORS, ROUTE_VECTORS } from '../mods/nebi-browser/tests/route-vectors.ts';
+import * as modRoute from '../mods/nebi-browser/hooks/route.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const MODS = ['nebi-browser', 'nebi-beacon', 'nebi-constellation'];
@@ -68,3 +69,25 @@ for (const v of ROUTE_VECTORS) {
     assert.deepEqual(resolveRoute({ cwd, env, home: at(v.home) }), v.expected);
   });
 }
+
+// The mod's route.ts on the same vectors, with register.tsx's resolveRoute steps over the vector's files
+// (the copies are byte-identical, so one stands for all three). Catches a field route.mjs keeps and the mod drops.
+function modResolve(v) {
+  const has = (p) => v.gitDirs.includes(p) || (v.gitFiles ?? []).includes(p);
+  const read = (p) => modRoute.parseObject(v.files[p] ?? null);
+  const account = modRoute.currentAccount(v.configDir, v.home, v.cwd || '/');
+  const root = v.cwd ? modRoute.gitRootCandidates(v.cwd).find(has) ?? null : null;
+  const project = root === null ? null : read(modRoute.joinPath(root, '.claude/browser.json'));
+  const fromProject = modRoute.projectRoute(project, account);
+  if (fromProject !== null) return fromProject;
+  if (account === null) return null;
+  return modRoute.accountRoute(read(modRoute.joinPath(v.home, '.claude/nebi/browsers.json')), account);
+}
+
+for (const v of ROUTE_VECTORS) {
+  test(`the mod's route.ts agrees with the vector: ${v.name}`, () => assert.deepEqual(modResolve(v), v.expected));
+}
+
+test('the vectors cover codexBrowserId', () => {
+  assert.ok(ROUTE_VECTORS.some((v) => v.expected?.codexBrowserId), 'no vector expects a codexBrowserId');
+});

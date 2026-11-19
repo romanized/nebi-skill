@@ -346,7 +346,7 @@ function testSteerChannelKeepsChromeOnTheProjectBrowser() {
   const other = decision(call('select_browser', { deviceId: SNEAKERS_CHROME.deviceId }));
   assert.equal(other.permissionDecision, 'deny');
   assert.equal(other.permissionDecisionReason,
-    `This project uses Main Chrome (${MAIN_CHROME.deviceId}). Call select_browser with deviceId ${MAIN_CHROME.deviceId} instead.`);
+    `This project uses Main Chrome (${MAIN_CHROME.deviceId}). Call select_browser with deviceId ${MAIN_CHROME.deviceId} instead. If Nebi wants another browser, ask him in one plain sentence: his reply lets you switch.`);
   assert.equal(call('select_browser', { deviceId: MAIN_CHROME.deviceId.toUpperCase() }), '', 'the project device passes');
   assert.equal(call('navigate', { url: 'https://example.com' }), '');
   assert.equal(call('list_connected_browsers'), '');
@@ -368,6 +368,41 @@ function testSteerChannelKeepsChromeOnTheProjectBrowser() {
     'a task notification is not Nebi asking');
   assert.equal(decision(call('switch_browser', {}, { transcript_path: path.join(home, 'missing.jsonl') })).permissionDecision, 'deny',
     'an unreadable transcript stays strict');
+
+  // nebi-browser's other two allowances, for select_browser only.
+  const lines = (...entries) => entries.map((entry) => JSON.stringify(entry)).join('\n') + '\n';
+  const own = (content) => ({ type: 'user', origin: { kind: 'human' }, message: { role: 'user', content } });
+  writeFileSync(transcript, lines(own('nope wrong browser, do it in my main chrome')));
+  assert.equal(call('select_browser', { deviceId: SNEAKERS_CHROME.deviceId }, { transcript_path: transcript }), '', 'naming a browser opens select_browser');
+  assert.equal(decision(call('switch_browser', {}, { transcript_path: transcript })).permissionDecision, 'deny', 'but not switch_browser');
+  writeFileSync(transcript, lines(own('click the login button in the browser')));
+  assert.equal(decision(call('select_browser', { deviceId: SNEAKERS_CHROME.deviceId }, { transcript_path: transcript })).permissionDecision, 'deny',
+    '"in the browser" names no browser');
+
+  const refusal = [
+    own('check the order page'),
+    { type: 'assistant', message: { role: 'assistant', content: [{ type: 'tool_use', id: 'sb1', name: 'mcp__claude-in-chrome__select_browser', input: { deviceId: SNEAKERS_CHROME.deviceId } }] } },
+    { type: 'user', message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: 'sb1', is_error: true, content: other.permissionDecisionReason }] } },
+    { type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text: 'Do you want the RapidSneakers Chrome?' }] } },
+  ];
+  writeFileSync(transcript, lines(...refusal, own('yes')));
+  assert.equal(call('select_browser', { deviceId: SNEAKERS_CHROME.deviceId }, { transcript_path: transcript }), '', 'his reply after a refusal opens select_browser');
+  writeFileSync(transcript, lines(...refusal, own('yes'), own('now the cart')));
+  assert.equal(decision(call('select_browser', { deviceId: SNEAKERS_CHROME.deviceId }, { transcript_path: transcript })).permissionDecision, 'deny',
+    'only the first reply after the refusal');
+}
+
+function testSteerNoteIsTheLeadsOnly() {
+  const home = path.join(fixtureRoot, 'steer-note');
+  const note = path.join(home, '.claude', 'nebi', 'STEER.md');
+  mkdirSync(path.dirname(note), { recursive: true });
+  writeFileSync(note, 'use the staging database\n');
+  assert.equal(runHook('claude-home/hooks/steer-channel.mjs', home, { tool_name: 'Bash', agent_id: 'sub-1' }), '', 'a sub-agent gets no note');
+  assert.equal(existsSync(note), true, 'and leaves it for the lead');
+  const lead = JSON.parse(runHook('claude-home/hooks/steer-channel.mjs', home, { tool_name: 'Bash' })).hookSpecificOutput;
+  assert.match(lead.additionalContext, /use the staging database/);
+  assert.equal(existsSync(note), false);
+  assert.equal(existsSync(path.join(home, '.claude', 'nebi', 'STEER.consumed.md')), true);
 }
 
 test.after(() => rmSync(fixtureRoot, { recursive: true, force: true }));
@@ -378,6 +413,7 @@ test('session end deletes only its own hook beacon', { skip: process.platform ==
 test('session start names the project browser and warns on an account mismatch', testSessionStartNamesTheProjectBrowser);
 test('session start routes to codex-browser from any account when the route names one', testSessionStartRoutesToCodexBrowserFromAnyAccount);
 test('steer channel keeps Claude in Chrome on the project browser', testSteerChannelKeepsChromeOnTheProjectBrowser);
+test('steer note goes to the lead, never a sub-agent', testSteerNoteIsTheLeadsOnly);
 test('stop hook nudges early stops only when nothing is in flight', testStopNudgesEarlyStopsOnlyWhenNothingIsInFlight);
 test('unknown tool responses are not success', testUnknownToolResponseIsNotSuccess);
 test('latest command controls the heuristic', testLatestCommandControlsProofHeuristic);

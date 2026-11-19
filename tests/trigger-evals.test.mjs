@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { detectFiredSkills, gradeTranscript, parseTriggers, validateCases } from '../claude-home/nebi/run-trigger-evals.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { detectFiredSkills, gradeTranscript, parseTriggers, stageSkills, validateCases } from '../claude-home/nebi/run-trigger-evals.mjs';
 const c = { skill: 'nebi-debugging', kind: 'not', prompt: 'write a heading' };
 const stream = (...events) => events.map(JSON.stringify).join('\n');
 const init = { type: 'system', subtype: 'init', skills: [c.skill] };
@@ -58,4 +62,15 @@ test('truncated JSON or unknown assistant shape cannot pass a negative case', ()
     assert.equal(gradeTranscript(stream(init, say, result) + '\n' + bad, c).status, 'ERROR');
   }
   assert.equal(gradeTranscript(stream(init, result), c).status, 'ERROR');
+});
+
+test('headless staging copies every installed skill, codex-browser and tikhub included, without evals', (t) => {
+  const skills = fileURLToPath(new URL('../claude-home/skills/', import.meta.url));
+  const staged = fs.mkdtempSync(path.join(os.tmpdir(), 'nebi-trigger-stage-'));
+  t.after(() => fs.rmSync(staged, { recursive: true, force: true }));
+  const want = fs.readdirSync(skills).filter((dir) => fs.existsSync(path.join(skills, dir, 'SKILL.md'))).sort();
+  assert.ok(want.includes('codex-browser') && want.includes('tikhub'));
+  assert.deepEqual(Object.keys(stageSkills(skills, staged)).sort(), want);
+  assert.deepEqual(fs.readdirSync(staged).sort(), want);
+  for (const dir of want) assert.equal(fs.existsSync(path.join(staged, dir, 'evals')), false, dir);
 });
