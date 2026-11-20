@@ -21,6 +21,10 @@ The upstream register is `claude-home/nebi/upstreams.json` in the nebi-skill rep
 5. Add or update the register entry (pin, per-skill folder `tree` or commit, `installed` paths, `localEdits`, `decision`, `update` with `<SHA>` as the placeholder), redeploy, and run `node ~/.claude/nebi/upstreams.mjs` to confirm it reads `current; matches pin`.
 6. Prove it loads: the skill appears in a fresh session's skill list for each client that should have it.
 
+## The library
+
+Every skill, repo or tool that gets researched lands in the register, installed or not, so a later session finds the verdict instead of redoing the review. The register ships in a public repo: no store domains, account IDs or emails in `decision`, `why` or `notes`. A new entry needs a one-line `use_when` (when a future session should reach for it). Add `projects` (main-repo folder basenames, such as `Karpet24`; absent means global) when it was picked or reviewed for specific projects. Status is derived (installed paths mean installed, a parked skill declined, anything else saved); set `status` to `installed`, `saved` or `declined` only where that guess is wrong, such as an MCP or plugin install with no path or a reference that was turned down. `node ~/.claude/nebi/upstreams.mjs --library [--project <name> | --here] [--json]` lists it; `--here` maps a worktree to its main repo, and the SessionStart hook names the count for the session's project.
+
 ## Refresh
 
 Run `node ~/.claude/nebi/upstreams.mjs` (or `--offline` for install checks only). It flags folders changed upstream, local edits, missing installs and lock entries not in the register. It never updates. For each flagged source, read the upstream diff between the pin and HEAD, then run the printed update command, re-pin the entry, and redeploy.

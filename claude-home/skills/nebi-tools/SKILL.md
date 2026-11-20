@@ -24,6 +24,7 @@ One home for the tools and keys that used to sit in ecommerce-workspace. Nothing
 | A whole site or section: crawl it to markdown | `crwl crawl <url> --deep-crawl bfs --max-pages N -o md` (Crawl4AI) or `firecrawl-local crawl <url> --limit N --out <dir>`; both free and local | `firecrawl crawl` or `x download` (cloud credits) when blocked or too big for this Mac |
 | List a site's URLs | `firecrawl-local map <url>` (free, local) | `firecrawl map` (1 credit) |
 | Structured records across many pages | `firecrawl agent` or Tilion `collect_data` | reverse-api-engineer when it will be pulled again |
+| Paid semantic search or a company list from open criteria, on a budget | `exa/exa.py search` or `exa/exa.py agent` with `EXA_LEDGER` and `EXA_BUDGET_USD` set | the exa MCP for quick lookups (unmetered by the ledger) |
 | Call a site from code when it has no public API | `reverse-api-engineer` skill and CLI | |
 | Watch a page for changes | `firecrawl monitor` | |
 | Social posts and replies (X, Reddit, TikTok, Instagram and more) | `tikhub` skill | |

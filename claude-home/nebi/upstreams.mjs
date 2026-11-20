@@ -2,6 +2,7 @@
 // upstreams.mjs — read-only status for the Nebi upstream register (upstreams.json).
 // Usage: node upstreams.mjs [--register <file>] [--offline] [--json] [--all]
 //        node upstreams.mjs --docs [--mark-reviewed <id|all>] [--register <file>]
+//        node upstreams.mjs --library [--project <name> | --here] [--json] [--register <file>]
 // For every registered source it answers: is it installed where the register
 // says, does the installed folder still match the pinned upstream (local edits),
 // and has upstream changed since the pin (behind)? Skills in the listed global
@@ -29,6 +30,17 @@
 // yields no posts reports ERROR, because a redesign would otherwise hide new
 // posts for good. Generic slugs can redirect: OpenAI's prompt-guidance serves
 // latest-model, so a model's own guide is registered by its model URL.
+//
+// --library lists the register as a library of everything researched, whatever the
+// verdict: name, status, scope, when to reach for it, and whether an update command
+// exists. Offline and read-only. Status is an entry's `status` (installed, saved,
+// declined) when set, else derived: installed paths mean installed, a parked skill
+// declined, anything else saved; so `status` is needed only where that guess is wrong
+// (an MCP or plugin install has no path, a reviewed reference was turned down). Scope is
+// the entry's `projects` (main-repo folder basenames; absent = global), plus "global"
+// when an installed path sits outside the lockRoots. --project matches a basename
+// case-insensitively; --here takes it from the cwd's git common dir (context.mjs
+// identify), so a worktree maps to its main repo.
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
@@ -309,6 +321,65 @@ function main() {
   for (const row of shown) console.log(`  ${row.project.padEnd(44)} ${row.item.padEnd(34)} ${row.status}`);
 }
 
+export const STATUSES = ['installed', 'saved', 'declined'];
+
+/** An entry's library status: explicit `status`, else derived (see the header). */
+export function entryStatus(source) {
+  if (source.status) return source.status;
+  const items = [source, ...(source.skills ?? [])];
+  if (items.some((item) => item.installed?.length)) return 'installed';
+  return items.some((item) => item.parked) ? 'declined' : 'saved';
+}
+
+/** First sentence, capped, for a one-line listing. */
+const firstSentence = (text = '') => {
+  const sentence = /^[\s\S]*?[.!?](?=\s|$)/.exec(text)?.[0] ?? text;
+  const line = sentence.replace(/\s+/g, ' ').trim();
+  return line.length > 160 ? `${line.slice(0, 159)}…` : line;
+};
+
+/** Library rows for every entry, or only those tagged for `project` (a main-repo basename). */
+export function libraryRows(register, project) {
+  const roots = (register.lockRoots ?? []).map((root) => path.join(expand(root), path.sep));
+  const wanted = project?.toLowerCase();
+  return register.sources
+    .filter((source) => !wanted || (source.projects ?? []).some((name) => name.toLowerCase() === wanted))
+    .map((source) => {
+      const paths = [...(source.installed ?? []), ...(source.skills ?? []).flatMap((skill) => skill.installed ?? [])];
+      const global = !source.projects?.length || paths.some((p) => !roots.some((root) => expand(p).startsWith(root)));
+      return {
+        name: source.name,
+        kind: source.kind ?? 'source',
+        status: entryStatus(source),
+        scope: [...(global ? ['global'] : []), ...(source.projects ?? [])],
+        use_when: source.use_when ?? firstSentence(source.why ?? source.decision),
+        update: Boolean(source.update),
+      };
+    })
+    .sort((a, b) => STATUSES.indexOf(a.status) - STATUSES.indexOf(b.status));
+}
+
+async function libraryMain() {
+  const register = JSON.parse(fs.readFileSync(registerPath, 'utf8'));
+  let project = option('--project');
+  if (flag('--project') && (!project || project.startsWith('--'))) throw new Error('--project needs a main-repo folder name');
+  if (flag('--here')) {
+    const { identify } = await import('./context.mjs');
+    project = identify(process.cwd()).name;
+  }
+  const rows = libraryRows(register, project);
+  if (flag('--json')) {
+    process.stdout.write(`${JSON.stringify({ register: registerPath, project: project ?? null, entries: rows }, null, 2)}\n`);
+    return;
+  }
+  const counts = STATUSES.map((status) => `${rows.filter((row) => row.status === status).length} ${status}`).join(', ');
+  console.log(`Library${project ? ` for ${project}` : ''}: ${rows.length} entries (${counts}). Register: ${registerPath}`);
+  const width = Math.min(48, Math.max(0, ...rows.map((row) => row.name.length)));
+  for (const row of rows) {
+    console.log(`  ${row.status.padEnd(9)} ${row.name.padEnd(width)} [${row.scope.join(', ')}]${row.update ? ' (update cmd)' : ''} ${row.use_when}`);
+  }
+}
+
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
 const decodeEntities = (text) => text.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (match, name) => {
   if (name[0] !== '#') return ENTITIES[name] ?? match;
@@ -425,5 +496,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const fail = (err) => { console.error(`upstreams: ${err.message}`); process.exitCode = 1; };
   if (flag('--mark-reviewed') && !flag('--docs')) fail(new Error('--mark-reviewed only works with --docs'));
   else if (flag('--docs')) docsMain().catch(fail);
+  else if (flag('--library')) libraryMain().catch(fail);
   else { try { main(); } catch (err) { fail(err); } }
 }

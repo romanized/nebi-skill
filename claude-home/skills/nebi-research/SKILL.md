@@ -25,7 +25,7 @@ The active harness's core §0 override always wins. This is the default method w
 
 ## The return
 
-Return claim → source URL or local file/version → publication/update date when known and access date → confidence or decision impact. Do not fabricate a URL, date, or corroboration to fill the format. End with what you could not confirm and where you looked. A source that would not load is reported as unread, never as nothing found. Keep the artifact compact enough to hand directly to the next skill or builder.
+Return claim → source URL or local file/version → publication/update date when known and access date → confidence or decision impact. Do not fabricate a URL, date, or corroboration to fill the format. End with what you could not confirm and where you looked. A source that would not load is reported as unread, never as nothing found. Keep the artifact compact enough to hand directly to the next skill or builder. When the research judged a skill, repo or tool, save the verdict in the upstream library (nebi-maintenance, `references/skill-sources.md`) even when nothing gets installed.
 
 ## Role
 

@@ -74,6 +74,9 @@
       "name": "benjaminsehl/liquid-skills",
       "repo": "benjaminsehl/liquid-skills",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "shopify-liquid-themes",
@@ -161,6 +164,9 @@
       "name": "coreyhaines31/marketingskills",
       "repo": "coreyhaines31/marketingskills",
       "kind": "skills",
+      "projects": [
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "cro",
@@ -314,6 +320,9 @@
       "name": "d4vinci/scrapling",
       "repo": "d4vinci/scrapling",
       "kind": "skills",
+      "projects": [
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "scrapling-official",
@@ -335,6 +344,7 @@
       "name": "dig1t/skills",
       "repo": "dig1t/skills",
       "kind": "skills",
+      "status": "saved",
       "skills": [
         {
           "name": "luau-best-practices",
@@ -381,6 +391,10 @@
       "name": "emilkowalski/skills",
       "repo": "emilkowalski/skills",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website",
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "animate",
@@ -537,6 +551,9 @@
       "name": "fal-ai-community/skills",
       "repo": "fal-ai-community/skills",
       "kind": "skills",
+      "projects": [
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "fal-models-catalog",
@@ -619,6 +636,10 @@
       "name": "greensock/gsap-skills",
       "repo": "greensock/gsap-skills",
       "kind": "skills",
+      "projects": [
+        "CS_Momentum_Web",
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "gsap-core",
@@ -847,6 +868,9 @@
       "name": "nexscope-ai/eCommerce-Skills",
       "repo": "nexscope-ai/eCommerce-Skills",
       "kind": "skills",
+      "projects": [
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "dropshipping-product-research",
@@ -930,6 +954,9 @@
       "name": "pbakaus/impeccable",
       "repo": "pbakaus/impeccable",
       "kind": "skills",
+      "projects": [
+        "withdrawal-desk"
+      ],
       "skills": [
         {
           "name": "impeccable",
@@ -1046,6 +1073,9 @@
       "name": "vercel-labs/agent-skills",
       "repo": "vercel-labs/agent-skills",
       "kind": "skills",
+      "projects": [
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "web-design-guidelines",
@@ -1206,6 +1236,7 @@
       "name": "Tencent/BrowserSkill",
       "repo": "Tencent/BrowserSkill",
       "kind": "reference",
+      "status": "declined",
       "pin": "75e2c64abaf4b7cc75682d94b0c1fd5db0cbd5e5",
       "decision": "removed 2026-09-23 by the user after trial: Claude in Chrome and the Codex browser already cover logged-in browsing; the extension injects into every page and the daemon accepts any extension origin",
       "notes": "Free, MIT, local. Worth it only for terminal-only agents or recurring scripted browser jobs. Reinstall: bsk v0.3.0 release binary (sha256 f85b2d46...), the extension in a separate Chrome profile, then cd <project> && DISABLE_TELEMETRY=1 npx skills@1.7.0 add https://github.com/Tencent/BrowserSkill/tree/<SHA>/crates/bsk-cli/skill -a claude-code codex -y"
@@ -1214,6 +1245,7 @@
       "name": "google/ax",
       "repo": "google/ax",
       "kind": "reference",
+      "status": "declined",
       "pin": "d8ed0fe38bceb7842d3c47817d53d16ccdfcb601",
       "decision": "not adopted: hosted cluster runtime (Kubernetes, Redis) for remote agents; no local use"
     },
@@ -1221,6 +1253,7 @@
       "name": "vercel-labs/agent-browser",
       "repo": "vercel-labs/agent-browser",
       "kind": "reference",
+      "status": "declined",
       "decision": "not adopted: a second browser controller next to Claude in Chrome, the Codex browser and bsk. Rechecked 2026-11-20 (browser scout: v0.43.0, 52.9k stars, per-session daemons, profile reuse): still not adopted; microsoft/playwright-cli fills the role."
     },
     {
@@ -1258,6 +1291,9 @@
       "name": "aaron-he-zhu/aaron-marketing-skills",
       "repo": "aaron-he-zhu/aaron-marketing-skills",
       "kind": "skills",
+      "projects": [
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "attribution-reconciler",
@@ -1297,6 +1333,9 @@
       "name": "antfu/skills",
       "repo": "antfu/skills",
       "kind": "skills",
+      "projects": [
+        "withdrawal-desk"
+      ],
       "skills": [
         {
           "name": "vitest",
@@ -1355,22 +1394,25 @@
       "name": "exa-labs/exa-mcp-server",
       "repo": "exa-labs/exa-mcp-server",
       "kind": "reference",
+      "status": "installed",
       "pin": "15ffb50519e719dc791cdc750ce5ed1934c0a1ed",
       "decision": "2026-10-10: user-scope MCP only (claude mcp add -s user --transport http exa https://mcp.exa.ai/mcp), anonymous free tier. Deviation from the exa@claude-plugins-official plugin: its two skills were skipped because `search` fires on any research request next to nebi-research and forbids falling back to web search on rate limits. Proven: search in a fresh headless session.",
-      "notes": "Remote server, no local code. Paid key or OAuth only for higher limits and exa-agent."
+      "notes": "Remote server, no local code. Paid key or OAuth only for higher limits and exa-agent. 2026-11-20 observed: the exa@claude-plugins-official plugin (3.4.1) is enabled and OAuth-signed-in by the owner via /mcp, so its skills exa:search and exa:exa-agent and the agent_run tool are live next to the anonymous user-scope server. EXA_API_KEY now sits in nebi-tools tools.env for the direct API (tools/exa/exa.py)."
     },
     {
       "name": "ChromeDevTools/chrome-devtools-mcp",
       "repo": "ChromeDevTools/chrome-devtools-mcp",
       "kind": "reference",
+      "status": "installed",
       "pin": "chrome-devtools-mcp@1.10.1 (npm)",
-      "decision": "2026-10-10: user-scope MCP `npx -y chrome-devtools-mcp@1.10.1 --isolated --no-usage-statistics` for audits only: Lighthouse, performance traces with CrUX, network and console. --isolated runs its own temporary Chrome profile, so it never touches Nebi's profiles; logged-in work stays with codex-browser. Proven: Lighthouse on karpet24.nl in a fresh headless session.",
+      "decision": "2026-10-10: user-scope MCP `npx -y chrome-devtools-mcp@1.10.1 --isolated --no-usage-statistics` for audits only: Lighthouse, performance traces with CrUX, network and console. --isolated runs its own temporary Chrome profile, so it never touches Nebi's profiles; logged-in work stays with codex-browser. Proven: Lighthouse on a live shop site in a fresh headless session.",
       "notes": "CrUX lookups send public page URLs to Google."
     },
     {
       "name": "anthropics/skills (office)",
       "repo": "anthropics/skills",
       "kind": "reference",
+      "status": "declined",
       "decision": "2026-10-10: not installed: xlsx, pdf, docx and pptx already reach Claude Code as synced claude.ai skills (~/.claude/skills/synced). LibreOffice (formula recalculation) is not installed; shortlisted."
     },
     {
@@ -1406,6 +1448,9 @@
       "name": "currents-dev/playwright-best-practices-skill",
       "repo": "currents-dev/playwright-best-practices-skill",
       "kind": "skills",
+      "projects": [
+        "personal-zombies-game"
+      ],
       "skills": [
         {
           "name": "playwright-best-practices",
@@ -1463,6 +1508,7 @@
       "name": "mksglu/context-mode",
       "repo": "mksglu/context-mode",
       "kind": "reference",
+      "status": "declined",
       "pin": "40813fe886798bad07c69a43d2ae00a52b4b934d",
       "decision": "2026-10-15 (user named it from a \"7 repos\" post): NOT installed (deviation, reported to the user). Verified at the pin: hooks/core/routing.mjs:733-771 rewrites Bash curl/wget (and inline fetch, gradle/mvn) into an echo that exits 0, so verification commands report success without running; WebFetch is denied in the main session; start.mjs writes a SessionStart hook into $CLAUDE_CONFIG_DIR/settings.json and repairs enabledPlugins/installed_plugins.json on every MCP boot, even MCP-only. Also stores prompts on disk and appends ~600 words to every Agent dispatch.",
       "notes": "Elastic-2.0 (source-available). Code unchanged since 2026-06-26 apart from bot stats commits. The \"98%\" is raw tool-output bytes vs returned bytes on fixtures (its own BENCHMARK.md says 96%)."
@@ -1488,6 +1534,7 @@
       "name": "steipete/claude-code-mcp",
       "repo": "steipete/claude-code-mcp",
       "kind": "reference",
+      "status": "declined",
       "pin": "2e401f3ed81d32435ca6cfe85a3ac1404d318c84",
       "decision": "2026-10-15 (user named it from a \"7 repos\" post): NOT installed (deviation, reported to the user). Archived; npm @steipete/claude-code-mcp 1.10.12 (2025-05-17) is the last release and always spawns claude -p --dangerously-skip-permissions rooted at $HOME. Built so Cursor/Windsurf can call Claude Code; inside Claude Code, native sub-agents, background agents and the Workflow tool do the same under Nebi's own hooks. Install on request: claude mcp add -s user claude-code-mcp -- npx -y @steipete/claude-code-mcp@1.10.12 (with CLAUDE_CONFIG_DIR unset so it lands in ~/.claude.json).",
       "notes": "MIT. README documents a permissionMode option that only exists in unreleased HEAD."
@@ -1516,6 +1563,11 @@
       "name": "Leonxlnx/taste-skill",
       "repo": "Leonxlnx/taste-skill",
       "kind": "skills",
+      "projects": [
+        "CS_Momentum_Web",
+        "MeiMei-website",
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "design-taste-frontend",
@@ -1544,6 +1596,9 @@
       "name": "gamedev-skills/awesome-gamedev-agent-skills",
       "repo": "gamedev-skills/awesome-gamedev-agent-skills",
       "kind": "skills",
+      "projects": [
+        "CS_Momentum_Web"
+      ],
       "skills": [
         {
           "name": "create-game-assets",
@@ -1610,6 +1665,9 @@
       "name": "CloudAI-X/threejs-skills",
       "repo": "CloudAI-X/threejs-skills",
       "kind": "skills",
+      "projects": [
+        "2025-portfolio"
+      ],
       "skills": [
         {
           "name": "threejs-animation",
@@ -1671,6 +1729,9 @@
       "name": "MengTo/Skills (build-threejs-scroll-worlds)",
       "repo": "MengTo/Skills",
       "kind": "skills",
+      "projects": [
+        "2025-portfolio"
+      ],
       "skills": [
         {
           "name": "build-threejs-scroll-worlds",
@@ -1692,6 +1753,9 @@
       "name": "design.how",
       "repo": "https://design.how/.well-known/agent-skills/index.json",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "build-design-system",
@@ -1744,6 +1808,9 @@
       "name": "design.how vault: swing-type",
       "repo": "https://design.how/vault/swing-type/.well-known/agent-skills/index.json",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "swing-type",
@@ -1763,6 +1830,9 @@
       "name": "design.how vault: roll-type",
       "repo": "https://design.how/vault/roll-type/.well-known/agent-skills/index.json",
       "kind": "skills",
+      "projects": [
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "roll-type",
@@ -1781,6 +1851,9 @@
       "name": "1nird/animations-cutscenes-skill",
       "repo": "1nird/animations-cutscenes-skill",
       "kind": "skills",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
       "skills": [
         {
           "name": "roblox-animation",
@@ -1802,6 +1875,9 @@
       "name": "1nird/Map-and-Model",
       "repo": "1nird/Map-and-Model",
       "kind": "skills",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
       "skills": [
         {
           "name": "roblox-map",
@@ -1839,6 +1915,9 @@
       "name": "1nird/roblox-vfx-v2",
       "repo": "1nird/roblox-vfx-v2",
       "kind": "skills",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
       "skills": [
         {
           "name": "roblox-vfx",
@@ -1860,6 +1939,9 @@
       "name": "1nird/rbx-vfx-and-sfx-skills",
       "repo": "1nird/rbx-vfx-and-sfx-skills",
       "kind": "skills",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
       "skills": [
         {
           "name": "roblox-sfx",
@@ -1887,6 +1969,9 @@
       "name": "1nird/rbx-thumbnail",
       "repo": "1nird/rbx-thumbnail",
       "kind": "skills",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
       "skills": [
         {
           "name": "roblox-thumbnail",
@@ -1926,6 +2011,9 @@
       "name": "shadcn/improve",
       "repo": "shadcn/improve",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "improve",
@@ -1946,6 +2034,9 @@
       "name": "GoogleChrome/modern-web-guidance",
       "repo": "GoogleChrome/modern-web-guidance",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "modern-web-guidance",
@@ -1997,6 +2088,9 @@
       "name": "anthropics/single-agent-loop-kit",
       "repo": "anthropics/single-agent-loop-kit",
       "kind": "skills",
+      "projects": [
+        "nebi-skill"
+      ],
       "skills": [
         {
           "name": "single-agent-loop",
@@ -2017,6 +2111,11 @@
       "name": "microsoft/TokenEconomizer",
       "repo": "microsoft/TokenEconomizer",
       "kind": "plugin",
+      "projects": [
+        "nebi-skill",
+        "cnlsneakers",
+        "ecommerce-workspace"
+      ],
       "pin": "583fff78bf504b59d542f953c31e87d01d02ab42",
       "skills": [
         {
@@ -2036,6 +2135,9 @@
       "name": "petergyang/no-ai-slop",
       "repo": "petergyang/no-ai-slop",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "no-ai-slop",
@@ -2056,6 +2158,9 @@
       "name": "op7418/Humanizer-zh",
       "repo": "op7418/Humanizer-zh",
       "kind": "skills",
+      "projects": [
+        "MeiMei-website"
+      ],
       "skills": [
         {
           "name": "humanizer-zh",
@@ -2078,6 +2183,9 @@
       "name": "CloudAI-X/threejs-skills (2025-portfolio-hero)",
       "repo": "CloudAI-X/threejs-skills",
       "kind": "skills",
+      "projects": [
+        "2025-portfolio"
+      ],
       "skills": [
         {
           "name": "threejs-shaders",
@@ -2098,6 +2206,9 @@
       "name": "Moh4696/open-3d-skills (2025-portfolio-hero)",
       "repo": "Moh4696/open-3d-skills",
       "kind": "skills",
+      "projects": [
+        "2025-portfolio"
+      ],
       "skills": [
         {
           "name": "site-check",
@@ -2119,6 +2230,10 @@
       "name": "coreyhaines31/marketingskills (ad set, global)",
       "repo": "coreyhaines31/marketingskills",
       "kind": "skills",
+      "projects": [
+        "cnlsneakers",
+        "ecommerce-workspace"
+      ],
       "skills": [
         {
           "name": "conversion-tracking",
@@ -2235,6 +2350,9 @@
       "name": "vercel/next.js (skills)",
       "repo": "vercel/next.js",
       "kind": "skills",
+      "projects": [
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "next-bundle-optimizer",
@@ -2271,6 +2389,9 @@
       "name": "blader/humanizer",
       "repo": "blader/humanizer",
       "kind": "skills",
+      "projects": [
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "humanizer",
@@ -2291,6 +2412,9 @@
       "name": "jakubkrehel/skills",
       "repo": "jakubkrehel/skills",
       "kind": "skills",
+      "projects": [
+        "printvisie-clone"
+      ],
       "skills": [
         {
           "name": "better-typography",
@@ -2311,6 +2435,10 @@
       "name": "uizze/uizze",
       "repo": "uizze/uizze",
       "kind": "reference",
+      "status": "declined",
+      "projects": [
+        "printvisie-clone"
+      ],
       "pin": "fc401e9e654cbafe427b0c98142fc8bccd0c4e7e",
       "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): owner named uizze.com. It is a paid reference library of web and iOS screens for agents (MCP at https://uizze.com/mcp, Bearer token or OAuth; tools find_ui_references and find_ui_materials; $9/month, $85/year, $199 lifetime; no free MCP tier found) plus a free skill, anti-ui-slop. Not installed: anti-ui-slop v1.3.1 is a 234-line Markdown adaptation of impeccable 4.4.0 (its MANIFEST pins impeccable commits) with routing to the paid MCP, and impeccable itself is installed at a newer pin. No account, no payment.",
       "notes": "MIT repo (skill folder Apache-2.0 via impeccable), 118 stars, created 2026-07. Also mirrored in github/awesome-copilot as anti-ui-slop."
@@ -2319,6 +2447,9 @@
       "name": "miqdadbadjuber/anti-slop",
       "repo": "miqdadbadjuber/anti-slop",
       "kind": "reference",
+      "projects": [
+        "printvisie-clone"
+      ],
       "pin": "1969b459f843603ba2efbbb24e8e1bf963c889b3",
       "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): reviewed for anti-AI UI formatting, not installed. antislop-ui is the most precise catalogue of UI tells found (eyebrow badge above the H1, decorative status dot, emoji bullets, arrow on every button, capsule AI badges, copy-paste feature cards, three-step How it works, wide-tracked uppercase labels, fake logo bar), but it must load with the 701-line core, which blocks UI work until the user answers a during/after mode question, asks before creating any asset (R-23), and with no direction falls back to ENERGY 1 / RHYTHM 1 / MOTION 1. That stalls unattended builders and fights an animation-led brief. Revisit for an attended audit (mode after).",
       "notes": "MIT, 9.5k stars, active (2026-11-18). Ships an npx installer and a settings file at ~/.config/antislop/settings.json; antislop-human runs Python contrast checks."
@@ -2327,6 +2458,10 @@
       "name": "Leonxlnx/taste-skill-classics",
       "repo": "Leonxlnx/taste-skill-classics",
       "kind": "reference",
+      "status": "declined",
+      "projects": [
+        "printvisie-clone"
+      ],
       "pin": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
       "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): reviewed, not installed. The pre-2.5 taste styles moved here (opt-in, disable-model-invocation). industrial-brutalist-ui prescribes ASCII-framed uppercase meta labels, CRT scanlines and noise overlays, which are the eyebrow and decoration tells the owner wants gone, and minimalist-ui bans fonts and icon sets outright; both contradict design-taste-frontend 2.5.1, which supersedes them."
     },
@@ -2334,6 +2469,10 @@
       "name": "markbuildsbrands/creative-winning-variables (Drive zip)",
       "repo": "https://drive.google.com/drive/folders/1QPEGj5YG8TisRjxqD_xeYYzH28gezIbW",
       "kind": "skills",
+      "projects": [
+        "cnlsneakers",
+        "ecommerce-workspace"
+      ],
       "pin": "Drive file 12zRvDWDxdplgqcuItCp-RcACfCLIYH27, modified 2026-11-02, zip sha256 607f14b65d4770ee74b108c6fab584b729d85740530ee27587c51c112c4dd100",
       "skills": [
         {
@@ -2473,6 +2612,7 @@
       "name": "firecrawl/firecrawl",
       "repo": "firecrawl/firecrawl",
       "kind": "reference",
+      "status": "installed",
       "pin": "484be117975ac7b8be085c25f1fbd54d005f17ff",
       "decision": "2026-11-20 owner named it. The server repo (AGPL-3.0). Used three ways: the cloud CLI and skills (firecrawl/cli entry); Firecrawl Local, the official single-binary local engine from this repo (apps/firecrawl-local), crate firecrawl-local 0.1.1 built with `nice -n 19 cargo install firecrawl-local --version 0.1.1 --locked` to ~/.cargo/bin/firecrawl-local after Nebi expected Firecrawl to be local and free (build.rs reviewed: only picks where shared code compiles from); its `init` (edits every AI tool's config) was not run and no MCP was registered. FIRECRAWL_CLOUD=off in settings env keeps it fully local; the cloud CLI does not read that variable. Self-hosting with Docker stays saved, not installed.",
       "update": "nice -n 19 cargo install firecrawl-local --version <VERSION> --locked"
@@ -2481,6 +2621,7 @@
       "name": "firecrawl/firecrawl-claude-plugin",
       "repo": "firecrawl/firecrawl-claude-plugin",
       "kind": "reference",
+      "status": "declined",
       "pin": "d6e42a497efafa32d5d199c2e0b58ac0a7245450",
       "decision": "not adopted 2026-11-20: 19 plugin skills (fantasy-sports, flights-and-hotels, ...) that cannot be set to name-only, plus a hosted MCP that duplicates the CLI. The CLI skills cover the same commands."
     },
@@ -2528,6 +2669,7 @@
       "name": "Tilion (cloud MCP)",
       "repo": "tiliondev/fortress",
       "kind": "reference",
+      "status": "installed",
       "pin": "026da4dab70e15f2f03b767f8039e71bec5dc762",
       "decision": "2026-11-20 owner named tilion.com: added the hosted MCP at user scope on all four accounts (`claude mcp add --transport http --scope user tilion https://back.tilion.dev/mcp`; ~/.claude.json, ~/.claude-max2, ~/.claude-team, ~/.claude-team2). OAuth through /mcp by the owner; no key stored by agents. About 20 tools: sessions, read_page, collect_data, click/fill, saved logins.",
       "why": "Hosted Chrome with anti-bot recovery, CAPTCHA solving and residential proxies; the cloud slot in the browser routing.",
@@ -2545,6 +2687,91 @@
       "installed": [
         "~/.local/bin/crwl"
       ]
+    },
+    {
+      "name": "exa-labs/agent-skills",
+      "repo": "exa-labs/agent-skills",
+      "kind": "skills",
+      "pin": "9d220cc035f17bc01ca707ffae4ea1114af081fd",
+      "skills": [
+        {
+          "name": "build-with-exa",
+          "path": "skills/build-with-exa",
+          "tree": "b0f14411d71f28a3e8d76aad5a7fdba52ef27924",
+          "installed": [
+            "~/.claude/skills/build-with-exa"
+          ]
+        },
+        {
+          "name": "company-research",
+          "path": "skills/company-research",
+          "tree": "e0e8ecfc1375e959c028aeb20c3bbe14f07961b5",
+          "installed": [
+            "~/.claude/skills/company-research"
+          ]
+        },
+        {
+          "name": "exa-contents",
+          "path": "skills/exa-contents",
+          "tree": "35250a234db5eeb239c904924835bc53b83017d5",
+          "installed": [
+            "~/.claude/skills/exa-contents"
+          ]
+        },
+        {
+          "name": "exa-search",
+          "path": "skills/exa-search",
+          "tree": "9488d268717aec25c6eaad59ca8355c262d171f0",
+          "installed": [
+            "~/.claude/skills/exa-search"
+          ]
+        },
+        {
+          "name": "lead-generation",
+          "path": "skills/lead-generation",
+          "tree": "06d0e90db2334e40380b3aa9a4c040c2bae3fd17",
+          "installed": [
+            "~/.claude/skills/lead-generation"
+          ]
+        }
+      ],
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add exa-labs/agent-skills#<SHA> --skill build-with-exa company-research exa-contents exa-search lead-generation -g -a claude-code -y",
+      "decision": "2026-11-20 owner asked for Exa's official skills: installed all 5 from the real upstream at 9d220cc, global (Exa is used across projects), descriptions left on. Review at the pin: MIT, Markdown only (no scripts, hooks or allowed-tools), 75 stars, pushed 2026-11-16. company-research runs as context: fork and says 'Do NOT use other Exa tools'; lead-generation wants the MCP agent_run tool (the exa plugin has it) and triggers on 'find companies', so watch it for over-firing in ecommerce work. Both reference web_search_advanced_exa, which neither connected MCP exposes; the budgeted route is nebi-tools tools/exa/exa.py. Installed copies diffed identical to the pin.",
+      "why": "Exa's own request shapes, category/filter rules and Agent API method (Websets and /findSimilar are deprecated per these docs); nothing else in the pack covers Exa's paid API.",
+      "notes": "Skills CLI copied the folders into ~/.claude/skills (no ~/.agents copy). Codex parked: no Codex copy."
+    },
+    {
+      "name": "parallel-web/parallel-agent-skills",
+      "repo": "parallel-web/parallel-agent-skills",
+      "kind": "plugin",
+      "status": "installed",
+      "pin": "ccc87e3c15d6a96bc8e73b2de5f2e510d2d63d71",
+      "update": "claude plugin marketplace update parallel-agent-skills && claude plugin update parallel@parallel-agent-skills  # review the diff from the pin first",
+      "decision": "2026-11-20 owner named Parallel (parallel.ai) and asked for its skills and MCP, global, so they can log in: installed the official Claude Code plugin parallel@parallel-agent-skills 0.12.0 (user scope) from its own marketplace at ccc87e3. Review at the pin: MIT, 95 stars, pushed 2026-11-17; Markdown skills plus one scanner script (migrate-to-parallel/scripts/scan_provider_usage.py, reads code only), one Bash-only sub-agent (parallel-subagent), no hooks. MCP parallel-search at https://mcp.parallel.ai/mcp/claude: search, fetch and decisions work anonymously, research needs the owner's sign-in via /mcp. Descriptions checked for over-firing: web-search and web-extract defer to the MCP, deep-research fires only on explicit words; findall fires on 'find all X'.",
+      "why": "Second web-research provider beside Exa for fallback and parallel search; FindAll builds verified entity lists, Entity Search finds companies and people.",
+      "notes": "Key PARALLEL_API_KEY in nebi-tools tools.env; parallel-cli reads it from the environment. Balance and stored login need `parallel-cli login` (device OAuth) by the owner. Prices 2026-11-20: search fast $1/1k, basic/advanced $5/1k, extract $1/1k URLs, FindAll $0.25/run + $0.03/match, Entity Search $5/1k. Responses carry usage SKU counts, not dollars."
+    },
+    {
+      "name": "parallel-web/parallel-web-tools",
+      "repo": "parallel-web/parallel-web-tools",
+      "kind": "cli",
+      "status": "installed",
+      "pin": "0.9.4",
+      "update": "uv tool install --force \"parallel-web-tools[cli]==<VERSION>\"",
+      "decision": "2026-11-20: installed parallel-cli 0.9.4 from PyPI with uv tool (MIT, released 2026-10-24, deps click/httpx/parallel-web/python-dotenv/rich, cli extra pyyaml/questionary). The plugin's CLI skills (deep research, enrichment, FindAll, monitor) call it.",
+      "why": "The Parallel plugin's CLI skills need it.",
+      "notes": "~/.local/bin/parallel-cli"
+    },
+    {
+      "name": "TikHub MCP",
+      "repo": "tikhub (hosted, mcp.tikhub.io)",
+      "kind": "reference",
+      "status": "installed",
+      "pin": "hosted 1.20.0 (Instagram server, 2026-11-20)",
+      "update": "cd <project> && ~/.claude/skills/nebi-tools/tools/tikhub/tikhub-mcp.sh on|off|list [platform ...]",
+      "decision": "2026-11-20 owner pasted TikHub's 16-server MCP config and asked for it global. Added all 16 at user scope as native HTTP servers (not `npx mcp-remote`) with a headersHelper reading tools.env; all connected. Measured: a fresh session's first request went 64.8k -> 97.6k tokens (+33k, the deferred names of ~1,090 tools). Owner then said they don't want them loaded immediately: removed all 16 from user scope (session back to 60.5k) and added tools/tikhub/tikhub-mcp.sh, which switches chosen platforms on or off per folder (local scope; default set instagram linkedin twitter reddit threads others tikhub). headersHelper is skipped in folders whose trust prompt was never accepted (bypass mode never shows it; servers then fail with 'Dynamic Client Registration rejected (HTTP 404)'), so the switch writes the bearer header into that folder's entry in ~/.claude.json (mode 600). Proven: on/list/off in ~/Documents/GitHub/music, Instagram server connected. Same day the TikHub REST API and MCP returned 500 on every platform with both the old and new key (TikHub-side).",
+      "why": "TikHub as MCP tools in the folders that want them, without the standing token cost everywhere; the tikhub skill's REST helper covers every endpoint otherwise.",
+      "notes": "Servers: tikhub-{tiktok,douyin,instagram,xiaohongshu,weibo,others,bilibili,youtube,kuaishou,zhihu,linkedin,reddit,tikhub,wechat,twitter,threads}. Cloudflare in front rejects Python's default urllib user agent (403); curl and Claude Code pass."
     }
   ],
   "docs": [

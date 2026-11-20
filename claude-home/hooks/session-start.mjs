@@ -44,6 +44,20 @@ async function browserLines(cwd) {
   }
 }
 
+/** One line when the upstream register's library has entries for this project; offline, nothing otherwise. */
+async function libraryLines(project) {
+  try {
+    const { libraryRows } = await import('../nebi/upstreams.mjs');
+    const register = JSON.parse(fs.readFileSync(path.join(HARNESS_HOME, 'nebi', 'upstreams.json'), 'utf8'));
+    const rows = libraryRows(register, project);
+    if (!rows.length) return [];
+    const counts = ['installed', 'saved', 'declined'].map(status => `${rows.filter(row => row.status === status).length} ${status}`).join(', ');
+    return [`Library: ${rows.length} skills/repos researched for ${plain(project)} (${counts}); check it before hunting: node ${path.join(HARNESS_HOME, 'nebi', 'upstreams.mjs')} --library --here`];
+  } catch {
+    return [];
+  }
+}
+
 try {
   const input = JSON.parse(fs.readFileSync(0, 'utf8'));
   const cwd = typeof input.cwd === 'string' ? input.cwd : process.cwd();
@@ -54,6 +68,7 @@ try {
   const state = `Branch: ${context.current.branch || 'unavailable'}; working tree: ${context.current.dirty === null ? 'unknown' : context.current.dirty ? 'dirty' : 'clean'}.`;
   const helper = path.join(HARNESS_HOME, 'nebi', 'context.mjs');
   const browser = await browserLines(cwd);
+  const library = await libraryLines(context.project.name);
   // Complaints captured in this project's earlier sessions (feedback-capture.mjs), so the next session sees them.
   const complaints = process.env.NEBI_FEEDBACK_CAPTURE === 'off' || process.env.NEBI_EVAL === '1' ? [] : recentComplaints(context.project);
   const text = [
@@ -72,6 +87,7 @@ try {
     'END SAVED CONTEXT DATA',
     ...(complaints.length ? ['Recent complaints from Nebi in this project (some may be fixed; check before acting):', ...complaints.map(line => `- ${line}`)] : []),
     ...browser,
+    ...library,
     `Context helper: run node ${helper} show --cwd <directory> --session <id> for this task; node ${helper} list --all only for a requested cross-project overview.`,
     'For a resume, match the user’s intended task before selecting an existing checkpoint; never choose the newest note merely because it is newest. For new work, keep this session’s separate task.',
     'Use nebi-sessions for substantial ongoing work and handoffs. The lead saves meaningful checkpoints with the helper; hooks only record repository facts. Simple questions need no bookkeeping.',

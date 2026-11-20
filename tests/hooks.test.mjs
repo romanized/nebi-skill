@@ -523,6 +523,29 @@ test('an eval run (NEBI_EVAL=1) keeps the session-start context but records noth
   }
 });
 
+test('session start names the library entries for this project, from a worktree too, and nothing elsewhere', () => {
+  const home = path.join(fixtureRoot, 'library');
+  const shop = path.join(home, 'work', 'libshop');
+  const tree = path.join(home, 'work', 'libshop-wt');
+  const other = path.join(home, 'work', 'other');
+  for (const dir of [shop, other, path.join(home, '.claude', 'nebi')]) mkdirSync(dir, { recursive: true });
+  const git = (...args) => assert.equal(spawnSync('git', ['-C', shop, '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', ...args]).status, 0);
+  git('init', '-q');
+  git('commit', '-q', '--allow-empty', '-m', 'root');
+  git('worktree', 'add', '-q', tree);
+  writeFileSync(path.join(home, '.claude', 'nebi', 'upstreams.json'), JSON.stringify({ lockRoots: [], sources: [
+    { name: 'owner/saved', kind: 'reference', projects: ['libshop'], decision: 'Reviewed, kept for later.' },
+    { name: 'owner/declined', kind: 'reference', status: 'declined', projects: ['LibShop'], decision: 'Turned down.' },
+    { name: 'owner/global', kind: 'skills', skills: [{ name: 'g', installed: ['~/.claude/skills/g'] }] },
+  ] }));
+  const context = (cwd) => JSON.parse(runHook('claude-home/hooks/session-start.mjs', home, { cwd, session_id: 'start' }, { NEBI_FEEDBACK_CAPTURE: 'off' }))
+    .hookSpecificOutput.additionalContext;
+  const line = `Library: 2 skills/repos researched for libshop (0 installed, 1 saved, 1 declined); check it before hunting: node ${path.join(home, '.claude', 'nebi', 'upstreams.mjs')} --library --here`;
+  assert.ok(context(shop).split('\n').includes(line), context(shop));
+  assert.ok(context(tree).split('\n').includes(line), 'a worktree maps to its main repo');
+  assert.doesNotMatch(context(other), /^Library:/m, 'no entries, no line');
+});
+
 test('session start shows recent complaints from this project only', () => {
   const home = path.join(fixtureRoot, 'complaints');
   const shop = path.join(home, 'work', 'shop');

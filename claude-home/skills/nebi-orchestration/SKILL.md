@@ -51,7 +51,7 @@ Before parallel writing, record a compact work map:
 `ID | owner | write scope | read-only interfaces | dependencies | acceptance check | shared-resource owner`
 
 - Give every file, shared resource, and cross-cutting decision one write owner. If ownership overlaps, serialize it or assign one owner.
-- When parallel writers share one repo and the harness offers isolation, give each lane its own worktree or branch; the lead owns the merge.
+- When parallel writers share one repo and the harness offers isolation, give each lane its own worktree or branch; the lead owns the merge. A worktree made by hand goes in `~/Documents/GitHub/.worktrees/<repo>/<lane>`, never beside the repo (the harness's own `.claude/worktrees/` is fine), and comes out once its branch is merged: `node ~/.claude/nebi/worktrees.mjs tidy` plans it, `--apply` does it.
 - When outputs connect, the lead owns and stabilizes the minimum interface contract first: schema, signature, format, behavior, and compatibility check. Workers implement against it; only the lead approves a contract change.
 - Start a lane only when its dependencies are satisfied. Reserve time and context for reconciliation and combined proof.
 - Workers are terminal: they complete their lane and return the deliverable and receipts this turn. They do not hide work behind re-delegation; only the lead changes routing.

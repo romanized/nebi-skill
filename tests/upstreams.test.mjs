@@ -6,7 +6,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import test from 'node:test';
-import { checkDocs, extractPosts, localTreeHash, markReviewed, normalizeDoc } from '../claude-home/nebi/upstreams.mjs';
+import { STATUSES, checkDocs, entryStatus, extractPosts, localTreeHash, markReviewed, normalizeDoc } from '../claude-home/nebi/upstreams.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const script = path.join(root, 'claude-home/nebi/upstreams.mjs');
@@ -271,4 +271,55 @@ test('--docs CLI: exit 0 with changes to review, --mark-reviewed writes only the
   assert.equal(after.status, 0, after.stderr);
   assert.match(after.stdout, /guide unchanged\n$/);
   assert.equal(cli('--mark-reviewed').status, 1);
+});
+
+test('library status: explicit wins, else installed paths, a parked skill or saved', () => {
+  assert.equal(entryStatus({ skills: [{ installed: ['~/.claude/skills/a'] }] }), 'installed');
+  assert.equal(entryStatus({ installed: ['~/.local/bin/a'] }), 'installed');
+  assert.equal(entryStatus({ skills: [{ installed: [], parked: '~/.agents/parked/a' }] }), 'declined');
+  assert.equal(entryStatus({ kind: 'reference', decision: 'reference only' }), 'saved');
+  assert.equal(entryStatus({ kind: 'reference', status: 'installed' }), 'installed', 'an MCP install has no path');
+});
+
+test('--library lists by project with scope, use_when or the first sentence, and update; --here maps a worktree to its main repo', () => {
+  const work = path.join(temp, 'library');
+  const main = path.join(work, 'shopmain');
+  fs.mkdirSync(main, { recursive: true });
+  git(main, 'init', '-q');
+  git(main, '-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-q', '--allow-empty', '-m', 'root');
+  git(main, 'worktree', 'add', '-q', path.join(work, 'shopmain-feature'));
+  const register = { lockRoots: [work], sources: [
+    { name: 'a/project-only', kind: 'skills', projects: ['shopmain'], use_when: 'Theme work on the shop.', update: 'npx skills add a/project-only#<SHA>',
+      skills: [{ name: 'p', installed: [path.join(main, '.claude/skills/p')] }] },
+    { name: 'b/global-too', kind: 'skills', projects: ['ShopMain'], why: 'Motion polish. Second sentence.', skills: [{ name: 'g', installed: ['~/.claude/skills/g'] }] },
+    { name: 'c/declined', kind: 'reference', status: 'declined', projects: ['shopmain'], decision: 'Not adopted: duplicates the CLI. More text.' },
+    { name: 'd/other', kind: 'reference', decision: 'Reference only.' },
+  ] };
+  const file = path.join(temp, 'register-library.json');
+  fs.writeFileSync(file, JSON.stringify(register));
+  const library = (cwd, ...extra) => {
+    const result = spawnSync(process.execPath, [script, '--register', file, '--library', ...extra], { cwd, encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  };
+  const rows = JSON.parse(library(root, '--project', 'shopmain', '--json')).entries;
+  assert.deepEqual(rows.map(({ name, status, scope, use_when, update }) => [name, status, scope.join(','), use_when, update]), [
+    ['a/project-only', 'installed', 'shopmain', 'Theme work on the shop.', true],
+    ['b/global-too', 'installed', 'global,ShopMain', 'Motion polish.', false],
+    ['c/declined', 'declined', 'shopmain', 'Not adopted: duplicates the CLI.', false],
+  ]);
+  assert.equal(JSON.parse(library(root, '--json')).entries.find((row) => row.name === 'd/other').scope.join(), 'global', 'no projects means global');
+  const here = JSON.parse(library(path.join(work, 'shopmain-feature'), '--here', '--json'));
+  assert.equal(here.project, 'shopmain');
+  assert.equal(here.entries.length, 3);
+  assert.match(library(root, '--project', 'nothing-here'), /^Library for nothing-here: 0 entries/);
+});
+
+test('the register uses only known statuses and non-empty project lists', () => {
+  const register = JSON.parse(fs.readFileSync(path.join(root, 'claude-home/nebi/upstreams.json'), 'utf8'));
+  for (const source of register.sources) {
+    if ('status' in source) assert.ok(STATUSES.includes(source.status), `${source.name}: status ${source.status}`);
+    if ('projects' in source) assert.ok(Array.isArray(source.projects) && source.projects.length && source.projects.every((p) => typeof p === 'string' && p && !p.includes('/')), `${source.name}: projects`);
+    if ('use_when' in source) assert.ok(typeof source.use_when === 'string' && source.use_when && !source.use_when.includes('\n'), `${source.name}: use_when`);
+  }
 });

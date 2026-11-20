@@ -31,6 +31,8 @@ python3 -I $T post <endpoint> --param k=v [--out <dir>]
 
 For YouTube, Threads, LinkedIn, Douyin, Xiaohongshu and the rest, find the endpoint on docs.tikhub.io and check its `price` before looping over it.
 
+Before using TikTok Creative Center ads (`/api/v1/tiktok/ads/*`), Instagram v2 posts or charged-miss budgeting, read [references/endpoint-notes.md](references/endpoint-notes.md): `search_ads` ignores country and keyword, and a 200 can bill for an empty result.
+
 ## Bigger harvests
 
 For more than a handful of calls, write a short script that imports the helper (`sys.path.insert(0, <tools/tikhub>)`, `import tikhub as th`, `th._request(path, params=..., api_key=th._load_api_key())`, then `th._strip_headers(body)`) and saves each page. Rank what comes back by engagement and recency, then pull replies on the top posts: replies hold the confirmations and the "this broke for me" reports. Say how many calls you spent.
