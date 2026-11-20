@@ -82,7 +82,8 @@ export const register: Register = (on, options) => {
     const input = e as unknown as Readonly<Record<string, unknown>>
     const cwd = tool === 'Bash' ? await $.session.cwd() : ''
     const tmpdir = tool === 'Bash' ? ((await $.env.get('TMPDIR').catch(() => undefined)) ?? '') : ''
-    const risk = classifyCall(tool, input, cwd, tmpdir)
+    const home = tool === 'Bash' ? ((await $.env.get('HOME').catch(() => undefined)) ?? '') : ''
+    const risk = classifyCall(tool, input, cwd, tmpdir, home)
     if (risk === null || (await read($, isOff)) || (await read($, allowed)).includes(risk.rule)) return next(e)
 
     // A sub-agent has nobody watching it: stop it at once and send it back to its lead.

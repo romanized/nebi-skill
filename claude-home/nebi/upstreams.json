@@ -1221,7 +1221,7 @@
       "name": "vercel-labs/agent-browser",
       "repo": "vercel-labs/agent-browser",
       "kind": "reference",
-      "decision": "not adopted: a second browser controller next to Claude in Chrome, the Codex browser and bsk"
+      "decision": "not adopted: a second browser controller next to Claude in Chrome, the Codex browser and bsk. Rechecked 2026-11-20 (browser scout: v0.43.0, 52.9k stars, per-session daemons, profile reuse): still not adopted; microsoft/playwright-cli fills the role."
     },
     {
       "name": "cursor/plugins (cursor-team-kit)",
@@ -2329,6 +2329,222 @@
       "kind": "reference",
       "pin": "5e08c9383dc4ad7fc0df70e1ac8cfa09ec356305",
       "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): reviewed, not installed. The pre-2.5 taste styles moved here (opt-in, disable-model-invocation). industrial-brutalist-ui prescribes ASCII-framed uppercase meta labels, CRT scanlines and noise overlays, which are the eyebrow and decoration tells the owner wants gone, and minimalist-ui bans fonts and icon sets outright; both contradict design-taste-frontend 2.5.1, which supersedes them."
+    },
+    {
+      "name": "markbuildsbrands/creative-winning-variables (Drive zip)",
+      "repo": "https://drive.google.com/drive/folders/1QPEGj5YG8TisRjxqD_xeYYzH28gezIbW",
+      "kind": "skills",
+      "pin": "Drive file 12zRvDWDxdplgqcuItCp-RcACfCLIYH27, modified 2026-11-02, zip sha256 607f14b65d4770ee74b108c6fab584b729d85740530ee27587c51c112c4dd100",
+      "skills": [
+        {
+          "name": "creative-winning-variables",
+          "path": "creative-winning-variables",
+          "scope": "global",
+          "sha256": {
+            "SKILL.md": "96af288ae6139d95f40b621cc253429b69c22c19fc6643cb1403300c2001f7fa",
+            "references/video-evidence.md": "81b7b1fbb5615e8603dd4805c727e69c457d14a11adc70141ac3a4924325791b"
+          },
+          "installed": [
+            "~/.claude/skills/creative-winning-variables"
+          ]
+        }
+      ],
+      "update": "Download the zip from the Drive folder (curl -sL 'https://drive.google.com/uc?export=download&id=12zRvDWDxdplgqcuItCp-RcACfCLIYH27'), compare sha256 and diff against the pin, then replace ~/.claude/skills/creative-winning-variables",
+      "decision": "2026-11-20 (user linked it, rs-intel session): installed unmodified, global, next to the coreyhaines ad set (ads, ad-creative): RapidSneakers (cnlsneakers) and Karpet24 (ecommerce-workspace) both make ads. Reviewed: 2 markdown files, no scripts, no network, no dependencies. Author: Mark (@markbuildsbrands, Instagram); his reels teach the same 'stack winning variables' method (rs-intel harvest 19 Nov). No license file; the folder says 'download zip and drop in AI of choice'. Codex copy skipped (Codex parked).",
+      "notes": "Overlap: ad-creative also judges which ad to kill; this one owns breaking an ad into variables, the variable library and one-variable tests. Built for long-form DTC problem/solution ads (UMP/UMS/authority), which a low-price sneaker ad mostly lacks; its 50% hook-rate bar is the author's opinion, unproven (rs-intel found 92% of teacher claims show no proof)."
+    },
+    {
+      "name": "firecrawl/cli",
+      "repo": "firecrawl/cli",
+      "kind": "skills",
+      "pin": "a9ce64e4d114fd203d8402ca000339d66e902cde",
+      "skills": [
+        {
+          "name": "firecrawl",
+          "path": "skills/firecrawl",
+          "tree": "ac34de54447f1caca723f0a6376380b7d2db424c",
+          "installed": [
+            "~/.claude/skills/firecrawl"
+          ]
+        },
+        {
+          "name": "firecrawl-agent",
+          "path": "skills/firecrawl-agent",
+          "tree": "1f5e172a1c0d8c6fc61f356176b916b86d07eb24",
+          "installed": [
+            "~/.claude/skills/firecrawl-agent"
+          ]
+        },
+        {
+          "name": "firecrawl-alexandria",
+          "path": "skills/firecrawl-alexandria",
+          "tree": "07d4bcb9585a16db748b66861e0dba5af47c8346",
+          "installed": [
+            "~/.claude/skills/firecrawl-alexandria"
+          ]
+        },
+        {
+          "name": "firecrawl-crawl",
+          "path": "skills/firecrawl-crawl",
+          "tree": "3e998d93b61eaf19e1e1c6da0e2b6ae2e57a7a82",
+          "installed": [
+            "~/.claude/skills/firecrawl-crawl"
+          ]
+        },
+        {
+          "name": "firecrawl-developer-index",
+          "path": "skills/firecrawl-developer-index",
+          "tree": "3b58e81b5ee0dad7ee093941e6a3d6c0377cce2f",
+          "installed": [
+            "~/.claude/skills/firecrawl-developer-index"
+          ]
+        },
+        {
+          "name": "firecrawl-download",
+          "path": "skills/firecrawl-download",
+          "tree": "5e723040984224228d24a405cabbfc13676c314b",
+          "installed": [
+            "~/.claude/skills/firecrawl-download"
+          ]
+        },
+        {
+          "name": "firecrawl-interact",
+          "path": "skills/firecrawl-interact",
+          "tree": "81ce80930763d47dd312f344c5ad3112f012b128",
+          "installed": [
+            "~/.claude/skills/firecrawl-interact"
+          ]
+        },
+        {
+          "name": "firecrawl-map",
+          "path": "skills/firecrawl-map",
+          "tree": "89f934004d9416d22c82176c6411a78a2c26c645",
+          "installed": [
+            "~/.claude/skills/firecrawl-map"
+          ]
+        },
+        {
+          "name": "firecrawl-monitor",
+          "path": "skills/firecrawl-monitor",
+          "tree": "6ceb7fffb1d521a8c1cb5aa375391d3af143dd66",
+          "installed": [
+            "~/.claude/skills/firecrawl-monitor"
+          ]
+        },
+        {
+          "name": "firecrawl-parse",
+          "path": "skills/firecrawl-parse",
+          "tree": "7421383a7be8244b9ab2192d2e039310cd60426a",
+          "installed": [
+            "~/.claude/skills/firecrawl-parse"
+          ]
+        },
+        {
+          "name": "firecrawl-research-index",
+          "path": "skills/firecrawl-research-index",
+          "tree": "f5c13d9eb60172157ec901988bcd48e719831669",
+          "installed": [
+            "~/.claude/skills/firecrawl-research-index"
+          ]
+        },
+        {
+          "name": "firecrawl-scrape",
+          "path": "skills/firecrawl-scrape",
+          "tree": "b98d97a3aa30370e530563883024291580e0c373",
+          "installed": [
+            "~/.claude/skills/firecrawl-scrape"
+          ]
+        },
+        {
+          "name": "firecrawl-search",
+          "path": "skills/firecrawl-search",
+          "tree": "9487d2cf8e2a813b9a54136a8516a5f54268e8e3",
+          "installed": [
+            "~/.claude/skills/firecrawl-search"
+          ]
+        }
+      ],
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add firecrawl/cli#<SHA> --skill firecrawl firecrawl-agent firecrawl-alexandria firecrawl-crawl firecrawl-developer-index firecrawl-download firecrawl-interact firecrawl-map firecrawl-monitor firecrawl-parse firecrawl-research-index firecrawl-scrape firecrawl-search -g -a claude-code -y && npm install -g --ignore-scripts firecrawl-cli@<VERSION>",
+      "decision": "2026-11-20 owner named firecrawl/firecrawl: installed the CLI (npm firecrawl-cli 1.30.0, ISC, no install scripts) and all 13 skills from its repo at a9ce64e, global. All 13 set to name-only in ~/.claude/settings.json skillOverrides: the main skill claims 'any live-web task ... even when the task doesn't name Firecrawl' and firecrawl-developer-index claims every library question, which would move free exa/WebSearch research onto Firecrawl credits. nebi-tools routes to it for maps, crawls, downloads, extraction, monitors and parsing. FIRECRAWL_NO_TELEMETRY=1 in settings env.",
+      "why": "Whole-site map/crawl/download, schema extraction, change monitors and file parsing; nothing else in the pack crawls a site.",
+      "notes": "Skipped `firecrawl-cli init`: it installs skills into every detected agent and logs in. Auth is the CLI's own store (`firecrawl login --browser`); free plan 1,000 credits/month. The cloud receives every URL and page. The skills CLI copied the folders into ~/.claude/skills (no ~/.agents copy)."
+    },
+    {
+      "name": "firecrawl/firecrawl",
+      "repo": "firecrawl/firecrawl",
+      "kind": "reference",
+      "pin": "484be117975ac7b8be085c25f1fbd54d005f17ff",
+      "decision": "2026-11-20 owner named it. The server repo (AGPL-3.0). Used three ways: the cloud CLI and skills (firecrawl/cli entry); Firecrawl Local, the official single-binary local engine from this repo (apps/firecrawl-local), crate firecrawl-local 0.1.1 built with `nice -n 19 cargo install firecrawl-local --version 0.1.1 --locked` to ~/.cargo/bin/firecrawl-local after Nebi expected Firecrawl to be local and free (build.rs reviewed: only picks where shared code compiles from); its `init` (edits every AI tool's config) was not run and no MCP was registered. FIRECRAWL_CLOUD=off in settings env keeps it fully local; the cloud CLI does not read that variable. Self-hosting with Docker stays saved, not installed.",
+      "update": "nice -n 19 cargo install firecrawl-local --version <VERSION> --locked"
+    },
+    {
+      "name": "firecrawl/firecrawl-claude-plugin",
+      "repo": "firecrawl/firecrawl-claude-plugin",
+      "kind": "reference",
+      "pin": "d6e42a497efafa32d5d199c2e0b58ac0a7245450",
+      "decision": "not adopted 2026-11-20: 19 plugin skills (fantasy-sports, flights-and-hotels, ...) that cannot be set to name-only, plus a hosted MCP that duplicates the CLI. The CLI skills cover the same commands."
+    },
+    {
+      "name": "kalil0321/reverse-api-engineer",
+      "repo": "kalil0321/reverse-api-engineer",
+      "kind": "skills",
+      "pin": "e3aae749746f076f78f9642d83eeb3c7af9bac44",
+      "skills": [
+        {
+          "name": "reverse-api-engineer",
+          "path": "skills/reverse-api-engineer",
+          "tree": "7384f9c777d3389d36c1d9d990ed756c5cb1c458",
+          "installed": [
+            "~/.claude/skills/reverse-api-engineer"
+          ]
+        }
+      ],
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add kalil0321/reverse-api-engineer#<SHA> --skill reverse-api-engineer -g -a claude-code -y && uv tool install --reinstall 'reverse-api-engineer==<VERSION>'",
+      "decision": "2026-11-20 owner named it: installed CLI 0.16.0 (uv tool, PyPI wheel, MIT, Python 3.14) and its skill, global. Default backend is the Claude Agent SDK, which runs the logged-in `claude` binary; no ANTHROPIC_API_KEY set. Dependency httpx2 checked: pydantic's httpx successor, explained in its CHANGELOG (#122).",
+      "why": "Turns a site's private HTTP API into a typed client by watching a browser do the task; nothing else in the pack does this.",
+      "notes": "Captured traffic (cookies, tokens) goes to the model. Its agent runs without approval prompts. chrome-mcp mode drives the user's real Chrome: opt-in only; --headless for public data. Runs and config in ~/.reverse-api/. Anthropic's Agent SDK docs bar third-party products from offering claude.ai login; this is the owner's own local use, flagged to the owner 2026-11-20."
+    },
+    {
+      "name": "microsoft/playwright-cli",
+      "repo": "microsoft/playwright-cli",
+      "kind": "skills",
+      "pin": "c872a33cec77fa03c28fa7c6d1ad99d15d04ce42",
+      "skills": [
+        {
+          "name": "playwright-cli",
+          "path": "skills/playwright-cli",
+          "tree": "0cc4729ee620ed1deff6630aa439ace9c0980849",
+          "installed": [
+            "~/.claude/skills/playwright-cli"
+          ]
+        }
+      ],
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add microsoft/playwright-cli#<SHA> --skill playwright-cli -g -a claude-code -y && npm install -g --ignore-scripts @playwright/cli@<VERSION>",
+      "decision": "2026-11-20 lead's pick from the browser scout (owner asked for more reliable browsers agents can spin up): installed @playwright/cli 0.1.25 (Apache-2.0, no install scripts) and its skill, global. Named sessions give each agent its own browser; `attach --extension=chrome --session=<name>` works in the user's Chrome as a tab group. Chosen over vercel-labs/agent-browser (declined 2026-10-03).",
+      "why": "A clean, isolated browser per sub-agent, not tied to a Claude account, unlike Claude in Chrome and codex-browser.",
+      "notes": "Depends on playwright 1.66.0-alpha-2026-11-18. No stealth: protected sites go to Scrapling or Tilion."
+    },
+    {
+      "name": "Tilion (cloud MCP)",
+      "repo": "tiliondev/fortress",
+      "kind": "reference",
+      "pin": "026da4dab70e15f2f03b767f8039e71bec5dc762",
+      "decision": "2026-11-20 owner named tilion.com: added the hosted MCP at user scope on all four accounts (`claude mcp add --transport http --scope user tilion https://back.tilion.dev/mcp`; ~/.claude.json, ~/.claude-max2, ~/.claude-team, ~/.claude-team2). OAuth through /mcp by the owner; no key stored by agents. About 20 tools: sessions, read_page, collect_data, click/fill, saved logins.",
+      "why": "Hosted Chrome with anti-bot recovery, CAPTCHA solving and residential proxies; the cloud slot in the browser routing.",
+      "notes": "Company founded 2026-09; pages contradict each other (tilion.com shows a live cloud, PyPI says 'coming soon'; pricing page says $0.03/browser-hour, setup.md bills credits per minute plus per action). Free plan: $5 one-time credit, no card. Every page passes through Tilion; recordings kept up to 30 days. Local Fortress (source-available license) has Linux binaries only. Remove: `claude mcp remove tilion -s user` per account."
+    },
+    {
+      "name": "unclecode/crawl4ai",
+      "repo": "unclecode/crawl4ai",
+      "kind": "tool",
+      "pin": "838869bdda93f25e6d50b3f50ae9577d9b19a586",
+      "update": "uv tool install --reinstall 'crawl4ai==<VERSION>' && crawl4ai-setup",
+      "decision": "2026-11-20 lead's pick after Nebi asked whether Firecrawl and Tilion are the best and said several tools are fine: installed v0.9.5 (tag commit 838869b, released 2026-10-14) as an isolated uv tool (Python 3.13); v0.9.6 was skipped because it was an hour old at install time. Apache-2.0, 87.6k stars. Free local crawler: the first route for crawls in nebi-tools, Firecrawl when blocked or too big.",
+      "why": "Unlimited free crawling to markdown or JSON with deep-crawl strategies; Firecrawl's free plan caps at 1,000 credits a month.",
+      "notes": "Ten GitHub security advisories from 2026-08-31 to 2026-10-15 (SSRF, file write, env leak) are all in the Docker API server, which we do not run; CLI and library use only. No telemetry found in the installed package (the one mixpanel hit is a tracker blocklist). Its setup prints a cloud upsell banner: CRAWL4AI_NO_CLOUD_NOTICE=1 is set in settings env. No official agent skill checked (GitHub code search needs auth).",
+      "installed": [
+        "~/.local/bin/crwl"
+      ]
     }
   ],
   "docs": [

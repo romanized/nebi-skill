@@ -5,7 +5,7 @@
       "id": 1,
       "name": "find-real-fixes-on-x",
       "prompt": "Decide the next step only; do not execute. Nebi asks from the nebi-skill repo: search X for what people actually use to stop Claude Code sub-agents from colliding in git, and tell me which fixes work.",
-      "expected_output": "Use the TikHub helper from ecommerce-workspace: X search with Top and Latest over several phrasings, rank by engagement and recency, pull replies on the top posts, then read the source of each named tool before recommending it. Report calls spent.",
+      "expected_output": "Use the shared TikHub helper in nebi-tools: X search with Top and Latest over several phrasings, rank by engagement and recency, pull replies on the top posts, then read the source of each named tool before recommending it. Report calls spent.",
       "files": [],
       "expectations": [
         "Uses the TikHub X search endpoint through the shared helper",

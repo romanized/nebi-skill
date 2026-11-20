@@ -59,10 +59,10 @@ export function clean(text: string, max = 400): string {
 
 /**
  * The rule a tool call breaks, or null when it may run. `cwd` is the session's;
- * `tmpdir` is the per-user temp folder ($TMPDIR), '' when unknown.
+ * `tmpdir` is the per-user temp folder ($TMPDIR) and `home` is $HOME, '' when unknown.
  */
-export function classifyCall(tool: string, input: Readonly<Record<string, unknown>>, cwd = '', tmpdir = ''): Risk | null {
-  if (tool === 'Bash') return classifyBash(String(input.command ?? ''), cwd, tmpdir)
+export function classifyCall(tool: string, input: Readonly<Record<string, unknown>>, cwd = '', tmpdir = '', home = ''): Risk | null {
+  if (tool === 'Bash') return classifyBash(String(input.command ?? ''), cwd, tmpdir, home)
   if (tool.startsWith('mcp__')) return classifyMcp(tool, input)
 
   return null
@@ -131,14 +131,24 @@ const MAX_DEPTH = 4
 // A stopped sub-agent whose rm path sat in a variable: the literal path may well be a temp one.
 const VARIABLE_HINT = 'Run it again with the literal path written out: paths inside /tmp, /private/tmp or $TMPDIR run; report any other path to the lead.'
 
+// Claude Code's own rm check (2.1.329) asks even in bypass mode for a target that starts with
+// an unguarded variable followed by `/` and a glob, another `$`, a `/` or nothing: with the
+// variable unset that is `rm -rf /` or `/*`. `${E:?}/…` stops the shell first, so it does not ask.
+const UNSET_TO_ROOT = /^\$(?:\{([A-Za-z_][A-Za-z0-9_]*)(?::?-)?\}|([A-Za-z_][A-Za-z0-9_]*))\/(?:[*?[{$/]|$)/
+// What it asks for as written: /, a top-level folder, home, the working folder or a folder above it.
+// macOS spells some top-level folders under /private; the check reads them without it.
+const PRIVATE_ALIASES = new Set(['etc', 'var', 'tmp', 'home'])
+
 type BashRisk = Omit<Risk, 'tool' | 'what'>
-// Where the script runs: the session's folder and the per-user temp folder ('' when unknown).
-// `maybe` holds names that are either the literal path given or empty when the rm runs.
-type Context = { cwd: string; tmpdir: string; maybe?: ReadonlyMap<string, string> }
+// Where the script runs: the session's folder, the per-user temp folder and $HOME ('' when unknown),
+// and the whole command. `maybe` holds names that are either the literal path given or empty when
+// the rm runs. `plainRm` is the segment's text when it is a bare `rm` at the script's top level,
+// the only place this mod relies on Claude Code's own rm check.
+type Context = { cwd: string; tmpdir: string; home: string; script: string; maybe?: ReadonlyMap<string, string>; plainRm?: string }
 
 /** The first rule a shell command breaks, or null. */
-export function classifyBash(command: string, cwd = '', tmpdir = ''): Risk | null {
-  const risk = scriptRisk(command, cwd, { cwd, tmpdir }, 0)
+export function classifyBash(command: string, cwd = '', tmpdir = '', home = ''): Risk | null {
+  const risk = scriptRisk(command, cwd, { cwd, tmpdir, home, script: command }, 0)
 
   return risk ? { ...risk, tool: 'Bash', what: clean(command) } : null
 }
@@ -219,7 +229,9 @@ function scriptRisk(whole: string, from: string, ctx: Context, depth: number): B
       dir = joinPath(dir, words[1] ?? '~')
       continue
     }
-    const risk = wordsRisk(words, dir, { ...ctx, maybe }, depth)
+    const command = raw.find(word => !['do', 'then', 'else', '!'].includes(word))
+    const isPlainRm = depth === 0 && parens === 0 && !isInBackticks && command === 'rm'
+    const risk = wordsRisk(words, dir, { ...ctx, maybe, plainRm: isPlainRm ? text : undefined }, depth)
     if (risk) return risk
   }
 
@@ -390,8 +402,14 @@ function rmRisk(args: readonly string[], dir: string, ctx: Context): BashRisk | 
   if (!isRecursive) return null
 
   const targets = end === -1 ? args.filter(a => !a.startsWith('-') || a === '-') : [...args.slice(0, end).filter(a => !a.startsWith('-')), ...args.slice(end + 1)]
-  const blocking = targets.map(t => settled(t, ctx.maybe)).filter(t => !isTempPath(t, dir, ctx.tmpdir) && !isArtifact(t, dir, ctx.cwd) && !isCache(t))
-  if (targets.length > 0 && blocking.length === 0) return null
+  const held = targets.filter(t => {
+    const target = settled(t, ctx.maybe)
+    return !isTempPath(target, dir, ctx.tmpdir) && !isArtifact(target, dir, ctx.cwd) && !isCache(target)
+  })
+  if (targets.length > 0 && held.length === 0) return null
+  // Claude Code asks for these itself; a hold on top would ask Nebi twice.
+  if (ctx.plainRm !== undefined && held.length > 0 && held.every(t => isAskedByClaudeCode(t, ctx))) return null
+  const blocking = held.map(t => settled(t, ctx.maybe))
   // `rm -rf $S`, `cd "$S" && rm -rf out`: the path sits in a variable this cannot read.
   const isInVariable = blocking.length > 0 && blocking.every(t => t.includes('$') || (!/^[/~]/.test(t) && dir.includes('$')))
 
@@ -704,6 +722,37 @@ export function isCache(target: string): boolean {
   const names = target.split('/').filter(part => part !== '')
 
   return !names.includes('..') && CACHES.has(names[names.length - 1] ?? '')
+}
+
+/**
+ * True when Claude Code's own rm check is sure to stop this target of a bare top-level `rm`
+ * and ask, bypass mode or not. Only the shapes it always catches count; anything less clear
+ * (a `..`, a glob deeper down, quotes it reads differently, a variable the script itself sets
+ * or loops over) stays held, since asking twice beats not asking at all.
+ */
+function isAskedByClaudeCode(target: string, ctx: Context): boolean {
+  const unset = UNSET_TO_ROOT.exec(target)
+  if (unset) {
+    const name = unset[1] ?? unset[2] ?? ''
+    // Every mention of the name is a `$name` read: the command never sets it.
+    const mentions = ctx.script.match(new RegExp(`(?<![A-Za-z0-9_])${name}(?![A-Za-z0-9_])`, 'g'))?.length ?? 0
+    const reads = ctx.script.match(new RegExp(`\\$\\{?${name}(?![A-Za-z0-9_])`, 'g'))?.length ?? 0
+
+    return mentions === reads && !(ctx.plainRm ?? '').includes("'")
+  }
+  const stem = target.endsWith('/*') ? target.slice(0, -2) || '/' : target
+  if (/^~\/?$/.test(stem)) return true
+  if (!stem.startsWith('/') || /[$`~*?[{]/.test(stem) || stem.split('/').includes('..')) return false
+  const parts = resolvedParts(stem, '/') ?? []
+  const path = parts[0] === 'private' && PRIVATE_ALIASES.has(parts[1] ?? '') ? parts.slice(1) : parts
+  const isAt = (other: string) => {
+    const own = other.startsWith('/') ? resolvedParts(other, '/') : null
+    return own !== null && path.length <= own.length && path.every((part, i) => own[i] === part)
+  }
+  const isHome = ctx.home.startsWith('/') && (resolvedParts(ctx.home, '/') ?? []).join('/') === path.join('/')
+
+  // `isAt(cwd)`: the working folder or one above it, the git root included.
+  return path.length <= 1 || isHome || isAt(ctx.cwd)
 }
 
 // ---- MCP tools -----------------------------------------------------------------

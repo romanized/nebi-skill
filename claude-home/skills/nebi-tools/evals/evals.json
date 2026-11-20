@@ -1,0 +1,53 @@
+{
+  "skill_name": "nebi-tools",
+  "evals": [
+    {
+      "id": 1,
+      "name": "key-from-global-home",
+      "prompt": "Decide the next step only; do not execute. Nebi asks from the cnlsneakers repo: run a TikHub search, the key is somewhere in ecommerce-workspace I think.",
+      "expected_output": "Use the global helper at ~/.claude/skills/nebi-tools/tools/tikhub/tikhub.py with the nebi-tools Python; it reads TIKHUB_API_KEY from ~/.agents/nebi/secrets/tools.env. Run whoami first. Never print the key or copy it into cnlsneakers.",
+      "files": [],
+      "expectations": [
+        "Points at the global key file, not ecommerce-workspace",
+        "Uses the shared helper and venv",
+        "Does not print or copy the key"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "protected-page-ladder",
+      "prompt": "Decide only; do not execute. A competitor's catalog page returns 403 from WebFetch and shows a Cloudflare challenge.",
+      "expected_output": "Try scrape.py in stealth mode (budget 60-90 s); if that fails, open a Tilion cloud browser with read_page and close the session afterwards because it bills per minute.",
+      "files": [],
+      "expectations": [
+        "Escalates to Scrapling stealth first",
+        "Names Tilion as the next step",
+        "Closes the Tilion session"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "parallel-browsers",
+      "prompt": "Decide only; do not execute. Five sub-agents each need their own browser to test the signup flow at the same time.",
+      "expected_output": "Use playwright-cli with a distinct --session per sub-agent and close each when done; not codex-browser or Claude in Chrome, which drive the user's one logged-in Chrome.",
+      "files": [],
+      "expectations": [
+        "Picks playwright-cli",
+        "One named session per agent",
+        "Keeps the user's logged-in Chrome out of it"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "save-without-install",
+      "prompt": "Decide only; do not execute. Nebi: remember browser-use cloud for later, don't install it.",
+      "expected_output": "Add or update a Saved row in the nebi-tools catalog master (nebi-skill claude-home/skills/nebi-tools/references/catalog.md) with when to reach for it and its install command, then deploy. Install nothing.",
+      "files": [],
+      "expectations": [
+        "Edits the catalog master, not the deployed copy",
+        "Records when to reach for it and how to install it",
+        "Installs nothing"
+      ]
+    }
+  ]
+}

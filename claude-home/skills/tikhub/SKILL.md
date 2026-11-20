@@ -5,10 +5,10 @@ description: "Search and read social media through the TikHub API from any proje
 
 # TikHub
 
-A paid social-data API, about $0.001 per call (Instagram about $0.008). The key sits in ecommerce-workspace's `.env`, and the helper loads it from any folder:
+A paid social-data API, about $0.001 per call (Instagram about $0.008). The key sits in the nebi-tools key file (`~/.agents/nebi/secrets/tools.env`), and the helper loads it from any folder:
 
 ```bash
-T=~/Documents/GitHub/ecommerce-workspace/tools/tikhub/tikhub.py
+T=~/.claude/skills/nebi-tools/tools/tikhub/tikhub.py
 python3 -I $T whoami                                   # balance, scopes, expiry
 python3 -I $T price <endpoint>                         # listed cost, before a bulk run
 python3 -I $T get <endpoint> --param k=v --param k=v [--out <dir>]

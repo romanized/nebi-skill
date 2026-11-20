@@ -1,6 +1,6 @@
 {
   "name": "nebi-red-button",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Holds irreversible or outward actions (rm -rf, force push, reset --hard, destructive SQL, sends, deploys, deletes) and asks first, showing what they would change.",
   "author": {
     "name": "nebi"

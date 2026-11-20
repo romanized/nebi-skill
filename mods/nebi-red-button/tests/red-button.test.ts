@@ -19,8 +19,6 @@ const TABLE: readonly [string, Record<string, unknown>, string | null][] = [
   ['Bash', { command: 'sudo rm -Rf /var/www' }, 'rm-recursive'],
   ['Bash', { command: 'cd /tmp && rm -rf ../Users/nebi' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf /tmp/x/../../Users/nebi' }, 'rm-recursive'],
-  ['Bash', { command: 'rm -rf /tmp' }, 'rm-recursive'],
-  ['Bash', { command: 'rm -rf /private/tmp' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf /var/folders/x8/abc123/T' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf /private/var/folders/x8/abc123/T/../../../db' }, 'rm-recursive'],
   ['Bash', { command: 'rm -rf /var/folders/x8/other/T/x' }, 'rm-recursive'],
@@ -276,7 +274,7 @@ describe('nebi-red-button', () => {
     expect(classifyCall('Bash', { command: inTmpdir }, CWD, TMPDIR)).toBeNull()
     expect(classifyCall('Bash', { command: inTmpdir }, CWD)?.rule).toBe('rm-recursive')
     // A $TMPDIR of / or one level deep allows nothing beyond /tmp.
-    expect(classifyCall('Bash', { command: 'rm -rf /Users/nebi' }, CWD, '/')?.rule).toBe('rm-recursive')
+    expect(classifyCall('Bash', { command: 'rm -rf /Users/nebi/Desktop' }, CWD, '/')?.rule).toBe('rm-recursive')
     expect(classifyCall('Bash', { command: 'rm -rf /var/db' }, CWD, '/var')?.rule).toBe('rm-recursive')
 
     for (const command of ['rm -rf $S', 'rm -rf "$SCRATCH"/run-1', 'cd "$S" && rm -rf out']) {
@@ -386,6 +384,59 @@ describe('nebi-red-button', () => {
       expect(risk?.label, command).toBe('rm -rf outside /tmp')
       expect(risk?.hint, command).toBeUndefined()
     }
+  })
+
+  test("an rm Claude Code's own check already asks for is not held a second time", () => {
+    const HOME = '/Users/nebi'
+    const classify = (command: string) => classifyCall('Bash', { command }, CWD, TMPDIR, HOME)
+    // Its check asks for these itself: an unset variable that turns into / or /*, /, a
+    // top-level folder, home, and the working folder or one above it (the git root included).
+    for (const command of [
+      'for f in a b; do rm -rf "$E/$f"; done',
+      'rm -rf "$E"/*',
+      'rm -rf ${E}/',
+      'rm -rf ~',
+      'rm -rf ~/*',
+      `rm -rf ${HOME}`,
+      'rm -rf /',
+      'rm -rf /*',
+      'rm -rf /usr',
+      'rm -rf /tmp',
+      'rm -rf /private/tmp',
+      `rm -rf ${CWD}`,
+      `rm -rf ${CWD}/*`,
+      'rm -rf /Users/nebi/Documents/GitHub',
+    ]) {
+      expect(classify(command), command).toBeNull()
+    }
+    // Home is home wherever the session runs.
+    expect(classifyCall('Bash', { command: `rm -rf ${HOME}` }, '/private/tmp/job', TMPDIR, HOME)).toBeNull()
+    expect(classifyCall('Bash', { command: `rm -rf ${HOME}` }, '/private/tmp/job', TMPDIR)?.rule).toBe('rm-recursive')
+    // Everything its check lets through, or might, stays held: a guarded variable, a literal
+    // folder, a variable the script sets or loops over, one inside bash -c, sudo or $( ), a
+    // `..`, a quoted literal, and an rm with one target of each kind.
+    for (const command of [
+      'rm -rf "${X:?}/sub"',
+      'rm -rf "${E:?}/${f:?}"',
+      'rm -rf ~/Documents/GitHub/x/src',
+      `rm -rf ${CWD}/src`,
+      'rm -rf $S',
+      'rm -rf $S/x',
+      'S=$(pwd); rm -rf $S/*',
+      'for d in a b; do rm -rf $d/; done',
+      'bash -c "rm -rf $E/$f"',
+      'sudo rm -rf $E/$f',
+      'echo "$(rm -rf $E/)"',
+      'rm -rf /tmp/x/../../Users/nebi',
+      "rm -rf '$E/'",
+      'rm -rf "$E/$f" src',
+    ]) {
+      expect(classify(command)?.rule, command).toBe('rm-recursive')
+    }
+    // Every other rule holds as before, in the same script too.
+    expect(classify('git push --force origin main')?.rule).toBe('git-push-force')
+    expect(classify('rm -rf "$E/$f"; git push --force origin main')?.rule).toBe('git-push-force')
+    expect(classify('git reset --hard HEAD~1')?.rule).toBe('git-reset-hard')
   })
 
   for (const surface of ['terminal', 'desktop'] as const) {
