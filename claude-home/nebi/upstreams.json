@@ -17,16 +17,16 @@
         {
           "name": "security-and-hardening",
           "path": "skills/security-and-hardening",
-          "tree": "9fb34870625f80d5cac82625f388c0d81d3b525a",
+          "tree": "165116cd1e9e99c64e4015f7257bdd130545e244",
           "installed": [
             "~/.agents/skills/security-and-hardening",
             "~/.claude/skills/security-and-hardening"
           ]
         }
       ],
-      "pin": "301b02b12bff98e4688e6984af6556802322bbde",
+      "pin": "8c99fa36d90068c82d547f7c12a9d67a3e95f4ee",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add addyosmani/agent-skills#<SHA> --skill security-and-hardening -g -a claude-code codex -y",
-      "decision": "installed, global"
+      "decision": "installed, global. 2026-11-21 update sweep: the lead reinstalled security-and-hardening at 8c99fa3 (Claude Code copy); pin and tree moved to match. The ~/.agents copy is a parked Codex copy and stays on the old pin."
     },
     {
       "name": "anthropics/knowledge-work-plugins",
@@ -261,7 +261,8 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/ad-creative",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/ad-creative"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         },
         {
           "name": "ads",
@@ -270,7 +271,8 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/ads",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/ads"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         },
         {
           "name": "attribution",
@@ -279,7 +281,8 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/attribution",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/attribution"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         },
         {
           "name": "customer-research",
@@ -288,7 +291,8 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/customer-research",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/customer-research"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         },
         {
           "name": "emails",
@@ -297,7 +301,8 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/emails",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/emails"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         },
         {
           "name": "offers",
@@ -306,12 +311,13 @@
           "installed": [
             "~/Documents/GitHub/ecommerce-workspace/.agents/skills/offers",
             "~/Documents/GitHub/ecommerce-workspace/.claude/skills/offers"
-          ]
+          ],
+          "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c"
         }
       ],
-      "pin": "9d6d7ce8d18eb155dc2f9762435f097e60cdad7c",
+      "pin": "5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add coreyhaines31/marketingskills#<SHA> --skill cro copywriting seo-audit ai-seo schema analytics product-marketing -g -a claude-code codex -y ; cd ~/Documents/GitHub/ecommerce-workspace && DISABLE_TELEMETRY=1 npx skills@1.7.0 add coreyhaines31/marketingskills#<SHA> --skill ads attribution customer-research emails offers -a claude-code codex -y",
-      "decision": "installed (named): 7 global + 6 in ecommerce-workspace",
+      "decision": "installed (named): 7 global + 6 in ecommerce-workspace. 2026-11-21 update sweep: the lead reinstalled cro, copywriting, seo-audit, ai-seo, schema, analytics and product-marketing at 5b2b400 (Claude Code copies); the source pin moved there. The ecommerce-workspace skills keep 9d6d7ce as a per-skill pin, the parked ones keep 5b2c000, and the ~/.agents copies are parked Codex copies on the old pin.",
       "why": "Store copy, CRO, SEO, analytics and ads across the Shopify stores. product-marketing is the shared context skill the others read.",
       "localEdits": "ecommerce-workspace ad-creative SKILL.md: deliberate evidence-gathering rule and a fixed ads link (keep); one accidental \".Codex/product-marketing.md\" path (harmless, flagged to the user). Update it by hand, not with the command.",
       "notes": "Parked older copies in ~/.agents/skills-project-packs are superseded. Left out on purpose: image and video (overlap Higgsfield/Canva/ffmpeg-skill), B2B/SaaS skills, competitor-profiling, social, programmatic-seo. 2026-11-10: updated to 9d6d7ce (7 global, 6 in ecommerce-workspace). ad-creative was merged three-way to keep the workspace's local edits; upstream rewrote the sentence that held the local link fix. New references suggest `npx is-agentic` and `npx afdocs check`: third-party npx, review before running. 2026-11-16: ads, ad-creative, offers, attribution and conversion-tracking also installed GLOBAL at 1f83744 (entry 'coreyhaines31/marketingskills (ad set, global)'); the workspace copies of ads/ad-creative/offers/attribution are left in place and duplicate those names in ecommerce-workspace."
@@ -1403,8 +1409,8 @@
       "repo": "ChromeDevTools/chrome-devtools-mcp",
       "kind": "reference",
       "status": "installed",
-      "pin": "chrome-devtools-mcp@1.10.1 (npm)",
-      "decision": "2026-10-10: user-scope MCP `npx -y chrome-devtools-mcp@1.10.1 --isolated --no-usage-statistics` for audits only: Lighthouse, performance traces with CrUX, network and console. --isolated runs its own temporary Chrome profile, so it never touches Nebi's profiles; logged-in work stays with codex-browser. Proven: Lighthouse on a live shop site in a fresh headless session.",
+      "pin": "chrome-devtools-mcp@1.13.0 (npm)",
+      "decision": "2026-10-10: user-scope MCP `npx -y chrome-devtools-mcp@1.10.1 --isolated --no-usage-statistics` for audits only: Lighthouse, performance traces with CrUX, network and console. --isolated runs its own temporary Chrome profile, so it never touches Nebi's profiles; logged-in work stays with codex-browser. Proven: Lighthouse on a live shop site in a fresh headless session. 2026-11-21 update sweep: re-registered as `npx -y chrome-devtools-mcp@1.13.0 --isolated --no-usage-statistics` (adds network mocks, logpoints and heap snapshot analysis); `claude-accounts diff` shows it identical on all four accounts.",
       "notes": "CrUX lookups send public page URLs to Google."
     },
     {

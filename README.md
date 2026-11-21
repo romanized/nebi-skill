@@ -51,7 +51,7 @@ Portable source for the Nebi operating doctrine across Claude Code and Codex. Th
 | Each skill's `evals/` | Trigger cases, decision cases, and any supporting fixtures |
 | `claude-home/hooks/` | Seven handlers plus a shared runtime helper: startup, feedback capture, operator steering, kill guard (Claude only), evidence ledger, completion feedback and state refresh |
 | `claude-home/agents/`, `codex-home/agents/` | Claude: native scout, checker and lean builder, with no pinned model (the default-builder binding applies unless a dispatch names one). Codex: scout and checker adapters |
-| `claude-home/nebi/` | Shared project/task context helper, session sweeps, status line, trigger runner, source record and runtime seeds |
+| `claude-home/nebi/` | Shared project/task context helper, session sweeps, status line, trigger runner, account sync (`accounts.mjs`), source record and runtime seeds |
 | `claude-home/nebi/benchmarks/` | Historical and current evaluation records; never deployed |
 | `claude-home/rules/`, `commands/`, `output-styles/` | Claude rules/style and the shared `/sharpen` command |
 | `scripts/`, `tests/`, `.github/workflows/verify.yml` | Offline verification, native Codex hook inspection/activation, disposable action tasks, and CI |

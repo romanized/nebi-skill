@@ -21,6 +21,8 @@ Read only the section relevant to the request. This is a routing reference for t
 | Judge audio you cannot hear: pick or rank SFX/music candidates, find the cleanest trim, A/B two takes, check a video's soundtrack for sync, masking and loudness, make UI or film SFX offline | **`earshot`** skill and CLI (`~/.local/bin/earshot`, models cached); `real-sound` when a code-made film needs a full soundtrack from licensed recordings | Rank or A/B candidates rather than trusting one absolute match: very short UI clicks read as percussion to its model. The MCP server is per project only (register notes). Exact LUFS edits stay with `ffmpeg-skill`; generating new audio stays with ElevenLabs or Higgsfield. |
 | Code-built motion graphics or templated video | Remotion plugin | Final local assembly/export can go to `ffmpeg-skill`. |
 | Simple still-image convert or exact resize | macOS `sips` or FFmpeg | ImageMagick is not installed. |
+| Plain background removal or a product cutout on an existing photo | `rembg` (nebi-tools catalog), local and free | Nothing is invented, only cut out. A new background, relight or restyle goes to Higgsfield. |
+| 3D in Blender: model, clean up an AI mesh, bake, export for Roblox or the web | `nebi-blender` (helper and MCP server `blender`), with the blender-* skills for the method | New 3D generation (GLB from a prompt) stays with Higgsfield; compressing a glTF for three.js is `threejs-asset-pipeline`. |
 
 ## Browser ownership
 

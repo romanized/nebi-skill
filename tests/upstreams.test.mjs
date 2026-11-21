@@ -315,6 +315,14 @@ test('--library lists by project with scope, use_when or the first sentence, and
   assert.match(library(root, '--project', 'nothing-here'), /^Library for nothing-here: 0 entries/);
 });
 
+test('the register names each source once', () => {
+  const register = JSON.parse(fs.readFileSync(path.join(root, 'claude-home/nebi/upstreams.json'), 'utf8'));
+  const seen = new Set();
+  for (const { name } of register.sources) {
+    assert.ok(!seen.has(name), `duplicate register source: ${name}`);
+    seen.add(name);
+  }
+});
 test('the register uses only known statuses and non-empty project lists', () => {
   const register = JSON.parse(fs.readFileSync(path.join(root, 'claude-home/nebi/upstreams.json'), 'utf8'));
   for (const source of register.sources) {

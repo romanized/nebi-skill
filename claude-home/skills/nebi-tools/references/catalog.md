@@ -1,6 +1,6 @@
 # nebi-tools catalog
 
-Every tool and repo Nebi has saved, whether or not it is installed. Add a row when something new is installed or worth remembering; mark a row declined instead of deleting it, so the reason stays on record. Pins and update commands for third-party entries are in `~/.claude/nebi/upstreams.json`. Last full pass: 2026-11-20.
+Every tool and repo Nebi has saved, whether or not it is installed. Add a row when something new is installed or worth remembering; mark a row declined instead of deleting it, so the reason stays on record. Pins and update commands for third-party entries are in `~/.claude/nebi/upstreams.json`. Last full pass: 2026-11-21.
 
 `PY` below is `~/.agents/nebi/venv/bin/python` and `T` is `~/.claude/skills/nebi-tools/tools`.
 
@@ -30,10 +30,33 @@ Every tool and repo Nebi has saved, whether or not it is installed. Add a row wh
 | ElevenLabs REST | Speech, voices, sound effects outside the connector | REST with the key | `ELEVENLABS_API_KEY` | ElevenLabs credits |
 | bol Retailer API (read-only) | A bol seller account's offers, orders and shared resources: any v10 GET, or the full offers export as CSV | `PY T/bol-api/bolapi.py check` (token only, free), `get <path> [--out FILE]`, `export-offers <out.csv>` | `BOL_CLIENT_ID`, `BOL_CLIENT_SECRET` | free; bol rate limits per endpoint |
 | yt-dlp | Views, likes and upload date for a video URL (`-J --skip-download`) | `yt-dlp -J --skip-download <url>` | none | free; no TikTok keyword search |
-| whisper.cpp | Local transcription with word timing | `whisper-cli -m /opt/homebrew/share/whisper.cpp/ggml-small.bin -ml 1 -sow <wav>` | none | free |
+| whisper.cpp | Local transcription with word timing, Dutch included | `whisper-cli -m ~/.cache/whisper.cpp/ggml-large-v3-turbo.bin -l auto -ml 1 -sow <wav>` (`ggml-base.en.bin` in the same folder is the fast English model) | none | free |
 | earshot | Judge audio you cannot hear | `earshot` skill | none | free |
+| mlx-audio 0.6.7 (Kokoro-82M) | English voice drafts on this Mac, no credits | `mlx_audio.tts.generate --model mlx-community/Kokoro-82M-bf16 --voice af_heart --lang_code a --text "<text>" --output_path <dir>` | none | free; Kokoro has no Dutch. Dutch placeholders: `say -v Xander -o out.aiff "<text>"`. Final client voice stays with ElevenLabs |
+| rembg 2.0.87 | Background removal and product cutouts | `rembg i -m isnet-general-use in.jpg out.png`; a folder: `rembg p in/ out/`; `birefnet-general` for hair-level edges | none | free; about 2 s a photo once the model is cached |
+| ocrmac (Apple Vision) | OCR on screenshots, receipts and photos | `uv run --python 3.12 --with ocrmac python -c "from ocrmac import ocrmac;print(ocrmac.OCR('<png>',language_preference=['nl-NL']).recognize())"`; digital PDFs: `pdftotext` | none | free; no model download, nothing installed |
+| d2 0.9.0 | Text to diagram for docs and flow images | `d2 --layout=elk in.d2 out.svg` (keep to SVG: PNG export downloads a browser) | none | free |
+| KTX-Software 4.4.2 | KTX2 texture compression for web 3D | `ktx create` and `ktx info` (`/usr/local/bin/ktx`); used by the `threejs-asset-pipeline` and blender-* export steps | none | free |
+| Blender 5.3 + Blender Lab MCP | 3D modelling, cleanup and export by script or MCP | `nebi-blender` skill (shell-only helper `blendtool.py`) and the blender-* skills; MCP server `blender` on every account | none | free |
+| Raycast 2.13 | The Cmd+Space launcher (Spotlight's shortcut is off) | see [Raycast](#raycast) below | Raycast account | free; Pro $10 a month or $96 a year, students 50% off Pro |
 
 Shop-specific tools live in the shop's own private repo, because they carry its store domain and logins: Karpet24's Shopify reports, Google Analytics MCP and stock guard are in `Karpet24/tools/` (`shopify-reports`, `google-analytics`, `k24-voorraadactie`).
+
+## Raycast
+
+Raycast is the launcher on Cmd+Space since 2026-11-21. Spotlight's shortcut (symbolic hotkey 64) is switched off; Cmd+Option+Space still opens Finder search. Raycast 2 keeps its hotkey in an encrypted settings database, so it is set in Raycast itself (Cmd+, > General > Raycast Hotkey), never through `defaults`.
+
+Its local MCP server needs Pro and stays off and unregistered by default. If Nebi turns it on: never allow-list `mcp__raycast__*`, never use it in a session started with `--dangerously-skip-permissions` (the account launchers add that flag), and share only Calculator, Calendar, Snippets, Quicklinks and Notes. Clipboard history and browser tabs can hold passwords and customer data.
+
+Settings checklist:
+
+- Hyper Key on Caps Lock.
+- Clipboard history kept for 1 month, with password managers, banking apps and Ghostty excluded.
+- File Search limited to `~/Documents/GitHub`, `~/Desktop` and `~/Downloads`, ignoring `**/.next/**`, `**/dist/**`, `**/build/**`, `**/.turbo/**` and `*.blend1`.
+- Rectangle keeps window management; Raycast's window commands stay unbound.
+- Extensions: GitHub, Brew, Docker, Spotify Player and Granola (unofficial). Skip the Stripe, Supabase and Shopify extensions, which duplicate the CLIs and connectors.
+
+Pro adds Raycast AI chat, Bring Your Own Key, the MCP server and cloud sync. The pricing page lists Pro at $10 a month or $96 a year and says verified students get 50% off Pro through a form, which works out to $48 a year (the page does not print that figure; checked 2026-11-21). Whether Pro can use a Claude subscription rather than an API key is unverified: the page only says Bring Your Own Key. Pro is on hold until Nebi's student verification comes through.
 
 ## Keys in tools.env (names only)
 
