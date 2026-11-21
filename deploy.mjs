@@ -122,6 +122,8 @@ const NON_SKILL_FILES = [
   'nebi/codex-browser.mjs',
   // Live sessions on every Claude account, with their SendMessage address.
   'nebi/peers.mjs',
+  // claude-accounts: every Claude account side by side, MCP drift repair (private registry in ~/.agents/nebi).
+  'nebi/accounts.mjs',
   // Lists and tidies git worktrees under ~/Documents/GitHub (nebi-orchestration).
   'nebi/worktrees.mjs',
   // Read-only check: would subagentPromptCacheTtl 1h pay off? (upstream gist, pinned in upstreams.json)

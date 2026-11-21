@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // peers: every live Claude Code session on this Mac, across all config folders
-// (~/.claude is account a, ~/.claude-max2 account b), with the address
+// (~/.claude is account a, ~/.claude-max2 b, ~/.claude-team c, ~/.claude-team2 d), with the address
 // SendMessage takes. ListAgents only sees sessions in the caller's own folder;
 // SendMessage({ to: "uds:<socket>" }) reaches any of them.
 //
@@ -11,7 +11,7 @@ import { existsSync, readFileSync, readdirSync, realpathSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { basename, join } from 'node:path'
 
-const ACCOUNTS = { '.claude': 'a', '.claude-max2': 'b' }
+const ACCOUNTS = { '.claude': 'a', '.claude-max2': 'b', '.claude-team': 'c', '.claude-team2': 'd' }
 
 const isAlive = pid => {
   try {
