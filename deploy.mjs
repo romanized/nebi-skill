@@ -15,7 +15,7 @@
  *   (SessionStart sweep, UserPromptSubmit feedback capture, PreToolUse steer channel,
  *   PostToolUse/PostToolUseFailure tool ledger, Stop proof nudge, SessionEnd state
  *   refresh) WITHOUT touching anything else in the file.
- * - macOS: writes and loads the com.nebi.claude-update LaunchAgent (daily 05:30
+ * - macOS: writes and loads the com.nebi.claude-update LaunchAgent (hourly
  *   `claude update`), because the env turns the in-session autoupdater off.
  * - Reports measured skill-listing size, bindings dates, and core section parity.
  * - Copies the Codex master to ~/.codex/AGENTS.md, the seven common skills to
@@ -834,9 +834,11 @@ function mergeSettings(backupSuffix) {
 // ---------------------------------------------------------------------------
 
 // DISABLE_AUTOUPDATER stops only the in-session updater: `claude update` checks
-// DISABLE_UPDATES alone (2.1.288), so this daily job keeps Claude Code current.
+// DISABLE_UPDATES alone (2.1.288), so this hourly job keeps Claude Code current.
+// Hourly since 2026-11-21: a daily 05:30 run left an evening release waiting up
+// to 9.5 hours. The timestamp line marks each run in the log.
 const UPDATE_AGENT_LABEL = 'com.nebi.claude-update';
-const UPDATE_AGENT_COMMAND = 'claude update';
+const UPDATE_AGENT_COMMAND = 'date +==%Y-%m-%dT%H:%M:%S%z; claude update';
 
 function updateAgentPath() {
   return path.join(HOME, 'Library', 'LaunchAgents', `${UPDATE_AGENT_LABEL}.plist`);
@@ -844,7 +846,7 @@ function updateAgentPath() {
 
 const xmlText = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-/** The agent's plist: `claude update` at 05:30 daily with the deploying shell's PATH. */
+/** The agent's plist: `claude update` every hour with the deploying shell's PATH. */
 function updateAgentPlist() {
   const log = path.join(HOME, 'Library', 'Logs', `${UPDATE_AGENT_LABEL}.log`);
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -864,13 +866,8 @@ function updateAgentPlist() {
     <key>PATH</key>
     <string>${xmlText(process.env.PATH || '/usr/bin:/bin:/usr/sbin:/sbin')}</string>
   </dict>
-  <key>StartCalendarInterval</key>
-  <dict>
-    <key>Hour</key>
-    <integer>5</integer>
-    <key>Minute</key>
-    <integer>30</integer>
-  </dict>
+  <key>StartInterval</key>
+  <integer>3600</integer>
   <key>StandardOutPath</key>
   <string>${xmlText(log)}</string>
   <key>StandardErrorPath</key>

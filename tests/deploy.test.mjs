@@ -494,7 +494,7 @@ test('the browser route, its router and the Claude-only mod-verify skill deploy 
   assert.equal(skillFiles.some((name) => name.endsWith('.pyc') || name === '.DS_Store'), false, 'no local run cruft');
 });
 
-test('macOS gets the daily claude update LaunchAgent, written idempotently and never loaded for a staged home', () => {
+test('macOS gets the hourly claude update LaunchAgent, written idempotently and never loaded for a staged home', () => {
   const home = tempDir();
   const plist = path.join(home, 'Library', 'LaunchAgents', 'com.nebi.claude-update.plist');
   const first = run(home);
@@ -506,8 +506,8 @@ test('macOS gets the daily claude update LaunchAgent, written idempotently and n
   assert.match(first.stdout, /com\.nebi\.claude-update .*: written; not loaded \(staged --home\)/);
   const text = fs.readFileSync(plist, 'utf8');
   assert.match(text, /<key>Label<\/key>\s*<string>com\.nebi\.claude-update<\/string>/);
-  assert.match(text, /<string>\/bin\/sh<\/string>\s*<string>-c<\/string>\s*<string>claude update<\/string>/);
-  assert.match(text, /<key>Hour<\/key>\s*<integer>5<\/integer>\s*<key>Minute<\/key>\s*<integer>30<\/integer>/);
+  assert.match(text, /<string>\/bin\/sh<\/string>\s*<string>-c<\/string>\s*<string>date \+==%Y-%m-%dT%H:%M:%S%z; claude update<\/string>/);
+  assert.match(text, /<key>StartInterval<\/key>\s*<integer>3600<\/integer>/);
   assert.match(text, /<key>PATH<\/key>\s*<string>[^<]+<\/string>/);
   const lint = spawnSync('plutil', ['-lint', plist], { encoding: 'utf8' });
   assert.equal(lint.status, 0, lint.stdout + lint.stderr);
