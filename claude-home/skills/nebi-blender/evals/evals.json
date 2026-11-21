@@ -1,0 +1,99 @@
+{
+  "skill_name": "nebi-blender",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ai-glb-to-roblox",
+      "prompt": "Decide the next step only; do not execute. A sub-agent with only Bash has crate.glb from Higgsfield generate_3d (240k verts) and needs it as a Roblox MeshPart, about 4 studs tall.",
+      "expected_output": "Run python3 ~/.claude/skills/nebi-blender/tools/blendtool.py roblox crate.glb crate.fbx --height 4, which welds the GLB soup, decimates to 10,000 tris, sets 1 unit = 1 stud with Z forward / Y up and the origin at the bottom. Check the JSON (tris per mesh under 20,000) and render a preview sheet to look at it. Import in Studio with World Forward Front, World Up Top.",
+      "files": [],
+      "expectations": [
+        "Uses blendtool.py roblox, not the MCP, because the agent has only a shell",
+        "Welds before decimating or relies on roblox doing it",
+        "Keeps each mesh under Roblox's 20,000-triangle cap",
+        "Renders or inspects the result before calling it done"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "live-gui-save-first",
+      "prompt": "Decide the next step only; do not execute. Nebi has Blender open with his castle.blend and asks you to delete every hidden object in it.",
+      "expected_output": "Work in the open Blender through the blender MCP (or blendtool.py live on port 9876). First save the file or work on a copy, because code run there cannot be undone; then delete the hidden objects and report what went, with a screenshot.",
+      "files": [],
+      "expectations": [
+        "Saves the open file or works on a copy before deleting",
+        "Uses the live route (MCP or blendtool.py live), not a headless job on the file Nebi has open",
+        "Reports which objects were removed"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "web-glb-for-threejs",
+      "prompt": "Decide the next step only; do not execute. Turn hero.blend into a small GLB for the portfolio's three.js hero scene; the page looks up the node called Screen to swap its texture.",
+      "expected_output": "Run blendtool.py web hero.blend hero.glb --keep-nodes (meshopt + WebP by default), because optimize would otherwise flatten and join the Screen node away. Check validate passed and set up MeshoptDecoder in the loader.",
+      "files": [],
+      "expectations": [
+        "Uses blendtool.py web",
+        "Keeps named nodes because the page looks one up",
+        "Names the loader setup the compression needs"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "stop-only-own-pid",
+      "prompt": "Decide the next step only; do not execute. You started a headless Blender bridge with blendtool.py serve earlier (pid 51234) and the job is finished. How do you shut Blender down?",
+      "expected_output": "Run blendtool.py stop --pid 51234, which checks it is a headless bridge and stops it cleanly. Never pkill or killall Blender, since Nebi may have the window open.",
+      "files": [],
+      "expectations": [
+        "Stops only the pid it started",
+        "Does not use pkill or killall"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "official-mcp-not-uvx",
+      "prompt": "Decide the next step only; do not execute. The blender MCP server will not connect on a fresh profile. Someone suggests running uvx blender-mcp.",
+      "expected_output": "Do not use uvx blender-mcp: it installs the community server. Run blendtool.py doctor, then blendtool.py setup-mcp to repair the official add-on and server, and check Blender's online access is on.",
+      "files": [],
+      "expectations": [
+        "Rejects uvx blender-mcp as the community package",
+        "Uses doctor and setup-mcp"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "shell-only-pack-script",
+      "prompt": "Decide the next step only; do not execute. A nebi-builder sub-agent (Bash only, no MCP tools) must run blender-asset-qa's check on crate.blend before it exports the crate for Roblox.",
+      "expected_output": "Run python3 ~/.claude/skills/blender-core/scripts/run_in_blender.py --blend crate.blend ~/.claude/skills/blender-asset-qa/scripts/qa_check.py -- --objects <crate objects> --profile roblox, fix every error and re-run until pass is true, then look at a review sheet (review_shots.py or blendtool.py render) before exporting.",
+      "files": [],
+      "expectations": [
+        "Runs the pack script headless through run_in_blender.py (or blendtool.py run), not through the MCP",
+        "Uses qa_check.py with the roblox profile",
+        "Looks at a rendered sheet before export"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "no-look-on-official-mcp",
+      "prompt": "Decide the next step only; do not execute. You are editing Nebi's open Blender through the blender MCP server, and blender-asset-qa tells you to call the MCP look tool with mode angles.",
+      "expected_output": "The official Blender Lab server has no look tool. Use get_screenshot_of_area_as_image or get_screenshot_of_window_as_image, or render_thumbnail_to_path, or run review_shots.py headless on a saved copy.",
+      "files": [],
+      "expectations": [
+        "Does not call a look tool",
+        "Names an official screenshot or render tool, or the headless review sheet"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "weld-before-auto-retopo",
+      "prompt": "Decide the next step only; do not execute. A Meshy GLB of about 300k verts needs to become an 8,000-tri game mesh, and the plan is to run blender-retopology-uv's auto_retopo.py --method decimate on it straight after import.",
+      "expected_output": "Weld first: auto_retopo.py --method decimate does not merge the per-corner glTF vertices, so it tears the soup into loose pieces. Run blendtool.py cleanup --weld or make_lods.py --cleanup, then auto_retopo to 8,000 tris, then qa_check and a render.",
+      "files": [],
+      "expectations": [
+        "Welds or merges by distance before decimating",
+        "Says why: the imported GLB is unwelded triangle soup",
+        "Checks the result with QA or a render"
+      ]
+    }
+  ]
+}

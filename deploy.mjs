@@ -80,7 +80,7 @@ const COMMON_SKILLS = [
 ];
 
 // Claude-only skills: they drive Claude Code itself, or arrived while Codex is parked (tikhub).
-const CLAUDE_ONLY_SKILLS = ['nebi-mod-verify', 'codex-browser', 'tikhub', 'nebi-tools'];
+const CLAUDE_ONLY_SKILLS = ['nebi-mod-verify', 'codex-browser', 'tikhub', 'nebi-tools', 'nebi-blender'];
 
 // Local run cruft inside a skill folder is never deploy input.
 const SKIPPED_ENTRIES = new Set(['__pycache__', '.DS_Store']);

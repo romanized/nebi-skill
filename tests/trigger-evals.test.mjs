@@ -39,7 +39,7 @@ test('CLI rejects invalid inputs instead of zero-case success', () => {
 test('default list uses source pack without requiring deployment', () => {
   const r = spawnSync(process.execPath, ['claude-home/nebi/run-trigger-evals.mjs', '--list'], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
-  assert.match(r.stdout, /11 skills/);
+  assert.match(r.stdout, /12 skills/);
   assert.match(r.stdout, /claude-home[\\/]skills/, 'the list prints native paths, so either separator');
 });
 test('cross-skill rows fail on forbidden co-firing even when the target fires', () => {

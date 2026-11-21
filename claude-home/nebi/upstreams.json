@@ -998,10 +998,9 @@
         {
           "name": "shopify",
           "path": "skills/shopify",
-          "pin": "a3d20f8dc284a2e8ae25272fa79520888abb5dcb",
-          "tree": "423b34481b3469d9cf29477c31badaf59fab3f46",
+          "pin": "0388268a61051d1e8400996a58b0e3590c1e1500",
+          "tree": "e66861c0f5915bd762bd5649ad109343b38f3b67",
           "installed": [
-            "~/.agents/skills/shopify",
             "~/.claude/skills/shopify"
           ]
         },
@@ -1036,9 +1035,9 @@
           "parked": "~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/shopify-use-shopify-cli"
         }
       ],
-      "pin": "a3d20f8dc284a2e8ae25272fa79520888abb5dcb",
-      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add Shopify/shopify-ai-toolkit#<SHA> --skill shopify -g -a claude-code codex -y",
-      "decision": "2026-10-07 (user asked to install clear wins during rs-bol scan): installed the unified `shopify` skill v1.17.1, global, pinned 8692e6a4 (per-skill pin). Upstream 2.0.0 retired the five per-topic skills below (still installed at the source pin 57e293be); remove them once a fresh session is confirmed using `shopify`, then move the source pin to the shopify pin. 2026-11-10: `shopify` updated to v1.19.0 (a3d20f8; script hosts unchanged, opt-out file still honoured). The five per-topic skills upstream retired are parked in ~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/: sessions kept loading the frozen ones (4 loads on 17-18 Oct against 1 for `shopify`).",
+      "pin": "0388268a61051d1e8400996a58b0e3590c1e1500",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add Shopify/shopify-ai-toolkit#<SHA> --skill shopify -g -a claude-code -y",
+      "decision": "2026-10-07 (user asked to install clear wins during rs-bol scan): installed the unified `shopify` skill v1.17.1, global, pinned 8692e6a4 (per-skill pin). Upstream 2.0.0 retired the five per-topic skills below (still installed at the source pin 57e293be); remove them once a fresh session is confirmed using `shopify`, then move the source pin to the shopify pin. 2026-11-10: `shopify` updated to v1.19.0 (a3d20f8; script hosts unchanged, opt-out file still honoured). The five per-topic skills upstream retired are parked in ~/.agents/skills-project-packs/retired-2026-11-10-shopify-per-topic/: sessions kept loading the frozen ones (4 loads on 17-18 Oct against 1 for `shopify`). 2026-11-21: updated to v1.20.0 (0388268) after reading the diff: the Liquid validator (_validate_theme.mjs) now ships bundled with only node built-ins, so theme-check no longer needs an npm install; Hydrogen 2026-10 wording; script hosts unchanged (shopify.dev docs and its usage endpoint), opt-out file still honoured. Installed Claude-only (Codex parked), which turned ~/.claude/skills/shopify from a symlink into a real folder; ~/.agents/skills/shopify, the Codex copy, stays at a3d20f8.",
       "why": "Store owner work across several stores (metafields, ShopifyQL, CLI) plus the bol bridge app: Polaris App Home patterns, Admin UI extensions (order-details block/action/print), offline validators for Admin GraphQL 2026-07 and Polaris components, app-store-review checklist.",
       "notes": "Telemetry opt-out file at ~/.config/shopify-ai-toolkit/opt-out (keep it; toolkit scripts otherwise send prompt, code and queries to shopify.dev/mcp/usage); also pass OPT_OUT_INSTRUMENTATION=true when running scripts. SKILL.md frontmatter PostToolUse(Skill) hook execs $CLAUDE_PLUGIN_ROOT/scripts/track-telemetry.sh only if it exists (no-op for a plain skill install; the opt-out file also short-circuits it). validate.mjs needs typescript 5.9.3 (and theme-check 3.24.0 for liquid) next to the scripts; package.json lists them but they are not shipped, so `npm install --prefix ~/.agents/skills/shopify` is still to be run (not done: unpinned transitive deps). Never run scripts/import_mock_shop_catalog.mjs (execs `shopify store` create/import). search_docs.mjs queries shopify.dev. The skill folder also ships stray theme files (blocks/, sections/, featured-collection.liquid, config/, locales/) from upstream; harmless."
     },
@@ -1080,10 +1079,11 @@
         {
           "name": "web-design-guidelines",
           "path": "skills/web-design-guidelines",
-          "tree": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
+          "tree": "8ff770c9b25b9fdb5a97503fc98d86b723813031",
           "installed": [
             "~/.claude/skills/web-design-guidelines"
-          ]
+          ],
+          "pin": "5a37a6329fbad3666c3207392a6a7c0110e92efb"
         },
         {
           "name": "vercel-react-best-practices",
@@ -1145,7 +1145,7 @@
       ],
       "pin": "1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add vercel-labs/agent-skills#<SHA> --skill vercel-react-best-practices -g -a claude-code codex -y ; DISABLE_TELEMETRY=1 npx skills@1.7.6 add vercel-labs/agent-skills#<SHA> --skill vercel-composition-patterns vercel-react-view-transitions web-design-guidelines writing-guidelines vercel-optimize deploy-to-vercel vercel-cli-with-tokens -g -a claude-code -y",
-      "decision": "installed: vercel-react-best-practices, global (React/Next sites). 2026-11-19 (Printvisie v3 build, lead's skill-install brief): re-pinned to 1a2c79d (the react-best-practices folder is unchanged from 063bee9, so no reinstall) and installed composition-patterns, react-view-transitions, web-design-guidelines, writing-guidelines, vercel-optimize, deploy-to-vercel and vercel-cli-with-tokens global for Claude Code. react-native-skills skipped: no native app.",
+      "decision": "installed: vercel-react-best-practices, global (React/Next sites). 2026-11-19 (Printvisie v3 build, lead's skill-install brief): re-pinned to 1a2c79d (the react-best-practices folder is unchanged from 063bee9, so no reinstall) and installed composition-patterns, react-view-transitions, web-design-guidelines, writing-guidelines, vercel-optimize, deploy-to-vercel and vercel-cli-with-tokens global for Claude Code. react-native-skills skipped: no native app. 2026-11-21: web-design-guidelines updated to 1.1.0 (5a37a63): it now reads a bundled rules snapshot (references/command.md, pinned to web-interface-guidelines 434b7f9, SHA-256 d246b026… verified) instead of fetching the unpinned main branch at run time.",
       "notes": "MIT. Reviewed at 1a2c79d: web-design-guidelines and writing-guidelines are 39-line routers that WebFetch their rules at run time from the unpinned main branch of vercel-labs/web-interface-guidelines and vercel-labs/writing-guidelines (read 2026-11-19), so their rules can change without a pin change. writing-guidelines targets Vercel docs (meta.contentType, TL;DR openers), not marketing copy; its AI-tells and no-em-dash sections transfer. deploy-to-vercel is outward: its no-auth fallback runs `npx vercel@latest deploy --temporary` (a public temporary production URL) without asking, and it links projects after a team pick; never run it without the user's go. vercel-cli-with-tokens reads VERCEL_TOKEN from env or .env and documents a paid Stripe-projects Vercel plan. vercel-optimize ships 150+ Node scripts; they shell out only to the `vercel` CLI (metrics, usage, api) and `rg` via execFile, and need a linked, logged-in deployed project. The skills CLI omits each folder's metadata.json."
     },
     {
@@ -1171,20 +1171,19 @@
       "name": "railwayapp/railway-skills",
       "repo": "railwayapp/railway-skills",
       "kind": "skills",
-      "pin": "526e95524e964ed326689cbac4464d97a58ab81c",
+      "pin": "29b37e471cfd9530de411d79b3b2d1e28d955d05",
       "decision": "installed, global; 2026-10-07 updated ca21b2a → dab1c2a with the skills CLI (the old copy described a project-wide tracing toggle the docs no longer have)",
-      "notes": "Installed by the skills CLI as ~/.agents/skills/use-railway with ~/.claude/skills/use-railway symlinked to it. The Railway CLI (`railway skills update`) also manages it, but its own install record still says ca21b2a and it skips the update as \"local changes\"; the files match dab1c2a. Its description fires broadly (\"MCP\", \"deployments\") — shortlist: name-only via skillOverrides if it mis-triggers. 2026-11-10: updated to 526e955 (skill 1.7.0). It now asks for a `RAILWAY_CALLER=skill:use-railway@1.7.0` prefix and a `RAILWAY_AGENT_SESSION` id on CLI calls: a caller tag Railway sees, nothing else.",
+      "notes": "Installed by the skills CLI as ~/.agents/skills/use-railway with ~/.claude/skills/use-railway symlinked to it. The Railway CLI (`railway skills update`) also manages it, but its own install record still says ca21b2a and it skips the update as \"local changes\"; the files match dab1c2a. Its description fires broadly (\"MCP\", \"deployments\") — shortlist: name-only via skillOverrides if it mis-triggers. 2026-11-10: updated to 526e955 (skill 1.7.0). It now asks for a `RAILWAY_CALLER=skill:use-railway@1.7.0` prefix and a `RAILWAY_AGENT_SESSION` id on CLI calls: a caller tag Railway sees, nothing else. 2026-11-21: forced update to 29b37e4 (skill 1.7.1) with the skills CLI after reading the diff: automatic eBPF tracing is documented as unavailable (project flag off everywhere), so the skill no longer offers it; caller tag now @1.7.1. Claude-only install made ~/.claude/skills/use-railway a real folder; ~/.agents/skills/use-railway (Codex copy) stays at 526e955.",
       "skills": [
         {
           "name": "use-railway",
           "path": "plugins/railway/skills/use-railway",
           "installed": [
-            "~/.claude/skills/use-railway",
-            "~/.agents/skills/use-railway"
+            "~/.claude/skills/use-railway"
           ]
         }
       ],
-      "update": "Managed by Railway tooling; to force: DISABLE_TELEMETRY=1 npx skills@1.7.0 add railwayapp/railway-skills#<SHA> --skill use-railway -g -a claude-code codex -y"
+      "update": "Managed by Railway tooling; to force: DISABLE_TELEMETRY=1 npx skills@1.7.0 add railwayapp/railway-skills#<SHA> --skill use-railway -g -a claude-code -y"
     },
     {
       "name": "stripe (plugin)",
@@ -1469,12 +1468,13 @@
           "scope": "global",
           "installed": [
             "~/.claude/skills/playwright-best-practices"
-          ]
+          ],
+          "pin": "0b75b5835a87de1fdd202ba965f3bc5a27738fdf"
         }
       ],
       "pin": "0b75b5835a87de1fdd202ba965f3bc5a27738fdf",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add currents-dev/playwright-best-practices-skill#<SHA> --skill playwright-best-practices -g -a claude-code -y (global); the project copy in personal-zombies-game: cd ~/Documents/GitHub/personal-zombies-game && the same without -g",
-      "decision": "installed, project personal-zombies-game; 2026-11-07 (Deadlight M2-T19, Q12 default) also installed global at the same pin 283d5cb, so every M2 worktree session loads it (T11, T90, T93). ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has it too.",
+      "decision": "installed, project personal-zombies-game; 2026-11-07 (Deadlight M2-T19, Q12 default) also installed global at the same pin 283d5cb, so every M2 worktree session loads it (T11, T90, T93). ~/.claude-max2/skills is a symlink to ~/.claude/skills, so the second account has it too. 2026-11-21: the global copy already matched 0b75b58 (tree 65ed9f3); added the per-skill pin so the register stops flagging it.",
       "why": "Reference for the BO1 Zombies milestone-end Playwright runner (multi-user contexts, WebSockets, canvas/WebGL, trace and reporting) and for Deadlight M2's browser tests.",
       "notes": "2026-10-12 review at the pin: MIT, 60 markdown files (SKILL.md v1.2 plus references), no scripts, hooks or allowed-tools. Codex parked, so claude-code only. 2026-11-07 re-read the pin: still MIT, 63 files, markdown only; docs show `npx playwright ...` commands and an execSync prisma example, run only if an agent follows them.",
       "localEdits": "Global copy: added the upstream LICENSE.md (MIT, Currents Software) byte for byte; no SKILL.md change. The skills CLI does not copy it. B6 Y2 note: its WebGL readiness snippet is wrong for three's webgl2 context."
@@ -2365,7 +2365,7 @@
         {
           "name": "next-cache-components-adoption",
           "path": "skills/next-cache-components-adoption",
-          "tree": "bf1e62f0e297f4992727fc546d3327b866f13472",
+          "tree": "f05bccf023c7da2d074a11ff4923e2a0fa7d245a",
           "installed": [
             "~/.claude/skills/next-cache-components-adoption"
           ]
@@ -2379,9 +2379,9 @@
           ]
         }
       ],
-      "pin": "5395cf44d1fcd1e257ad32365f8674a473c664ac",
+      "pin": "794836c3cbb750d1e34f99e210b39b7bdfbc4c58",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add https://github.com/vercel/next.js/tree/<SHA>/skills --skill next-bundle-optimizer next-cache-components-adoption next-partial-prefetching-adoption -g -a claude-code -y",
-      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): installed global from the canary branch (the Next.js skills moved here; next-best-practices is gone and Next 16.3+ ships version-matched docs in node_modules/next/dist/docs). printvisie-v3 runs Next 16.4.6 with cacheComponents and partialPrefetching on, so the two adoption skills cover the blocking-route and prefetch insights its builders hit; the bundle optimizer covers GSAP/Lenis/WebGL client weight via `next analyze`. Skipped: next-dev-loop (hard floor on agent-browser >= 0.31.1, which this register does not adopt), next-cache-components-optimizer and next-partial-prefetching-optimizer (they encode each goal as a failing @next/playwright instant() e2e test).",
+      "decision": "2026-11-19 (Printvisie v3 build, lead's skill-install brief): installed global from the canary branch (the Next.js skills moved here; next-best-practices is gone and Next 16.3+ ships version-matched docs in node_modules/next/dist/docs). printvisie-v3 runs Next 16.4.6 with cacheComponents and partialPrefetching on, so the two adoption skills cover the blocking-route and prefetch insights its builders hit; the bundle optimizer covers GSAP/Lenis/WebGL client weight via `next analyze`. Skipped: next-dev-loop (hard floor on agent-browser >= 0.31.1, which this register does not adopt), next-cache-components-optimizer and next-partial-prefetching-optimizer (they encode each goal as a failing @next/playwright instant() e2e test). 2026-11-21: re-pinned to 794836c; only next-cache-components-adoption changed (its browser check now points at the instant-navigation guide's paused-navigation inspection), reinstalled with the skills CLI; the other two folders are unchanged at that commit.",
       "why": "Official Next.js agent skills for App Router sites on Cache Components and Partial Prefetching.",
       "notes": "Markdown only (SKILL.md plus references), MIT (license.md). next-cache-components-adoption tells the agent to install next-dev-loop and agent-browser without asking and to run `npx @next/codemod@latest cache-components-instant-false`; the partial-prefetching one runs `npx @next/codemod@canary remove-partial-prefetch`. Both codemods refuse a dirty tree. A tree URL install clones the canary repo (about a minute)."
     },
@@ -2772,6 +2772,246 @@
       "decision": "2026-11-20 owner pasted TikHub's 16-server MCP config and asked for it global. Added all 16 at user scope as native HTTP servers (not `npx mcp-remote`) with a headersHelper reading tools.env; all connected. Measured: a fresh session's first request went 64.8k -> 97.6k tokens (+33k, the deferred names of ~1,090 tools). Owner then said they don't want them loaded immediately: removed all 16 from user scope (session back to 60.5k) and added tools/tikhub/tikhub-mcp.sh, which switches chosen platforms on or off per folder (local scope; default set instagram linkedin twitter reddit threads others tikhub). headersHelper is skipped in folders whose trust prompt was never accepted (bypass mode never shows it; servers then fail with 'Dynamic Client Registration rejected (HTTP 404)'), so the switch writes the bearer header into that folder's entry in ~/.claude.json (mode 600). Proven: on/list/off in ~/Documents/GitHub/music, Instagram server connected. Same day the TikHub REST API and MCP returned 500 on every platform with both the old and new key (TikHub-side).",
       "why": "TikHub as MCP tools in the folders that want them, without the standing token cost everywhere; the tikhub skill's REST helper covers every endpoint otherwise.",
       "notes": "Servers: tikhub-{tiktok,douyin,instagram,xiaohongshu,weibo,others,bilibili,youtube,kuaishou,zhihu,linkedin,reddit,tikhub,wechat,twitter,threads}. Cloudflare in front rejects Python's default urllib user agent (403); curl and Claude Code pass."
+    },
+    {
+      "name": "remix-run/agent-skills",
+      "repo": "remix-run/agent-skills",
+      "kind": "skills",
+      "projects": [
+        "withdrawal-desk"
+      ],
+      "use_when": "Writing React Router 7 framework-mode code: route modules, loaders and actions, fetchers, middleware, sessions, route types.",
+      "skills": [
+        {
+          "name": "react-router-framework-mode",
+          "path": "skills/react-router-framework-mode",
+          "tree": "08ac3f4e80ca73ecd37b86fcdb83124a7bec5000",
+          "scope": "project:~/Documents/GitHub/withdrawal-desk",
+          "installed": [
+            "~/Documents/GitHub/withdrawal-desk/.claude/skills/react-router-framework-mode"
+          ],
+          "pin": "33578aae4aa36a90c9f8f602105a1ccb0f4efe45"
+        }
+      ],
+      "pin": "33578aae4aa36a90c9f8f602105a1ccb0f4efe45",
+      "update": "cd ~/Documents/GitHub/withdrawal-desk && DISABLE_TELEMETRY=1 npx skills@1.7.0 add remix-run/agent-skills#<SHA> --skill react-router-framework-mode -a claude-code -y",
+      "decision": "2026-11-21 (dependency refresh, lead's install-clear-wins brief): installed project-scoped in withdrawal-desk, the only React Router 7 framework-mode app, and committed on its deps-2026-11-21 branch with skills-lock.json. Official (React Router team), MIT, markdown only, no scripts; all 13 files match upstream blobs at 33578aa. The data-mode and declarative-mode skills in the same repo were not installed: no project uses those modes (the 2025-portfolio archive EN/NL pages use react-router-dom 6, frozen)."
+    },
+    {
+      "name": "prisma/skills",
+      "repo": "prisma/skills",
+      "kind": "skills",
+      "status": "saved",
+      "projects": [
+        "withdrawal-desk"
+      ],
+      "use_when": "A project on Prisma ORM 7 (CLI, client API, the v7 upgrade, Prisma Postgres).",
+      "skills": [],
+      "pin": "a6f192959cf43b08aa330fe1ffca090267215812",
+      "decision": "2026-11-21 (dependency refresh): reviewed at a6f1929, not installed. Official, MIT, 11 skills (prisma-cli, prisma-client-api, prisma-upgrade-v7, prisma-postgres and others), all written for Prisma ORM 7 (metadata version 7.9.1; prisma-cli says Prisma 7 only). withdrawal-desk, the only Prisma project, stays on Prisma 6 because @shopify/shopify-app-session-storage-prisma 11 peers prisma ^6.19. Install prisma-upgrade-v7 plus prisma-cli and prisma-client-api in withdrawal-desk when that peer allows 7."
+    },
+    {
+      "name": "honojs/skills",
+      "repo": "honojs/skills",
+      "kind": "skills",
+      "status": "saved",
+      "projects": [
+        "site-stats",
+        "CS_Momentum_Web"
+      ],
+      "use_when": "Building or testing a Hono app where adding @hono/cli as a dev dependency is acceptable.",
+      "skills": [],
+      "pin": "e54ce51f6effaeb574ebd2629e89e086e14a2db3",
+      "decision": "2026-11-21 (dependency refresh): reviewed at e54ce51, not installed. Official, MIT, three small skills (hono, hono-jsx, hono-void). The hono skill tells the agent to verify through `npm install -D @hono/cli@next`, a pre-release, which clashes with CS_Momentum_Web's dependency rules (exact pins at least 7 days old, platform-owned dependency files); site-stats is a small Hono server that its tests already cover. Revisit when @hono/cli reaches 1.0 (the skill's own TODO)."
+    },
+    {
+      "name": "EL4CTEO/blender-skills",
+      "repo": "EL4CTEO/blender-skills",
+      "kind": "skills",
+      "skills": [
+        {
+          "name": "blender-core",
+          "path": "skills/blender-core",
+          "tree": "9b69bfd151a5ba675dcfcf678453956d14ae59b1",
+          "installed": [
+            "~/.claude/skills/blender-core"
+          ]
+        },
+        {
+          "name": "blender-scene-setup",
+          "path": "skills/blender-scene-setup",
+          "tree": "d818cb3e612c3b65107cf160f8e966233646c6a5",
+          "installed": [
+            "~/.claude/skills/blender-scene-setup"
+          ]
+        },
+        {
+          "name": "blender-hardsurface-modeling",
+          "path": "skills/blender-hardsurface-modeling",
+          "tree": "c56b59cfca55b01d643f920d3eb91c62b406f479",
+          "installed": [
+            "~/.claude/skills/blender-hardsurface-modeling"
+          ]
+        },
+        {
+          "name": "blender-geometry-nodes",
+          "path": "skills/blender-geometry-nodes",
+          "tree": "c0e7ef2f3c39c1629ab2ae476e0a2f497f52f3ee",
+          "installed": [
+            "~/.claude/skills/blender-geometry-nodes"
+          ]
+        },
+        {
+          "name": "blender-retopology-uv",
+          "path": "skills/blender-retopology-uv",
+          "tree": "378cdd4c2e01932bcfcdee0e56b1daa131992a14",
+          "installed": [
+            "~/.claude/skills/blender-retopology-uv"
+          ]
+        },
+        {
+          "name": "blender-pbr-materials",
+          "path": "skills/blender-pbr-materials",
+          "tree": "16d0076c4226fd8284d5f232563c47d24186d163",
+          "installed": [
+            "~/.claude/skills/blender-pbr-materials"
+          ]
+        },
+        {
+          "name": "blender-texture-baking",
+          "path": "skills/blender-texture-baking",
+          "tree": "d01d6ee5f0cc0739e6e594bc559202928c980fa4",
+          "installed": [
+            "~/.claude/skills/blender-texture-baking"
+          ]
+        },
+        {
+          "name": "blender-game-optimization",
+          "path": "skills/blender-game-optimization",
+          "tree": "69fd89977f20d4514c8c53c41ca72a62f9e5d11b",
+          "installed": [
+            "~/.claude/skills/blender-game-optimization"
+          ]
+        },
+        {
+          "name": "blender-export-pipelines",
+          "path": "skills/blender-export-pipelines",
+          "tree": "1ca55159fa72e1d686f104d4599cdb10ca64ad05",
+          "installed": [
+            "~/.claude/skills/blender-export-pipelines"
+          ]
+        },
+        {
+          "name": "blender-asset-qa",
+          "path": "skills/blender-asset-qa",
+          "tree": "4f12bbb4d6cd9d4c560ed3a4333530d60d32af1f",
+          "installed": [
+            "~/.claude/skills/blender-asset-qa"
+          ]
+        },
+        {
+          "name": "blender-workflow-recipes",
+          "path": "skills/blender-workflow-recipes",
+          "tree": "c6412bd8d361c3e6625437291490952500371a8b",
+          "installed": [
+            "~/.claude/skills/blender-workflow-recipes"
+          ]
+        }
+      ],
+      "pin": "9e7e04a603c125a0d17447ab97112fa70a865067",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add EL4CTEO/blender-skills#<SHA> --skill blender-core blender-scene-setup blender-hardsurface-modeling blender-geometry-nodes blender-retopology-uv blender-pbr-materials blender-texture-baking blender-game-optimization blender-export-pipelines blender-asset-qa blender-workflow-recipes -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
+      "use_when": "Any Blender craft job: bpy rules and 5.x API changes, modelling, geometry nodes, retopology and UVs, PBR, baking, game budgets, Roblox and web export presets, and the asset QA gate.",
+      "decision": "2026-11-21 Blender skill hunt (lead brief: should nebi-blender exist?): 11 of 28 skills installed global at 9e7e04a (MIT, plugin v1.3.2, 2,572 stars, pushed 2026-11-17, Blender 5.2 LTS+ verified on 5.3). Read blender-core, -export-pipelines (with roblox.md and godot-web.md), -asset-qa, -game-optimization, -retopology-uv, -workflow-recipes and run_in_blender.py; a grep of every skill script found no network calls, and the only subprocess launches Blender. Its own suite on this Mac's Blender 5.3.0: 73 passed, 0 failed, 0 skipped. Installed copies are diff-identical to the reviewed clone. Chosen over scenario-labs, RobLe3, majidmanzarpour and the others below: the only pack that is current, tested in a real Blender, and covers Roblox and web export plus AI-mesh cleanup. nebi-blender was trimmed to the shell-only helper and the routing to these.",
+      "why": "Deeper, tested Blender method than nebi-blender carried: a 5.x API-change table, Roblox (R15, cages, SurfaceAppearance) and web export presets, a QA gate with review sheets, budgets and LODs, retopology and baking for AI meshes.",
+      "localEdits": "Added the upstream root LICENSE (MIT, EL4CTEO) byte for byte into each of the 11 skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
+      "notes": "Left out on purpose (17): sculpting, character-rigging, facial-shapekeys, animation, clothing, hair-grooming, texturing, rendering, lighting-lookdev, stylized-npr, environment-kits, video-editing, simulation, time-of-day, weather-fx, addon-development, pipeline-automation. The skill listing is already over budget (skill-doctor 2026-11-21: 154 skills listed by name only), so only skills for Roblox, three.js and AI-mesh work went in; add one with the update command when a job needs it. Written for the community MCP server: look, search_assets, import_asset and generate_3d do not exist on the official Lab server, and nebi-blender maps them. Gaps found: auto_retopo.py --method decimate does not weld an imported AI GLB (on a 245,698-vert test mesh it left 9,988 loose pieces at 10,000 tris; welded first it stayed one piece). Its Roblox preset treats 1 Blender unit as 1 m, blendtool.py roblox as 1 stud. blender-core's description claims any 3D-asset request, so it may co-load on roblox-* and threejs-* tasks (trigger evals not run)."
+    },
+    {
+      "name": "blender/lab-blender_mcp",
+      "repo": "https://projects.blender.org/lab/blender_mcp.git",
+      "kind": "tool",
+      "pin": "dbbf836ad4b1025f14a2b3b504c43903f39e0b04",
+      "installed": [
+        "~/.agents/nebi/blender-mcp",
+        "~/Library/Application Support/Blender/5.3/extensions/user_default/mcp"
+      ],
+      "update": "python3 ~/.claude/skills/nebi-blender/tools/blendtool.py setup-mcp --pin <SHA>",
+      "use_when": "Driving the Blender window Nebi has open from an agent with MCP tools, or searching the bundled bpy API reference and manual.",
+      "decision": "installed, global (2026-11-21): the official Blender Lab MCP add-on and stdio server (GPL-3.0-or-later, by Blender developers, needs Blender 5.1+): 26 tools, no telemetry, no paid tier. Driven by nebi-blender and registered on every Claude account with claude-accounts. Chosen over ahujasid/mcp-for-blender. Same-day skill hunt: upstream HEAD is still dbbf836, and the repo ships no skills, only prompts.yml (the agent primer sent at connect) and the bpy API and manual as .rst files, which nebi-blender points shell-only agents to. Blender Lab's other repos (claypencil, denoising-data-generator) are not agent tooling; the blender.org lab page returns 403 to fetchers and was not read."
+    },
+    {
+      "name": "ahujasid/mcp-for-blender",
+      "repo": "ahujasid/mcp-for-blender",
+      "kind": "tool",
+      "status": "declined",
+      "pin": "a5a8acf2c6ae44a73670e0caf34663f16456d645",
+      "decision": "declined (2026-11-21): the community server (PyPI blender-mcp, MIT, 35k stars) has telemetry on by default and a premium upsell; the official Blender Lab MCP covers Blender 5.3. EL4CTEO and RobLe3 skills assume its tool names (look, search_assets, import_asset, generate_3d); nebi-blender maps them to the official server."
+    },
+    {
+      "name": "scenario-labs/skills (Blender DCC skills)",
+      "repo": "scenario-labs/skills",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "76cbc0b314b8baeea180bb2193f6ee44a415b49b",
+      "use_when": "Artist-level hero character sculpting or retopology, or when Scenario's Blender plugin is in use.",
+      "decision": "declined (2026-11-21 Blender hunt): read scenario-blender-expert and scenario-blender-retopology (MIT, 3,957 stars, pushed 2026-11-20, 15 Blender skills under skills/dcc/blender). Deep protocols distilled from Blender Studio artists and BCON talks, but they target 5.2, route live work through Scenario's own commercial Blender plugin and MCP, and tell the agent to fetch sibling skills through the Scenario MCP. Their depth is character art (edge flow, poles), not Roblox or web game assets; EL4CTEO covers the same pipeline, tested on 5.3."
+    },
+    {
+      "name": "RobLe3/cc-blender-skill",
+      "repo": "RobLe3/cc-blender-skill",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "a2634b588e80265e796aa53f8ab178d75105c2af",
+      "use_when": "Fitting a model to orthographic reference images through the Blender MCP.",
+      "decision": "declined (2026-11-21 Blender hunt): read blender-modeling (MIT, 179 stars, last push 2026-10-12, 31 SKILL.md files, about 4k installs of its top skill on skills.sh). Text-to-model through the MCP, with allowed-tools lists for both the official and the community server, plus reference-image fitting loops. Overlaps EL4CTEO, which has far more use and a suite that runs in a real Blender."
+    },
+    {
+      "name": "majidmanzarpour/blender-game-skills",
+      "repo": "majidmanzarpour/blender-game-skills",
+      "kind": "skills",
+      "pin": "f0ef29385a03de139957e6f700b801cdc00b7e29",
+      "use_when": "Modelling a game asset to match concept art or reference photos, with gated silhouette checks against the reference camera.",
+      "decision": "saved (2026-11-21 Blender hunt, shortlist): read blender-image-to-3d's SKILL.md (MIT, 193 stars, last push 2026-09-23, about 1k installs); its .py scripts make no network or subprocess calls. A gated reference-image-to-game-asset pipeline with compare sheets rendered from the reference camera and silhouette measurement. Not installed: no current job models from concept art, and EL4CTEO covers QA and export. Worth a trial when a Roblox or three.js asset must match concept art."
+    },
+    {
+      "name": "SFKislev/Flue (Blender)",
+      "repo": "SFKislev/Flue",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "840bb1a3faaddc31689b7431a899038e2d1042ba",
+      "decision": "declined (2026-11-21 Blender hunt): read skills/blender/SKILL.md (MIT, 111 stars, about 3k installs). A pip-installed shell bridge to many desktop apps; the skill hard-codes its author's Windows home path. The official Blender MCP plus blendtool.py live already give shell agents a bridge."
+    },
+    {
+      "name": "affaan-m/ECC (blender-motion-state-inspection)",
+      "repo": "affaan-m/ECC",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "4adeee6732a12d1540f49a4d50a38ce8c97f9a53",
+      "decision": "declined (2026-11-21 Blender hunt): read SKILL.md. Generic advice to extract rig and pose facts before trusting screenshots, with no scripts; its 9k installs come from the general ECC pack. EL4CTEO's rig_check and loop_check do this with code (rigging and animation are left out until a job needs them)."
+    },
+    {
+      "name": "HKUDS/CLI-Anything (cli-anything-blender)",
+      "repo": "HKUDS/CLI-Anything",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "34f519533bc175d2fe287ab8316b0dd99bb9cc43",
+      "decision": "declined (2026-11-21 Blender hunt): read skills/cli-anything-blender/SKILL.md. A pip package that keeps its own JSON scene format and generates bpy from it: an abstraction over bpy that agents already write directly."
+    },
+    {
+      "name": "freshtechbro/claudedesignskills (blender-web-pipeline)",
+      "repo": "freshtechbro/claudedesignskills",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "1da73febff0c3e1dfefc07f8a5ef8f7d1dfdb6cd",
+      "decision": "declined (2026-11-21 Blender hunt): read SKILL.md. A generic glTF-for-web overview, last pushed 2025-11-20, before the Blender 5.x API changes; EL4CTEO's godot-web.md and threejs-asset-pipeline cover it."
+    },
+    {
+      "name": "vladmdgolam/agent-skills (blender-mcp)",
+      "repo": "vladmdgolam/agent-skills",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "b66d157341c7c08023f6ef61324bd3ba3c1b6f85",
+      "decision": "declined (2026-11-21 Blender hunt): read SKILL.md. Written for another MCP server's tool names (get_scene_info, execute_python, screenshot); 9 stars."
     }
   ],
   "docs": [
