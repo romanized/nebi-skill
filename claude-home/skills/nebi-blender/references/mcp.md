@@ -19,7 +19,7 @@ Result: add-on module `bl_ext.user_default.mcp`, server at `~/.agents/nebi/blend
 ## Register with Claude Code
 
 ```
-claude-accounts mcp add -s user blender -e BLENDER_PATH=/Applications/Blender.app/Contents/MacOS/Blender -- /Users/nebi/.agents/nebi/blender-mcp/mcp/.venv/bin/blender-mcp
+claude-accounts mcp add -s user blender -e BLENDER_PATH=/Applications/Blender.app/Contents/MacOS/Blender -- $HOME/.agents/nebi/blender-mcp/mcp/.venv/bin/blender-mcp
 ```
 
 Put the name before `-e`: `-e` takes several values and would swallow a name written after it. `claude-accounts` adds it to every account; plain `claude mcp add` with the same arguments adds it to one. `claude mcp get blender` should show it connected. Undo: `claude-accounts mcp remove blender -s user`.

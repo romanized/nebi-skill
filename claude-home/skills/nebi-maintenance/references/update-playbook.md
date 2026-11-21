@@ -1,6 +1,6 @@
 # Update playbook: the whole machine, one pass
 
-The first full pass ran on 2026-11-21, a bit rushed, and it worked. It brought Homebrew, runtimes, Claude Code, plugins, skills, MCP servers on four accounts, sixteen project repos and the tool catalog up to date in one day without breaking a live site. This page records how, what went wrong, and the better plan for next time. Add to the changelog at the bottom after every run.
+The first full pass ran on 2026-11-21, a bit rushed, and it worked. It brought Homebrew, runtimes, Claude Code, plugins, skills, MCP servers on four accounts, sixteen project branches across fourteen repos (nine merged, four of those deployed and checked live, seven left for per-project work) and the tool catalog up to date in one day without breaking a live site. This page records how, what went wrong, and the better plan for next time. Add to the changelog at the bottom after every run.
 
 ## How the first run worked
 
@@ -35,7 +35,8 @@ The layers make the pass grow without a redesign. A new tool, language, workflow
 - **Agents ran into the 150-turn cap** and the lead had to resume them. Lanes were too big.
 - **Agents refused account config and commit steps** without Nebi's own say-so, correctly: an agent message is not consent. Those steps queued up for the lead.
 - **`sudo` needs a terminal,** so passwordless sudo was switched on for the day (KTX pkg, macOS). That is a risk to remove, not a pattern.
-- **GitHub Actions ran out of budget** (a spike in one repo), so no branch had CI evidence and every check was local.
+- **GitHub Actions was blocked by billing** (jobs stop with a failed-payment or spending-limit error), so no branch had CI evidence and every check was local.
+- **Six of the seven unmerged branches were cut from the wrong base:** unfinished local feature or redesign branches, or a main that was 263 commits behind. Cut dependency branches from a freshly fetched default branch, in a worktree, and check the diff holds only dependency changes before any merge.
 - **Lean agents have no MCP.** The shell helpers (`blendtool.py`, `claude-accounts`) carried the work.
 - **`defaults write` with old-style `{ enabled = 0; }` syntax stores strings,** and the Spotlight shortcut stayed on until it was rewritten as typed XML. Raycast 2 keeps its settings in an encrypted database, so its hotkey is set in Raycast itself.
 - **The register edit in the audit added two duplicate entries** because a `grep | head` cut off the existing ones. A test now fails on duplicate register names.

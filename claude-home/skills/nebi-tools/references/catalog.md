@@ -56,7 +56,7 @@ Settings checklist:
 - Rectangle keeps window management; Raycast's window commands stay unbound.
 - Extensions: GitHub, Brew, Docker, Spotify Player and Granola (unofficial). Skip the Stripe, Supabase and Shopify extensions, which duplicate the CLIs and connectors.
 
-Pro adds Raycast AI chat, Bring Your Own Key, the MCP server and cloud sync. The pricing page lists Pro at $10 a month or $96 a year and says verified students get 50% off Pro through a form, which works out to $48 a year (the page does not print that figure; checked 2026-11-21). Whether Pro can use a Claude subscription rather than an API key is unverified: the page only says Bring Your Own Key. Pro is on hold until Nebi's student verification comes through.
+Pro adds Raycast AI chat, Bring Your Own Key, the MCP server and cloud sync. The pricing page lists Pro at $10 a month or $96 a year and says verified students get 50% off Pro through a form, which works out to $48 a year (the page does not print that figure; checked 2026-11-21). Raycast's manual also documents Bring Your Own Subscription: a paid plan can reuse a Claude subscription through the Claude Code login for AI Chat, Quick AI and AI Commands, and that usage counts against the Claude limits.
 
 ## Keys in tools.env (names only)
 
