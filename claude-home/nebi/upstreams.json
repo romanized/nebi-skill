@@ -2922,15 +2922,33 @@
           "installed": [
             "~/.claude/skills/blender-workflow-recipes"
           ]
+        },
+        {
+          "name": "blender-character-rigging",
+          "path": "skills/blender-character-rigging",
+          "pin": "1a1cc6c49312f9f370aae86f52b7b907f29c94f6",
+          "tree": "c72547f64ae71af650189cf85381dd532c0e2ea6",
+          "installed": [
+            "~/.claude/skills/blender-character-rigging"
+          ]
+        },
+        {
+          "name": "blender-animation",
+          "path": "skills/blender-animation",
+          "pin": "1a1cc6c49312f9f370aae86f52b7b907f29c94f6",
+          "tree": "ddb804163871a5a058a3e4cac4c206bab3d5b298",
+          "installed": [
+            "~/.claude/skills/blender-animation"
+          ]
         }
       ],
       "pin": "9e7e04a603c125a0d17447ab97112fa70a865067",
-      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add EL4CTEO/blender-skills#<SHA> --skill blender-core blender-scene-setup blender-hardsurface-modeling blender-geometry-nodes blender-retopology-uv blender-pbr-materials blender-texture-baking blender-game-optimization blender-export-pipelines blender-asset-qa blender-workflow-recipes -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
-      "use_when": "Any Blender craft job: bpy rules and 5.x API changes, modelling, geometry nodes, retopology and UVs, PBR, baking, game budgets, Roblox and web export presets, and the asset QA gate.",
-      "decision": "2026-11-21 Blender skill hunt (lead brief: should nebi-blender exist?): 11 of 28 skills installed global at 9e7e04a (MIT, plugin v1.3.2, 2,572 stars, pushed 2026-11-17, Blender 5.2 LTS+ verified on 5.3). Read blender-core, -export-pipelines (with roblox.md and godot-web.md), -asset-qa, -game-optimization, -retopology-uv, -workflow-recipes and run_in_blender.py; a grep of every skill script found no network calls, and the only subprocess launches Blender. Its own suite on this Mac's Blender 5.3.0: 73 passed, 0 failed, 0 skipped. Installed copies are diff-identical to the reviewed clone. Chosen over scenario-labs, RobLe3, majidmanzarpour and the others below: the only pack that is current, tested in a real Blender, and covers Roblox and web export plus AI-mesh cleanup. nebi-blender was trimmed to the shell-only helper and the routing to these.",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.0 add EL4CTEO/blender-skills#<SHA> --skill blender-core blender-scene-setup blender-hardsurface-modeling blender-geometry-nodes blender-retopology-uv blender-pbr-materials blender-texture-baking blender-game-optimization blender-export-pipelines blender-asset-qa blender-workflow-recipes blender-character-rigging blender-animation -g -a claude-code -y; then re-copy the upstream root LICENSE into each skill folder",
+      "use_when": "Any Blender craft job: bpy rules and 5.x API changes, modelling, geometry nodes, retopology and UVs, PBR, baking, game budgets, Roblox and web export presets, the asset QA gate, biped rigging and weights with a Roblox R15 check, and keyframe clips baked and exported per clip.",
+      "decision": "2026-11-21 Blender skill hunt (lead brief: should nebi-blender exist?): 11 of 28 skills installed global at 9e7e04a (MIT, plugin v1.3.2, 2,572 stars, pushed 2026-11-17, Blender 5.2 LTS+ verified on 5.3). Read blender-core, -export-pipelines (with roblox.md and godot-web.md), -asset-qa, -game-optimization, -retopology-uv, -workflow-recipes and run_in_blender.py; a grep of every skill script found no network calls, and the only subprocess launches Blender. Its own suite on this Mac's Blender 5.3.0: 73 passed, 0 failed, 0 skipped. Installed copies are diff-identical to the reviewed clone. Chosen over scenario-labs, RobLe3, majidmanzarpour and the others below: the only pack that is current, tested in a real Blender, and covers Roblox and web export plus AI-mesh cleanup. nebi-blender was trimmed to the shell-only helper and the routing to these. 2026-11-21 (MeiMei-Roblox mm-art rigging hunt): blender-character-rigging and blender-animation added global at 1a1cc6c (release 1.3.3, same day; per-skill pin, the other 11 stay at 9e7e04a). Read both SKILL.md files and all 7 scripts at the pin: os is used for paths only, no network or subprocess. Upstream tests on this Mac's Blender 5.3.0: rigging 4/4 and animation 5/5 passed (filter 'animation' also ran one export test). Gap they fill: biped skinning with a heat-to-voxel-proxy fallback for AI meshes, 4-influence cleanup, rig_check --profile roblox (R15 names, no root weights), stress poses, control-rig to game-skeleton bake, loop pop/hitch check and per-clip FBX/glTF export. roblox-3d-model only rigs quadrupeds and roblox-animation bakes to the 16 R15 joints as KeyframeSequence data, not FBX. Chosen over scenario-blender-rigging, codepawl rig-characters and the others below: the only one with executable, tested scripts and a Roblox profile.",
       "why": "Deeper, tested Blender method than nebi-blender carried: a 5.x API-change table, Roblox (R15, cages, SurfaceAppearance) and web export presets, a QA gate with review sheets, budgets and LODs, retopology and baking for AI meshes.",
-      "localEdits": "Added the upstream root LICENSE (MIT, EL4CTEO) byte for byte into each of the 11 skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
-      "notes": "Left out on purpose (17): sculpting, character-rigging, facial-shapekeys, animation, clothing, hair-grooming, texturing, rendering, lighting-lookdev, stylized-npr, environment-kits, video-editing, simulation, time-of-day, weather-fx, addon-development, pipeline-automation. The skill listing is already over budget (skill-doctor 2026-11-21: 154 skills listed by name only), so only skills for Roblox, three.js and AI-mesh work went in; add one with the update command when a job needs it. Written for the community MCP server: look, search_assets, import_asset and generate_3d do not exist on the official Lab server, and nebi-blender maps them. Gaps found: auto_retopo.py --method decimate does not weld an imported AI GLB (on a 245,698-vert test mesh it left 9,988 loose pieces at 10,000 tris; welded first it stayed one piece). Its Roblox preset treats 1 Blender unit as 1 m, blendtool.py roblox as 1 stud. blender-core's description claims any 3D-asset request, so it may co-load on roblox-* and threejs-* tasks (trigger evals not run)."
+      "localEdits": "Added the upstream root LICENSE (MIT, EL4CTEO) byte for byte into each of the 13 skill folders; no SKILL.md change. The skills CLI does not copy it, so repeat the copy after an update.",
+      "notes": "Left out on purpose (15, after the 2026-11-21 rigging add): sculpting, facial-shapekeys, clothing, hair-grooming, texturing, rendering, lighting-lookdev, stylized-npr, environment-kits, video-editing, simulation, time-of-day, weather-fx, addon-development, pipeline-automation. The skill listing is already over budget (skill-doctor 2026-11-21: 154 skills listed by name only), so only skills for Roblox, three.js and AI-mesh work went in; add one with the update command when a job needs it. Written for the community MCP server: look, search_assets, import_asset and generate_3d do not exist on the official Lab server, and nebi-blender maps them. Gaps found: auto_retopo.py --method decimate does not weld an imported AI GLB (on a 245,698-vert test mesh it left 9,988 loose pieces at 10,000 tris; welded first it stayed one piece). Its Roblox preset treats 1 Blender unit as 1 m, blendtool.py roblox as 1 stud. blender-core's description claims any 3D-asset request, so it may co-load on roblox-* and threejs-* tasks (trigger evals not run). Rigging hunt notes (2026-11-21): sculpting left out again (Sculpt Mode crashes headless; its procedural ops are remesh, multires and noise, which blender-geometry-nodes and retopology already reach). The 11 older skills are one release behind (1.3.3 fixes export_asset static FBX takes, qa_check mirrored objects, apply_stack, auto_retopo with shape keys); review and run the update command when convenient. rigify_build's Rigify path emits Rigify names, so an R15 skeleton is built by hand or from Roblox's template and then checked with rig_check --profile roblox."
     },
     {
       "name": "blender/lab-blender_mcp",
@@ -2960,7 +2978,7 @@
       "status": "declined",
       "pin": "76cbc0b314b8baeea180bb2193f6ee44a415b49b",
       "use_when": "Artist-level hero character sculpting or retopology, or when Scenario's Blender plugin is in use.",
-      "decision": "declined (2026-11-21 Blender hunt): read scenario-blender-expert and scenario-blender-retopology (MIT, 3,957 stars, pushed 2026-11-20, 15 Blender skills under skills/dcc/blender). Deep protocols distilled from Blender Studio artists and BCON talks, but they target 5.2, route live work through Scenario's own commercial Blender plugin and MCP, and tell the agent to fetch sibling skills through the Scenario MCP. Their depth is character art (edge flow, poles), not Roblox or web game assets; EL4CTEO covers the same pipeline, tested on 5.3."
+      "decision": "declined (2026-11-21 Blender hunt): read scenario-blender-expert and scenario-blender-retopology (MIT, 3,957 stars, pushed 2026-11-20, 15 Blender skills under skills/dcc/blender). Deep protocols distilled from Blender Studio artists and BCON talks, but they target 5.2, route live work through Scenario's own commercial Blender plugin and MCP, and tell the agent to fetch sibling skills through the Scenario MCP. Their depth is character art (edge flow, poles), not Roblox or web game assets; EL4CTEO covers the same pipeline, tested on 5.3. 2026-11-21 (mm-art rigging hunt, HEAD 49665ab): read the head of scenario-blender-rigging/SKILL.md. Strong prose method (quality gates, Roblox FACS face notes), but still tells the agent to load siblings through the Scenario MCP and ships no scripts; EL4CTEO blender-character-rigging won."
     },
     {
       "name": "RobLe3/cc-blender-skill",
@@ -3018,6 +3036,52 @@
       "status": "declined",
       "pin": "b66d157341c7c08023f6ef61324bd3ba3c1b6f85",
       "decision": "declined (2026-11-21 Blender hunt): read SKILL.md. Written for another MCP server's tool names (get_scene_info, execute_python, screenshot); 9 stars."
+    },
+    {
+      "name": "codepawl/creator-generalist (rig-characters)",
+      "repo": "codepawl/creator-generalist",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "57bcdb718c795dd117228022c97bbe78cfe6f0bd",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
+      "use_when": "General rigging method across 2D cut-out and 3D when no Blender scripts are wanted.",
+      "decision": "declined (2026-11-21 mm-art rigging hunt): read plugins/3d-generalist/skills/rig-characters/SKILL.md (MIT, 348 stars, pushed 2026-11-19). Sound rigging rules, but prose only, an 'Ask first' step that questions the user, no Roblox target and button recipes in a sibling skill. EL4CTEO blender-character-rigging covers the same rules with tested scripts."
+    },
+    {
+      "name": "SyphoDev-yt/roblox-ai-skills (roblox-animation)",
+      "repo": "SyphoDev-yt/roblox-ai-skills",
+      "kind": "skills",
+      "status": "declined",
+      "pin": "5aad881d1e6553cc3671ad549fdf01b8191bdc37",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
+      "use_when": "Rendering contact sheets of an R15 Blender rig's animation to check poses against a reference.",
+      "decision": "declined (2026-11-21 mm-art rigging hunt): read the head of skills/roblox-animation/SKILL.md (204 stars, pushed 2026-11-04). JSON pose spec to a Blender Action on an existing R15 rig, with contact-sheet review and a useful trap note (a rig's rest-pose Action re-evaluates at render). Overlaps the installed roblox-animation, does not build or skin a rig, and GitHub reports its license as NOASSERTION."
+    },
+    {
+      "name": "Dev-GOM/claude-code-marketplace (blender-toolkit)",
+      "repo": "Dev-GOM/claude-code-marketplace",
+      "kind": "skills",
+      "status": "declined",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
+      "use_when": "None current.",
+      "decision": "declined (2026-11-21 mm-art rigging hunt): metadata only (Apache-2.0, 97 stars, last push 2026-01-17, before the Blender 5.x API changes). Not read further."
+    },
+    {
+      "name": "kevinbadi/blender-skills",
+      "repo": "kevinbadi/blender-skills",
+      "kind": "skills",
+      "status": "declined",
+      "projects": [
+        "MeiMei-Roblox"
+      ],
+      "use_when": "None current.",
+      "decision": "declined (2026-11-21 mm-art rigging hunt): metadata only (362 stars, last push 2026-04-04, no license file). Not read further."
     }
   ],
   "docs": [
