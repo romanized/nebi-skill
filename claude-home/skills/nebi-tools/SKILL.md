@@ -11,7 +11,7 @@ One home for the tools and keys that used to sit in ecommerce-workspace. Nothing
 |---|---|
 | Scripts | `~/.claude/skills/nebi-tools/tools/<tool>/`. Master: nebi-skill `claude-home/skills/nebi-tools/`, a public repo, so no keys, account IDs or emails go in it. |
 | Python for the scripts | `~/.agents/nebi/venv/bin/python`. Build or refresh: `bash ~/.claude/skills/nebi-tools/setup.sh` |
-| API keys | `~/.agents/nebi/secrets/tools.env` (mode 600). The other files in that folder are per-shop credentials. |
+| API keys | `~/.agents/nebi/secrets/tools.env` (mode 600). Railway: `railway.env` in the same folder, one workspace token per Railway workspace (its header says which workspace holds what and how to call it). The other files in that folder are per-shop credentials. |
 | Every tool and saved repo, installed or not | [references/catalog.md](references/catalog.md) |
 | Pins and update commands for third-party tools | `~/.claude/nebi/upstreams.json` |
 

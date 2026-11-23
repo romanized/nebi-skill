@@ -60,7 +60,7 @@ Pro adds Raycast AI chat, Bring Your Own Key, the MCP server and cloud sync. The
 
 ## Keys in tools.env (names only)
 
-`TIKHUB_API_KEY`, `EXA_API_KEY`, `PARALLEL_API_KEY`, `FAL_KEY`, `FAL_ADMIN_KEY`, `ELEVENLABS_API_KEY`, `BOL_CLIENT_ID`, `BOL_CLIENT_SECRET`. Firecrawl and Tilion keep their own logins (the Firecrawl CLI's store, Claude Code's MCP OAuth). Per-shop credential files sit next to `tools.env` in `~/.agents/nebi/secrets/`.
+`TIKHUB_API_KEY`, `EXA_API_KEY`, `PARALLEL_API_KEY`, `FAL_KEY`, `FAL_ADMIN_KEY`, `ELEVENLABS_API_KEY`, `BOL_CLIENT_ID`, `BOL_CLIENT_SECRET`. Firecrawl and Tilion keep their own logins (the Firecrawl CLI's store, Claude Code's MCP OAuth). Per-shop credential files sit next to `tools.env` in `~/.agents/nebi/secrets/`. Railway workspace tokens live in `railway.env` there: `RAILWAY_WS1_TOKEN`, `RAILWAY_WS2_TOKEN` and their `_ID`s. They work for GraphQL (`Authorization: Bearer`) and `railway api`; `railway list` and `whoami` need the CLI login.
 
 ## Saved, not installed
 
