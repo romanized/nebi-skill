@@ -1,10 +1,10 @@
 ---
-description: Sharpen rough input into a copy-ready prompt with the nebi-prompting skill
+description: Turn rough input into a saved brief and one activation line with the nebi-prompting skill
 disable-model-invocation: true
 ---
 
 # Sharpen
 
-Load and follow the `nebi-prompting` skill for the input below. Preserve its words and intent. If it already says `run it`, skip only the `Go?` wait — still show the artifact before executing.
+Load and follow the `nebi-prompting` skill for the input below: superbrain pass, saved brief, one activation line. Keep its constraints and intent. If it already says `run it` and no questions are open, skip only the wait for go and run the saved brief here.
 
 $ARGUMENTS

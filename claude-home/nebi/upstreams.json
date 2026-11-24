@@ -935,7 +935,7 @@
       "decision": "installed subset (named): receiving-code-review in both clients; verification-before-completion in Codex only (user decision 2026-09-24: 0 Claude loads in 30 days, core §6 and the Stop hook cover it; Codex loaded it in 146 sessions); deviation: no plugin, no other skills",
       "why": "Review handling has no Nebi overlap; verification-before-completion targets the most logged failure (done before proof).",
       "removed": "finishing-a-development-branch (installed and removed 2026-09-22 @5bf4e78): it fires at every task end, forces the full test suite and waits on a merge/PR/keep menu, against §4 and proportional §6 proof.",
-      "notes": "Deliberately not installed: the plugin SessionStart bootstrap (using-superpowers, \"1% chance means you must invoke\") and brainstorming/TDD/writing-plans/systematic-debugging/dispatching agents, which collide with nebi-* skills and doctrine §4/§6."
+      "notes": "Deliberately not installed: the plugin SessionStart bootstrap (using-superpowers, \"1% chance means you must invoke\") and brainstorming/TDD/writing-plans/systematic-debugging/dispatching agents, which collide with nebi-* skills and doctrine §4/§6. 2026-11-23 prompting redesign: read `brainstorming` and `writing-plans` at HEAD 22f0b46 (v7.0.2). Borrowed the fresh-subagent builder check (questions sorted answered / minor / user) into nebi-prompting's fresh read; not installing brainstorming (it chains writing-plans and a hard gate)."
     },
     {
       "name": "openai/skills",
@@ -1273,7 +1273,7 @@
       "kind": "plugin",
       "pin": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
       "decision": "2026-10-15 (user named it from a \"7 repos\" post): installed mattpocock-skills 1.2.3 from claude-plugins-official (marketplace pins c55ee46), user scope, all 25 skills (11 model-invoked, 14 user-invoked). The earlier decision was reference only because of overlap with nebi-debugging/sessions/prompting. skillOverrides cannot hide plugin skills in Claude Code 2.1.300 (plugin skills are locked on), so none are set. Routing probe (1 run each, decision only): a failing-test fix chose nebi-debugging, a Stripe research ask nebi-research, a skill-description edit nebi-maintenance, a diff review the built-in code-review. 2026-11-10: disabled (`claude plugin disable mattpocock-skills@claude-plugins-official`), not removed. /skill-doctor showed 0 uses of all 25 skills since install, and they double nebi-debugging, nebi-research and the built-in code-review. Undo: `claude plugin enable mattpocock-skills@claude-plugins-official`.",
-      "notes": "MIT. Overlap to watch: diagnosing-bugs vs nebi-debugging, research vs nebi-research (writes a Markdown file into the repo), code-review vs the built-in code-review, writing-for-agents vs nebi-maintenance/skill-creator. setup-matt-pocock-skills edits CLAUDE.md/AGENTS.md if run. The plugin manager ran npm install of its changesets devDependencies into the cache, so the register check lists node_modules as local edits; that is expected, not an edit.",
+      "notes": "MIT. Overlap to watch: diagnosing-bugs vs nebi-debugging, research vs nebi-research (writes a Markdown file into the repo), code-review vs the built-in code-review, writing-for-agents vs nebi-maintenance/skill-creator. setup-matt-pocock-skills edits CLAUDE.md/AGENTS.md if run. The plugin manager ran npm install of its changesets devDependencies into the cache, so the register check lists node_modules as local edits; that is expected, not an edit. 2026-11-23 prompting redesign: read `grilling` at HEAD abeeaf9 (rounds of all unblocked questions, each with a recommended answer; facts looked up, never asked). Borrowed that mechanism into nebi-prompting's superbrain pass; plugin stays disabled.",
       "skills": [
         {
           "name": "mattpocock-skills@claude-plugins-official",
@@ -2047,16 +2047,16 @@
         {
           "name": "modern-web-guidance",
           "path": "skills/modern-web-guidance",
-          "tree": "7c7d6612af788857352d452ebe263ad462351658",
+          "tree": "94cd548883b7cd735ee0d2bdd723c68a212a0933",
           "installed": [
             "~/.claude/skills/modern-web-guidance",
             "~/Documents/GitHub/MeiMei-website/.claude/skills/modern-web-guidance"
           ]
         }
       ],
-      "pin": "64a6d708f5a43f2cd3fde5d4d7db3905ba1bdf65",
+      "pin": "2b4aa13a72dd47cd135b06ce5abfccd92e19b24f",
       "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add GoogleChrome/modern-web-guidance#<SHA> --skill modern-web-guidance -g -a claude-code -y; cd ~/Documents/GitHub/MeiMei-website && DISABLE_TELEMETRY=1 npx skills@1.7.6 add GoogleChrome/modern-web-guidance#<SHA> --skill modern-web-guidance -a claude-code -y",
-      "decision": "2026-11-11 owner named it (Chrome for Developers, \"Modern Web Guidance\", npx modern-web-guidance@latest install) for the MeiMei finish-the-site brief: installed global and in MeiMei-website at 4dd9683 (release v1.0.0). Apache-2.0. The official installer only wraps `npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance`, so the pinned skills CLI was used instead. The skill folder is SKILL.md plus 209 guide files; search, retrieve and legacy-scan run the npm package modern-web-guidance@latest through npx (reviewed 1.0.0: source repo GoogleChrome/modern-web-guidance-src, maintainers from the Chrome team). The second skill in the repo, chrome-extensions, is left out: no project needs it. 2026-11-16 updated to v1.0.1 (64a6d70): 46 guide files revised, guides/js/js.md added, search adds BM25 ranking; the npm package 1.0.1 was diffed against 1.0.0 and has the same network endpoints and the same DISABLE_TELEMETRY switch. Global and MeiMei-website copies updated, telemetry edit re-applied.",
+      "decision": "2026-11-11 owner named it (Chrome for Developers, \"Modern Web Guidance\", npx modern-web-guidance@latest install) for the MeiMei finish-the-site brief: installed global and in MeiMei-website at 4dd9683 (release v1.0.0). Apache-2.0. The official installer only wraps `npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance`, so the pinned skills CLI was used instead. The skill folder is SKILL.md plus 209 guide files; search, retrieve and legacy-scan run the npm package modern-web-guidance@latest through npx (reviewed 1.0.0: source repo GoogleChrome/modern-web-guidance-src, maintainers from the Chrome team). The second skill in the repo, chrome-extensions, is left out: no project needs it. 2026-11-16 updated to v1.0.1 (64a6d70): 46 guide files revised, guides/js/js.md added, search adds BM25 ranking; the npm package 1.0.1 was diffed against 1.0.0 and has the same network endpoints and the same DISABLE_TELEMETRY switch. Global and MeiMei-website copies updated, telemetry edit re-applied. 2026-11-24 updated to v1.0.2 (2b4aa13): 33 guides revised, context-menu and teaser added, soft-edge-content-fade removed; the npm package 1.0.2 was diffed against 1.0.1 and has the same network endpoints and the same DISABLE_TELEMETRY switch. Global and MeiMei-website copies updated (1.0.1 copies backed up), telemetry edit re-applied. Same day, from Chrome's case study with note (Nebi asked to integrate it): the order of precedence between a project's own component library and this skill went into the global code-quality rule.",
       "why": "Current web platform best practice with Baseline data, searched per task, for every web UI build.",
       "localEdits": "SKILL.md, global and MeiMei-website project copy: the three command lines start with DISABLE_TELEMETRY=1, because the CLI otherwise sends each search query, guide id and the agent name to Google (Clearcut) through a detached watchdog process. Re-apply after every update.",
       "notes": "The skill description says MANDATORY for all HTML/CSS and client-side JS tasks, so it fires often; park it per project if that gets noisy. @latest is unpinned by design: the skill prints an update notice when the installed skill-version is older than the package."
@@ -3082,6 +3082,411 @@
       ],
       "use_when": "None current.",
       "decision": "declined (2026-11-21 mm-art rigging hunt): metadata only (362 stars, last push 2026-04-04, no license file). Not read further."
+    },
+    {
+      "name": "muratcankoylan/Agent-Skills-for-Context-Engineering",
+      "repo": "muratcankoylan/Agent-Skills-for-Context-Engineering",
+      "kind": "reference",
+      "status": "saved",
+      "projects": [
+        "nebi-skill"
+      ],
+      "pin": "d9202c76d6dc8351e648badb576a6e9b5aae1e7f",
+      "decision": "2026-11-23 prompting redesign: read `long-horizon-prompting` (v1.1.0). Not installed: its method fits in nebi-prompting's brief shape, which now carries one checkable success statement, a \"Doesn't count\" list of near misses and an artifact-based stop condition from it."
+    },
+    {
+      "name": "MengTo/Skills (scroll-scrubbed-visual-sequence)",
+      "repo": "MengTo/Skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "skills": [
+        {
+          "name": "scroll-scrubbed-visual-sequence",
+          "path": "agent-skills/web-design/scroll-scrubbed-visual-sequence",
+          "tree": "8b6c2c96a23cee1c6cb2ec840ef284c1b424dd98",
+          "installed": [
+            "~/Documents/GitHub/1oneam-project/teaser/.claude/skills/scroll-scrubbed-visual-sequence"
+          ]
+        }
+      ],
+      "pin": "409b4d04c98559bbd9d3344260e3a0878df30d43",
+      "update": "git clone https://github.com/MengTo/Skills.git <scratch> && git -C <scratch> checkout <SHA>; copy agent-skills/web-design/scroll-scrubbed-visual-sequence/{SKILL.md,REFERENCES.md} and the repo root LICENSE into the project's .claude/skills/scroll-scrubbed-visual-sequence (leave out demo/ and agents/)",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; read at pin by the lead): INSTALL, project-scoped (teaser). MIT (Meng To). 92-line SKILL.md + links-only REFERENCES.md; no scripts, hooks or allowed-tools. Fills the gap the gsap-* skills leave: one normalized progress value driving video / image-sequence / canvas renderers, keyframe-dense encodes, currentTime coalescing, reverse-scroll and reduced-motion checks.",
+      "why": "Scroll-scrubbed AI video for the escapism teaser.",
+      "use_when": "Building scroll-scrubbed video or image-sequence sections (pinned stage, reversible scrub).",
+      "localEdits": "demo/ and agents/openai.yaml left out (same method as the build-threejs-scroll-worlds entry), so SKILL.md's demo link dangles; repo root LICENSE added byte for byte."
+    },
+    {
+      "name": "motiondivision/ai-kit (motion skill + MCP)",
+      "repo": "motiondivision/ai-kit",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "skills": [
+        {
+          "name": "motion",
+          "path": "plugins/motion/skills/motion",
+          "tree": "c749922ae8ea31d0b91f1116c446de55a9b2dc34",
+          "installed": [
+            "~/Documents/GitHub/1oneam-project/shop/.claude/skills/motion"
+          ]
+        }
+      ],
+      "pin": "1e424943582cbbdb6e3f410687e39f96451447bb",
+      "update": "git clone https://github.com/motiondivision/ai-kit.git <scratch> && git -C <scratch> checkout <SHA>; copy plugins/motion/skills/motion/ into the project's .claude/skills/motion. MCP: claude mcp add --transport http --scope project motion https://mcp.motion.dev (free tier; skip the Motion+ server)",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; read at pin by the lead): INSTALL, project-scoped (shop, React + Motion). Official Motion skill: markdown only (best-practices, docs search, CSS spring, insert panel, audit). Upsells Motion+ but tells the agent not to install motion-plus without consent. No root LICENSE file; packages/motion-ai/package.json says MIT. Official installer `npx motion-ai` not used (it writes config for six agents). Free remote MCP added to shop/.mcp.json.",
+      "why": "Current Motion 12+ API and docs search for the shop's component springs and gestures; Emil's skills give taste, not API currency.",
+      "use_when": "Writing Motion (motion/react) animations in a React project, or upgrading from framer-motion."
+    },
+    {
+      "name": "Shopify Hydrogen 2026-10 agent skills",
+      "repo": "Shopify/hydrogen",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "installed",
+      "update": "cd <project> && npx @shopify/hydrogen skills sync",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; read at pin by the lead): installed by `npx @shopify/hydrogen@latest setup` into shop/.claude/skills and shop/.agents/skills (21 version-matched hydrogen-* skills). Official Shopify; managed by the Hydrogen CLI, so no pin here. pnpm reports them as 'agent skills awaiting approval' (pnpm approve not run).",
+      "why": "Version-matched Hydrogen 2026-10 guidance (storefront client, cart, variants, money) for the headless shop.",
+      "use_when": "Building a Hydrogen 2026-10 storefront (framework-agnostic library)."
+    },
+    {
+      "name": "oso95/scroll-world",
+      "repo": "oso95/scroll-world",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "71cc36d3bb150248ae36a2c552f9cbf88802a79c",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT, 11k stars. Higgsfield stills to camera-flight clips plus a zero-dependency scrub engine (references/scrub-engine.js) and prompts.md. Not installed: renders through Monid (third-party pay-per-clip biller) by default and interviews the user via AskUserQuestion, which stalls unattended builders; 762-line SKILL.md. Read scrub-engine.js and prompts.md at the pin as reference.",
+      "use_when": "Reference for AI-video scroll flights; read its scrub engine and prompts, don't install."
+    },
+    {
+      "name": "MengTo/Skills (cinematic-scroll-storytelling, documentary-brutalist-agency)",
+      "repo": "MengTo/Skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "pin": "409b4d04c98559bbd9d3344260e3a0878df30d43",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT. cinematic-scroll-storytelling (+ cinematic-gsap-lenis-motion-system) overlaps gsap-scrolltrigger + awwwards, and its motion system bans playful motion; documentary-brutalist-agency is an agency-site palette, useful only as a brutalism reference. Revisited 2026-11-24 (1oneam-project, teaser rebuild skill hunt): cinematic-scroll-storytelling DECLINED (overlaps gsap-scrolltrigger, awwwards and the installed scroll-scrubbed-visual-sequence; its motion rules ban the playful motion the teaser wants). documentary-brutalist-agency was not revisited.",
+      "use_when": "Looking for Lenis + ScrollTrigger story vocabulary or hard black/white brutalist chapter layouts."
+    },
+    {
+      "name": "fal-ai-community/skills (cinematography, fal-shot-craft, storytelling)",
+      "repo": "fal-ai-community/skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "ca79376d624d244e601f9182fa80b5bf66efec9c",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT. Shot language, lens, light and continuity anchors for video prompts; tied to genmedia/fal model calls, so installing it invites fal spend. Read the refs when writing Higgsfield video prompts. Re-checked 2026-11-24 (1oneam-project, teaser rebuild skill hunt) against the cached clone at 9ca850412943251fc9a466c4c29fdaf7a303a3d8: still SAVE, not installed; useful, but it predates Wan 3.0, Seedance 2.5 and Kling 4.0, so model-specific advice is stale.",
+      "use_when": "Writing cinematic video-generation prompts."
+    },
+    {
+      "name": "sd25-pe (Seedance 2.5 prompt engineering)",
+      "repo": "unknown (volces.com bucket via skills.sh)",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE, unreviewed. skills.sh lists it from a ByteDance Volcengine bucket (4.4k installs; CN mirror 12k) but the source was not readable (skills.sh 404, .well-known index NoSuchKey). Seedance 2.5 is Higgsfield's default video model, so review the archive before teaser video work; install temporarily like wan3-pe only if clean.",
+      "use_when": "Before generating Seedance 2.5 video, once the source can be read."
+    },
+    {
+      "name": "LottieFiles/motion-design-skill",
+      "repo": "LottieFiles/motion-design-skill",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "d77a9fc8cb371cab1ba5420df5bfd232cd14c9bb",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT. ~80% overlap with animate/choreograph/emil-design-eng; emotion-mapping.md and narrative-structure.md are worth a read for story tone.",
+      "use_when": "Mapping emotion to motion in a narrative piece."
+    },
+    {
+      "name": "iart-ai/motion-design-skills (motion-art-direction)",
+      "repo": "iart-ai/motion-design-skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "b85e50c4cef5ff17aa2187a10d49d2dae9226c74",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT, v0.1.0, small; one easing vocabulary and timing scale per piece (video-oriented); overlaps the emil set.",
+      "use_when": "Setting a single motion vocabulary for a video piece."
+    },
+    {
+      "name": "imskyleen/animate-ui",
+      "repo": "imskyleen/animate-ui",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "pin": "9873c628afdcdb030e74dc2930774a2aa473bd39",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): DECLINE. MIT + Commons Clause; Motion-animated Radix/Base UI product primitives, not editorial or brutalist."
+    },
+    {
+      "name": "DavidHDev/react-bits",
+      "repo": "DavidHDev/react-bits",
+      "kind": "tool",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "pin": "424f86f3",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): DECLINE as a skill (none ships; community MCPs are unofficial). MIT + Commons Clause. Reachable through the shadcn MCP registry if a one-off effect is wanted."
+    },
+    {
+      "name": "magicuidesign/mcp",
+      "repo": "magicuidesign/mcp",
+      "kind": "mcp",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "pin": "edd8ae61",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): DECLINE. SaaS-landing component aesthetic, the opposite of the brief."
+    },
+    {
+      "name": "darkroomengineering/cc-settings",
+      "repo": "darkroomengineering/cc-settings",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "pin": "8cf56894",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): DECLINE. Studio workflow skills from the Lenis authors; no Lenis skill."
+    },
+    {
+      "name": "Shopify Dev MCP (@shopify/dev-mcp)",
+      "repo": "Shopify/dev-mcp",
+      "kind": "mcp",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. Version 1.19.0. Live Storefront/Liquid docs and validation; add only when the shop moves to a real store or theme: OPT_OUT_INSTRUMENTATION=true claude mcp add --transport stdio --scope project shopify-dev-mcp -- npx -y @shopify/dev-mcp@1.19.0. The installed shopify skill covers the concept phase.",
+      "use_when": "Building against a real Shopify store or Liquid theme."
+    },
+    {
+      "name": "shadcn MCP (registry door)",
+      "repo": "shadcn-ui/ui",
+      "kind": "mcp",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. One door to React Bits (Pro), Animate UI, Cult UI and motion-primitives registries for one-off effects: npx shadcn@latest mcp init --client claude (pin a version first).",
+      "use_when": "Pulling a single ready-made effect component from a shadcn-style registry."
+    },
+    {
+      "name": "visioncortex/vtracer",
+      "repo": "visioncortex/vtracer",
+      "kind": "tool",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT, 7.6k stars. Raster to SVG (AI art or a logo to animatable vectors): pip install vtracer or cargo install vtracer.",
+      "use_when": "Vectorizing generated art or glyphs for animation or a custom font."
+    },
+    {
+      "name": "fonttools/fonttools",
+      "repo": "fonttools/fonttools",
+      "kind": "tool",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "decision": "2026-11-24 (1oneam-project, overnight setup; reviewed by the skills-hunt research lane, research/09-skills-and-tools.md): SAVE. MIT. pyftsubset and woff2 conversion for rare display fonts: uv tool install 'fonttools[woff]'. Used tonight from a scratchpad venv only.",
+      "use_when": "Subsetting or converting fonts to woff2."
+    },
+    {
+      "name": "medusajs/medusa-agent-skills",
+      "repo": "medusajs/medusa-agent-skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "use_when": "Building or reviewing storefront layout: product listing, product page, product card, cart, checkout, navigation.",
+      "skills": [
+        {
+          "name": "storefront-best-practices",
+          "path": "plugins/ecommerce-storefront/skills/storefront-best-practices",
+          "tree": "6b38586de2df4350774e92061fe0762bf83c9226",
+          "installed": [
+            "~/.claude/skills/storefront-best-practices"
+          ]
+        }
+      ],
+      "pin": "42b9afd28b22ee6077d3c0ea8b5444a8c9bee1bc",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add medusajs/medusa-agent-skills#<SHA> --skill storefront-best-practices -g -a claude-code -y",
+      "decision": "2026-11-24 1oneam shop build, lead's install brief: installed storefront-best-practices global for Claude Code at 42b9afd (2026-10-21; HEAD was c5a56b4), copied straight from the reviewed tree, no local edits; Codex copy skipped (parked). Review: Markdown only (SKILL.md + 28 references), no scripts or hooks in the skill; repo-level scripts (incl. a PostHog stats script) are not installed. curl commands in agent-friendly.md are example checks against example.com. Odd: the repo has no LICENSE (GitHub reports none); the description is written to over-trigger (\"ALWAYS use\", \"CRITICAL\") and pushes the Medusa docs MCP. Medusa-only rules do not apply to the Shopify/Hydrogen shop: price as-is vs divide-by-100 handling, Medusa JS SDK and region_id calls, @medusajs/types, port 8000, the Medusa MCP setup. Its product-details rule to block selecting out-of-stock variants conflicts with Baymard's guidance to keep sold-out sizes visible (and selectable for notify-me); follow Baymard there.",
+      "why": "E-commerce storefront layout rules for listing, product page, cart, checkout and product card."
+    },
+    {
+      "name": "elevenlabs/skills (sound-effects, setup-api-key, music)",
+      "repo": "elevenlabs/skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "use_when": "Generating sound effects or music with ElevenLabs, or fixing an ElevenLabs API key that stopped working.",
+      "skills": [
+        {
+          "name": "sound-effects",
+          "path": "sound-effects",
+          "tree": "217c1caa6ad2a91d8fb445be4d176ec545793b1d",
+          "installed": [
+            "~/.claude/skills/sound-effects"
+          ]
+        },
+        {
+          "name": "setup-api-key",
+          "path": "setup-api-key",
+          "tree": "4bc571f2d788b83e76c736394e29a8a5831068a0",
+          "installed": [
+            "~/.claude/skills/setup-api-key"
+          ]
+        },
+        {
+          "name": "music",
+          "path": "music",
+          "tree": "d781a92a35ef506bf1e6cdeb0b50c3df40c6a100",
+          "installed": [
+            "~/.claude/skills/music"
+          ]
+        }
+      ],
+      "pin": "97478d1b23b9a6795f85bf8b6e33a4677fa1f869",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.7.6 add elevenlabs/skills#<SHA> --skill sound-effects setup-api-key music -g -a claude-code -y",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt), lead's install brief: INSTALLED global for Claude Code at 97478d1 (2026-11-18, = HEAD on install), copied straight from the reviewed folder trees, no local edits; Codex copy skipped (parked). MIT (ElevenLabs). Markdown only (SKILL.md + references), no scripts or hooks. sound-effects is for the teaser's narrator blips: pass model_id eleven_text_to_sound_v3 (SFX v3) explicitly, since the API default is still v2, which is deprecated on 2027-03-01. Caution: the skills' setup lines run unpinned `npx -y @elevenlabs/cli@latest onboard init` / `onboard check`; do not run them, the key already lives in the shared tools env file. Older unregistered copies sit in another project's .agents/skills (different content).",
+      "why": "Official vendor skills that track the ElevenLabs SFX and Music APIs."
+    },
+    {
+      "name": "emily2040/seedance-2.0 (seedance-camera, seedance-antislop, seedance-prompt)",
+      "repo": "emily2040/seedance-2.0",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "4668457e560eee06e95d7fcfdf441c8c0bba802e",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt): SAVE, not installed. Seedance camera language, anti-slop and prompt structure; trial only if Seedance becomes the hero-clip model.",
+      "use_when": "Seedance becomes the model for a hero video clip and its prompts need camera and anti-slop rules."
+    },
+    {
+      "name": "jwynia/agent-skills (dialogue)",
+      "repo": "jwynia/agent-skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt): DECLINED. The installed stop-slop, humanizer and no-ai-slop already cover the copy pass for narrator lines.",
+      "use_when": "Only if a dedicated fiction-dialogue pass is needed that the slop skills do not cover."
+    },
+    {
+      "name": "ghaida/intent (storytelling)",
+      "repo": "ghaida/intent",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt): DECLINED. Only its kishotenketsu idea (four-act structure with a twist instead of a conflict) was useful; recorded in the teaser's story research instead of installing.",
+      "use_when": "Never for install; the kishotenketsu note is the only takeaway."
+    },
+    {
+      "name": "seedance-prompt-designer (skills.volces.com)",
+      "repo": "unknown (skills.volces.com bucket)",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "declined",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt): DECLINED. Ownership unverified: no traceable publisher repo behind the skills.volces.com listing. Same bucket as the saved sd25-pe entry.",
+      "use_when": "Only if a verifiable publisher repo appears."
+    },
+    {
+      "name": "dannyjpwilliams/ui-sound-design-skill",
+      "repo": "dannyjpwilliams/ui-sound-design-skill",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "status": "saved",
+      "pin": "6cb4be41a19a5556ffd94f04e641e18b623ac483",
+      "decision": "2026-11-24 (1oneam-project, teaser rebuild skill hunt): SAVE, not installed. UI sound design rules; the Web Audio rules it teaches are already in the teaser's audio engine.",
+      "use_when": "Designing UI sound feedback for a project without its own Web Audio engine."
+    },
+    {
+      "name": "twostraws/swiftui-agent-skill",
+      "repo": "twostraws/swiftui-agent-skill",
+      "kind": "skills",
+      "projects": [
+        "Headroom"
+      ],
+      "skills": [
+        {
+          "name": "swiftui-pro",
+          "path": "swiftui-pro",
+          "tree": "1a9d5b3dfc4051b6d9ce252d58e32f1ec39b12f5",
+          "installed": [
+            "~/.claude/skills/swiftui-pro"
+          ]
+        }
+      ],
+      "pin": "f2920b63995263f57b3e198674e89a602efba6d2",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add twostraws/swiftui-agent-skill#<SHA> --skill swiftui-pro -g -a claude-code -y",
+      "use_when": "Writing or reviewing SwiftUI: deprecated-API sweep, view and data-flow rules, accessibility, localization and performance checks, with per-file before/after findings.",
+      "decision": "2026-11-24 (Headroom macOS notch app, lead brief): installed global at f2920b6 (MIT, Paul Hudson, v2.0.0, last commit 2026-10-26, about 39K skills.sh installs). Read SKILL.md, all 12 references and agents/openai.yaml: markdown only, no scripts, hooks or network calls; the only links point to his sibling skills. Installed copy is diff-identical to the reviewed clone. Caveats: written iOS-first (iOS 27 default target, iPhone Duo layouts) and says to avoid UIKit unless asked, so a notch app's AppKit layer (NSPanel, NSWindow levels) is outside it. Overlaps write-swift (general Swift), which stays.",
+      "why": "Current SwiftUI review method from a long-time SwiftUI teacher, kept up to date with the 27 releases; complements write-swift."
+    },
+    {
+      "name": "dimillian/skills",
+      "repo": "dimillian/skills",
+      "kind": "skills",
+      "projects": [
+        "Headroom"
+      ],
+      "skills": [
+        {
+          "name": "macos-spm-app-packaging",
+          "path": "macos-spm-app-packaging",
+          "tree": "86940aac97b410a2b22af26356d8078e303dbb25",
+          "installed": [
+            "~/.claude/skills/macos-spm-app-packaging"
+          ]
+        }
+      ],
+      "pin": "05ba982bfeb0d77d3c97d4542b0ee15034d05f84",
+      "update": "DISABLE_TELEMETRY=1 npx skills@1.9.0 add dimillian/skills#<SHA> --skill macos-spm-app-packaging -g -a claude-code -y",
+      "use_when": "Scaffolding, building, bundling, signing, notarizing or shipping Sparkle updates for a SwiftPM macOS app without an Xcode project, including menu bar (LSUIElement) apps.",
+      "decision": "2026-11-24 (Headroom macOS notch app, lead brief): installed global at 05ba982 (MIT, Thomas Ricouard; skill last changed 2026-03-16, repo 2026-03-29; about 1.5K skills.sh installs). Read SKILL.md, the 3 references, the bootstrap Package.swift and all 8 template scripts. Scripts are templates the agent copies into a project; nothing runs on load. No network beyond Apple notarytool and Sparkle generate_appcast when the release scripts are run on purpose. Watch when run: compile_and_run.sh and launch.sh pkill by app name (set APP_NAME, the default is MyApp); setup_dev_signing.sh creates a self-signed cert into the login keychain via fixed /tmp paths; sign-and-notarize.sh writes the App Store Connect key to /tmp briefly. Installed copy is diff-identical to the reviewed clone. Rest of the pack (swiftui-ui-patterns, swiftui-liquid-glass, macos-menubar-tuist-app and others) not reviewed here.",
+      "why": "Fills a gap: no installed skill covered a SwiftPM-only macOS app bundle, Info.plist, signing and notarization loop."
+    },
+    {
+      "name": "superdesigndev/treg",
+      "repo": "superdesigndev/treg",
+      "kind": "reference",
+      "status": "saved",
+      "pin": "fa99c42162140b0f44719a7c2d522490d87853c0",
+      "use_when": "A job needs paid data we hold no key for, per call instead of a subscription: SEO and backlinks, keyword volume, competitor ad libraries or ad accounts, people or company enrichment; or its ad and growth research workflows (rea-marketing, rea-growth, make-ugc, lead-signals).",
+      "decision": "2026-11-24 Nebi asked to save it as a reference for ads and similar work. Reviewed at fa99c42: treg is a hosted tool registry (\"OpenRouter for agent tools\") at treg.to, 4,200+ endpoints across 140 providers, prepaid per call with $1 free once, plus a team vault that injects registered keys server-side. Ships a Claude Code plugin marketplace (treg skill and MCP, plus workflow plugins ai-ugc-video, doomscroll, jev-memory, lead-signals, make-ugc, rea-growth, rea-marketing, recruit, web-access). License: Apache-2.0 with an added term against offering it as a competing hosted service; self-hosting is allowed. Not installed: nobody needs it yet, and its skill description says to reach for it first for any external data, which would outrank nebi-tools, TikHub and Exa routes; install it in the project that needs it.",
+      "notes": "Never run `treg upload` against this Mac: it sends .env keys, skills and CLI credentials to treg's server. Overlaps TikHub (social), Exa/Firecrawl/Scrapling (web) and Higgsfield (generated media); what it adds is SEO, ad-library and enrichment data without per-vendor subscriptions."
     }
   ],
   "docs": [

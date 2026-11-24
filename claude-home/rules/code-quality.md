@@ -33,3 +33,13 @@ Boundaries are real only if enforced: package structure, dependency rules, build
 ## Testing decoupling
 
 Test entities, use cases, and boundary contracts **without** the real framework, DB, network, or external service. If you can't test the core without spinning up infrastructure, the boundaries are wrong.
+
+## UI: the project's own components come first
+
+When a project has its own component library or design system, it outranks generic UI guidance, even though `modern-web-guidance` calls itself mandatory:
+
+1. Anything the library covers (dialogs, toasts, buttons, form fields, popovers) uses its component and conventions. Don't swap one for a native element because a guidance skill prefers native.
+2. Where the library stops (scroll effects, disclosure, loading priority, Core Web Vitals), search `modern-web-guidance` before writing the HTML, CSS or client JS, and name the skill in a sub-agent's brief for that work.
+3. When the two disagree, apply the guidance only through the props and attributes the component already takes.
+
+Why: in [Chrome's case study with note](https://developer.chrome.com/blog/mwg-with-internal-component) (2026-11-10, 180 runs), naming the skill in the prompt lifted standards adherence from 77–86% to 90–94%, and an unconditional "follow the guidance" made agents replace in-house components with native elements.

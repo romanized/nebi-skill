@@ -82,6 +82,7 @@ Reach for these when the installed route fails or a job needs what only they do.
 | SerpApi | Paid fallback when Google Trends keeps answering 429 | key from serpapi.com | 250 free searches a month, then $25 for 1,000; `SERPAPI_KEY`. |
 | BuiltWith | A site's tech stack | free single lookups on builtwith.com | API key for bulk: `BUILTWITH_API_KEY`. |
 | Pinterest Trends, Amazon Best Sellers | Trend and bestseller pages | browser or `scrape.py` | Public pages, no API. |
+| treg | Paid data we hold no key for, per call instead of a subscription: SEO and backlinks, keyword volume, competitor ad libraries and ad accounts, people or company enrichment; also its ad and growth research workflows (rea-marketing, rea-growth, make-ugc, lead-signals) | `/plugin marketplace add superdesigndev/treg`, then `/plugin install treg@treg` in that project | Hosted at treg.to, prepaid per call, $1 free once; reviewed at `fa99c42`. Never run `treg upload` here: it sends `.env` keys, skills and CLI credentials to its server. Its skill says to reach for it first for any outside data, so install it only in the project that needs it. |
 
 The ecommerce-specific candidates (Klaviyo, ad-spy tools, Google Shopping, Similarweb, Exploding Topics) and their checks are in `ecommerce-workspace/research/tool-candidates.md`.
 

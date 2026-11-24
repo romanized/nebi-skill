@@ -5,129 +5,126 @@
       "id": 1,
       "name": "standalone-no-scan",
       "prompt": "Sharpen this prompt: Review the attached pricing copy for clarity. Keep the existing offer and return five line edits. Do not inspect any repository. Do not run it yet.",
-      "expected_output": "One labeled copy-ready prompt, no repository access, and Go? outside the fence.",
+      "expected_output": "One saved brief, no repository access, chat shows the path plus an activation or paste line, nothing executes.",
       "files": [],
       "expectations": [
-        "Exactly one fenced text block",
-        "Exact Goal/Context/Constraints/Deliverable heading order",
+        "The brief is saved with the helper and the chat shows its path, not the brief body",
+        "The brief keeps the existing offer and the five line edits",
         "No repository inspection",
-        "No invented scope",
-        "The literal Go? appears outside every fence",
-        "Final status is ❓ Need you, not ⏳ Working or ✅ Done"
+        "No invented scope; any addition is marked (added) and listed in one What I added line",
+        "Nothing executes",
+        "Final status is ❓ Need you or ✅ Done, never ⏳ Working"
       ]
     },
     {
       "id": 2,
       "name": "ongoing-primer-bounded",
       "prompt": "Sharpen this for the repo we're already working in: fix the onboarding regression from yesterday, but I haven't said whether the old mobile behavior is intentional.",
-      "expected_output": "A fenced faithful draft after both allowed primer checks, with the old-mobile ambiguity in one external questions block and no wrapper leakage or Go?.",
+      "expected_output": "Targeted primer reads, a saved draft brief, the old-mobile ambiguity asked once with a recommended answer, and no activation line while it is open.",
       "files": [],
       "expectations": [
-        "Exactly one fenced text block",
         "The selected task checkpoint and git status --short --branch are checked when available; no foreign/global note is substituted",
-        "Questions are outside the fence",
-        "No Go? while questions remain",
-        "No repository enumeration/search",
-        "Git-status filenames and repository inventory do not leak into the artifact or questions",
-        "No invented acceptance criteria or platform coverage",
-        "If the primer's project conflicts with the prompt's, the mismatch is asked outside the artifact; when the primer shows no conflict, no mismatch is invented",
-        "Evaluation-only or current-turn execution controls do not enter the artifact"
+        "Only targeted reads; no repository inventory, and git-status filenames do not leak into the brief or questions",
+        "The old-mobile question is asked once, outside the brief, with a recommended answer",
+        "No activation line and no execution while the question is open",
+        "No invented acceptance criteria or platform coverage presented as the user's",
+        "If the primer's project conflicts with the prompt's, the mismatch is asked; when there is no conflict, none is invented",
+        "Current-turn execution controls do not enter the brief",
+        "Final status is ❓ Need you"
       ]
     },
     {
       "id": 3,
       "name": "ambiguous-run-it",
       "prompt": "Split this into prompts and run it: first research the current API limit, then update only the integration after the research is settled.",
-      "expected_output": "Two prompt artifacts and one minimal external question; no scan or execution because the API/integration is material and missing.",
+      "expected_output": "A draft brief with research before the integration update and one question naming the missing API/integration; no scan, no execution, no activation line.",
       "files": [],
       "expectations": [
-        "Two labeled fenced text blocks",
-        "API/integration ambiguity is asked once",
-        "No Go? while questions remain",
+        "Research precedes the integration update (ordered stages in one brief, or two ordered briefs)",
+        "The API/integration identity is asked once with a recommended answer",
         "No repository inspection",
-        "No execution begins",
-        "Research precedes implementation"
+        "No execution begins despite run it",
+        "No activation line while the question is open",
+        "Final status is ❓ Need you"
       ]
     },
     {
       "id": 4,
       "name": "multiple-copy-targets",
       "prompt": "Sharpen this into two prompts without running them: first compare the current Stripe API limits using official documentation; second update only src/payments/stripe-client.ts based on the settled research and run its focused test.",
-      "expected_output": "Two ordered, independently copyable prompts with no invented files, tools, or checks, and no execution.",
+      "expected_output": "Two saved briefs because the user asked for two prompts, two activation lines, no invented files or checks, and no execution.",
       "files": [],
       "expectations": [
-        "Two labeled fenced text blocks",
-        "Research prompt precedes implementation prompt",
-        "Second prompt names the settled research it consumes in the user's sequencing words",
-        "Named file and focused test constraint preserved",
+        "Two briefs are saved because the user explicitly asked for two prompts",
+        "The research brief precedes the implementation brief",
+        "The second brief names the settled research it consumes in the user's sequencing words",
+        "The named file and focused test constraint are preserved",
         "No repository inspection",
-        "Single Go? outside all fences",
-        "No execution"
+        "No execution",
+        "The brief is saved with the helper and the chat shows its path, not the brief body"
       ]
     },
     {
       "id": 5,
       "name": "explicit-no-local-context",
       "prompt": "Sharpen this, and do not look at any local project: audit whether this marketing brief has a clear audience, offer, proof, and CTA; return a prompt for another agent, not the audit itself.",
-      "expected_output": "One prompt that instructs the future agent to perform the requested audit, preserves its dimensions, performs no local reads now, and does not recurse into prompt creation.",
+      "expected_output": "One saved brief that tells the future agent to run the audit, keeps its four dimensions, does no local reads now and does not recurse into prompt creation.",
       "files": [],
       "expectations": [
-        "Exactly one fenced text block",
+        "The brief is saved with the helper and the chat shows its path, not the brief body",
         "Audience/offer/proof/CTA preserved",
         "No local reads",
         "Does not perform the audit during sharpening",
-        "Artifact instructs the future agent to audit rather than return another prompt",
-        "Current-turn wrapper controls do not enter the artifact",
-        "Future brief availability does not create a non-material question",
-        "No invented marketing strategy"
+        "The brief instructs the future agent to audit rather than return another prompt",
+        "Current-turn controls do not enter the brief",
+        "No invented marketing strategy presented as the user's"
       ]
     },
     {
       "id": 6,
       "name": "real-rebuild-request",
       "prompt": "Sharpen this before we run it: research popular prompting and orchestration skills with sub-agents, use official OpenAI and Claude documentation, extract only proven universal patterns, improve our own two Nebi skills, compare old versus new on real prompts, and do not install a pile of overlapping global skills.",
-      "expected_output": "A faithful staged prompt or small ordered set that sequences research, improvement, and old-vs-new evaluation, preserves the no-overlapping-global-install constraint, and does not ask which clearly labeled prompting and orchestration skills are meant.",
+      "expected_output": "A brief that sequences research, improvement and old-vs-new evaluation, keeps the no-overlapping-global-install constraint, and does not ask which skills are meant.",
       "files": [],
       "expectations": [
-        "Research and implementation are sequenced",
+        "Research, improvement and evaluation are sequenced",
         "No pile of overlapping global skills is installed",
         "Official OpenAI and Claude sources preserved",
         "Old-vs-new evaluation preserved",
-        "Prompting and orchestration labels are preserved without a naming question",
-        "No repository inspection during sharpening",
-        "No added vendor or installation decision"
+        "Prompting and orchestration labels are kept without a naming question",
+        "No added vendor or installation decision",
+        "The brief is saved with the helper and the chat shows its path, not the brief body"
       ]
     },
     {
       "id": 7,
       "name": "fully-specified-run-it",
       "prompt": "Sharpen this: first compare the current Stripe API limits using official Stripe documentation; then update only src/payments/stripe-client.ts and run its focused test. Run it.",
-      "expected_output": "Two ordered artifacts visibly shown, then execution begins without Go?; an unreadable named file is worked from the user's description and noted in one line, while the unblocked research stage still runs before the edit/test stage reports its blocker.",
+      "expected_output": "The brief is saved and its path shown, then execution starts here without waiting; the research stage runs before the edit/test stage, and an unreadable named file blocks only that later stage.",
       "files": [],
       "expectations": [
-        "Two labeled fenced text blocks shown before any execution",
-        "The run it instruction stays out of both artifacts",
-        "During sharpening the named source file may be read but the repository is not enumerated or searched",
-        "If src/payments/stripe-client.ts cannot be read, the artifact uses the user's own description and the failed read is stated in one line outside the artifact",
-        "Before execution there is no claim about whether the repository contains the named file and no blocking question about its unreadability",
-        "No questions block and no `Go?` gate is posed awaiting an answer; narrating that `Go?` is being skipped is correct",
-        "The research artifact executes before the named-file edit and focused test; a missing file can block only that later stage",
-        "The blocked edit/test stage does not create the missing file or widen scope",
-        "Execution begins only after the artifacts are shown"
+        "The brief is saved and its path shown before any execution",
+        "The run it instruction stays out of the brief",
+        "No questions block and no wait for go",
+        "The research stage executes before the named-file edit and focused test",
+        "If src/payments/stripe-client.ts cannot be read, the failed read is stated in one line and only the edit/test stage reports blocked",
+        "The blocked stage does not create the missing file or widen scope",
+        "The saved brief is executed without being sharpened again"
       ]
     },
     {
       "id": 8,
       "name": "not-supplied-and-waiting-status",
       "prompt": "Sharpen this; no project context is supplied: keep the tutorial popup unchanged on the first run; on later runs, keep showing it but add a skip control that dismisses only that run's popup.",
-      "expected_output": "One artifact whose sourceless sections read Not supplied., a Go? outside the fence, and an honest waiting status.",
+      "expected_output": "One saved brief whose sourceless headings read Not supplied., with additions marked, no question for a non-material gap, nothing executed.",
       "files": [],
       "expectations": [
-        "Exactly one fenced text block",
-        "Sections with no source material read exactly Not supplied. instead of invented content",
+        "The brief is saved with the helper and the chat shows its path, not the brief body",
+        "Headings with no source material read exactly Not supplied. instead of invented facts",
+        "Any improvement beyond the user's words is marked (added)",
         "No questions block for a non-material gap",
-        "The literal Go? appears outside every fence and nothing executes",
-        "Final status is ❓ Need you, not ⏳ Working or ✅ Done"
+        "Nothing executes",
+        "Final status is ❓ Need you or ✅ Done, never ⏳ Working"
       ]
     },
     {
@@ -135,17 +132,17 @@
       "name": "answer-round-then-execute",
       "prompt": "Split this and run it in the supplied disposable local test database: migrate the analytics events to a new schema whose name I have intentionally not supplied yet, then delete the old test tables once nothing reads them. Ask for the missing schema name before inspecting local files or running anything.",
       "followup": "The new schema is analytics_v2. The disposable database is ./analytics-test.sqlite and its query log is ./fixture-query.log. Use a full code-reference scan plus that fixture query log as the check; yes, drop the old test tables after that check, using only this disposable local database. Go ahead.",
-      "expected_output": "Turn one shows draft artifacts plus one questions block with recommended answers and stops; turn two echoes the updated artifacts, then executes on the go-ahead in the answer message.",
+      "expected_output": "Turn one saves a draft brief, asks one question batch with recommended answers and stops; turn two updates the saved brief, then executes on the go-ahead in the answer message.",
       "files": [
         "evals/fixtures/analytics/setup.py"
       ],
       "expectations": [
-        "Turn one: draft artifacts shown, one questions block with a recommended answer per question, no Go?, no execution despite run it",
+        "Turn one: draft brief saved, one questions block with a recommended answer per question, no execution despite run it",
         "Turn one: no local-primer or repository reads; supplied/local test inputs do not imply prior joint work",
         "Turn one: final status is ❓ Need you",
-        "Turn two: updated artifacts are shown again before anything runs",
-        "Turn two: the go-ahead in the answer message counts as run it and execution begins after the echo",
-        "Turn two: the shown artifacts are executed without being sharpened again"
+        "Turn two: the saved brief is updated with the answers before anything runs",
+        "Turn two: the go-ahead in the answer message counts as run it and execution begins after the update",
+        "Turn two: the brief is executed as saved, without being sharpened again"
       ],
       "setup": "Before the first turn, run the supplied setup.py into an empty disposable directory. Use that directory as cwd. Supply only prompt first; send followup after the first result. The historical fixture uses analytics_v2 as the target table, as explained in its README. Never use a live database."
     },
@@ -153,39 +150,98 @@
       "id": 10,
       "name": "resolved-primer-conflict",
       "prompt": "Sharpen one combined prompt only. We are already working in this repo. Use the active nebi-skill repository. The saved note is for another project; ignore that note and do not change it. Review and improve the six skills. Do not execute yet.",
-      "expected_output": "Produce one faithful copy-ready prompt, preserve the resolved source-of-truth instruction, and ask Go? without another question about the stale note.",
+      "expected_output": "One saved brief that uses the active repository as instructed, without another question about the stale note, and no execution.",
       "files": [],
       "expectations": [
         "Uses the active repository as instructed",
         "Does not ask to resolve the already resolved mismatch",
-        "Preserves no-execution gate and artifact shape"
+        "Leaves the saved note unchanged",
+        "One combined brief, as asked",
+        "No execution",
+        "The brief is saved with the helper and the chat shows its path, not the brief body"
       ]
     },
     {
       "id": 11,
       "name": "examples-widened",
       "prompt": "Sharpen this, don't run it: get better marketing skills for my Shopify stores, like coreyhaines31/marketingskills and the official Shopify AI toolkit.",
-      "expected_output": "One artifact that keeps both named sources as must-includes, adds a bounded search for better marketing/e-commerce skills with a quality bar, and lists that widening in a `What I added:` line outside the fence.",
+      "expected_output": "One saved brief that keeps both named sources as must-includes, adds a bounded search for better marketing/e-commerce skills with a quality bar, and lists that widening in What I added.",
       "files": [],
       "expectations": [
         "Both named sources survive as must-includes",
         "Adds one bounded discovery step with a quality bar instead of treating the names as the full list",
-        "Lists the widening under What I added outside the fence",
+        "The widening is marked (added) in the brief and listed in one What I added line",
         "Adds no vendor, install decision or role the user did not ask for",
-        "The literal Go? appears outside every fence"
+        "Nothing executes"
       ]
     },
     {
       "id": 12,
       "name": "requested-investigation",
       "prompt": "First check how our scraping tools are set up in this workspace so the prompt carries real facts, then sharpen this: refresh our scraping setup for competitor research. Don't run it.",
-      "expected_output": "Investigates the workspace's scraping setup because the user asked (for example the tool registry and the tools folder), puts what it found under Context as dated prep findings the executor must re-verify, and does not run the refresh itself.",
+      "expected_output": "Investigates the scraping setup because the user asked, puts the findings under Context as dated prep findings to re-verify, saves the brief and does not run the refresh.",
       "files": [],
       "expectations": [
-        "Performs the requested investigation, including a search or listing beyond a single named file, instead of refusing under the no-scan rule",
+        "Performs the requested investigation, including a search or listing beyond a single named file",
         "Labels the findings as dated prep findings to re-verify",
-        "Does not start the refresh during sharpening",
-        "The literal Go? appears outside every fence"
+        "Does not start the refresh",
+        "The brief is saved with the helper and the chat shows its path, not the brief body"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "handoff-fleet-activation-line",
+      "files": [],
+      "prompt": "Make a handoff so a new session can finish the onboarding rebuild in this repo. It is two big independent parts: the backend migration and the new signup UI. I am done for today.",
+      "expected_output": "A handoff brief saved with --kind handoff, carrying Not verified and first moves per part, and one activation line with the launcher, an effort from the core and ultracode because there are two sizeable independent workstreams.",
+      "expectations": [
+        "The handoff brief is saved with --kind handoff in the task handoffs folder",
+        "The brief has a Not verified section and a runnable Done when check",
+        "One activation line with cd to the project, the account launcher and an effort level",
+        "The activation line includes ultracode because there are two sizeable independent workstreams",
+        "The brief body is not pasted into chat",
+        "No terminal, tab or session is opened",
+        "Final status is ✅ Done naming the line to paste"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "superbrain-fills-gaps",
+      "files": [],
+      "prompt": "idea: i want a little tool that tells me every morning which of my shopify stores had a refund spike, keep it simple, make a prompt for a new session",
+      "expected_output": "A saved brief that improves the rough idea (what counts as a spike, a runnable done-check, near misses), marks additions, asks only material questions with recommended answers, runs the fresh read, and returns one activation line.",
+      "expectations": [
+        "The brief adds a concrete done-check and a Doesn't count line the user did not write, marked (added)",
+        "Keep it simple survives as a constraint",
+        "The fresh read runs through the helper's review with the highest-capability binding before the brief is final",
+        "Questions, if any, are material, asked once, each with a recommended answer",
+        "The activation line has no ultracode for this single small workstream",
+        "The brief body is not pasted into chat"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "user-named-settings-win",
+      "files": [],
+      "prompt": "Write a brief for a new session to audit our checkout flow security end to end. Run it on sonnet at high effort and no ultracode, even though it is big.",
+      "expected_output": "A saved brief and an activation line carrying exactly the user-named model and effort with no ultracode.",
+      "expectations": [
+        "The activation line carries --model sonnet and --effort high exactly as named",
+        "The activation line has no ultracode",
+        "The brief header records the user-named settings without arguing for others",
+        "The brief body is not pasted into chat"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "rough-but-authorized-action",
+      "files": [],
+      "prompt": "ugh the footer links are all over the place, just make them match the header links and check it on mobile",
+      "expected_output": "The work is done directly: no brief is saved, no activation line, no wait for go.",
+      "expectations": [
+        "No brief is saved and no activation line is produced",
+        "No wait for go",
+        "The footer change is made and checked as asked"
       ]
     }
   ]

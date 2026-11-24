@@ -8,6 +8,8 @@
 4. `Turn this rambly voice note into the best working prompt, but keep my words: the game needs more tension, the loop is too flat, maybe progression or risk, just don't make it grindy.`
 5. `I have three things mixed together here: audit what exists, work out the smallest real fix, and then tell me what should be delegated. Structure this before we start.`
 6. `These are scattered instructions for another agent; turn them into one executable brief without adding decisions.`
+7. `idea: a small tool that pings me each morning which store had a refund spike, keep it simple, make a prompt for a new session`
+8. `Write me a brief I can hand to a fresh agent for the pricing page rework, with the right settings to run it.`
 
 ## Must not fire
 
