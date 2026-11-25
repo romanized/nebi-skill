@@ -153,6 +153,34 @@ function testStopNudgesEarlyStopsOnlyWhenNothingIsInFlight() {
   assert.equal(stop('⏳ Working — updating the tests next', { background_tasks: undefined }), '', 'unknown task state stays silent');
 }
 
+// The 2026-11-25 reply: a status line of answer codes for things the reply never explains.
+function testStopNudgesAsksThatLeanOnUnseenContext() {
+  const home = path.join(fixtureRoot, 'bare-ask');
+  const build = [{ id: 't1', type: 'shell', status: 'running', description: 'gate' }];
+  const stop = (message, background_tasks = []) => runHook('claude-home/hooks/verify-before-stop.mjs', home, {
+    session_id: 'ask', last_assistant_message: message, background_tasks,
+  });
+  const bare = /Soft check \(§3\): this ❓ Need you leans on context/;
+
+  const shorthand = 'The gate\'s end-to-end groups and the fix builder are still running. Next, when they land: merge the ' +
+    'fixes, run a final gate on that sha, deploy bol after 18:00 and check its health, then publish the owner page.\n\n' +
+    '❓ Need you: reply "go" (Karpet24 app login and deploy), "send" (GLS API mail), "untick yes/no" (shop UPS ' +
+    'copy box), and the Friday courier handover time.';
+  assert.match(stop(shorthand, build), bare, 'shorthand is caught even while work runs');
+  assert.match(stop('❓ Need you — say go to deploy the Karpet24 app'), bare, 'a status line alone is never the ask');
+
+  const explained = 'The gate is still running. Two things only you can do:\n\n' +
+    '1. **Karpet24 app:** the update is built and tested, but deploying needs you to log in to the Shopify Partners ' +
+    'CLI once on this Mac (it asks for 2FA). Say go once you are logged in and I deploy it.\n' +
+    '2. **Friday courier pickup:** what time do the parcels go to the courier on Friday? I need it for the pickup labels.\n\n' +
+    '❓ Need you — log in to the Shopify CLI for the Karpet24 deploy, and send the Friday courier time';
+  assert.equal(stop(explained, build), '');
+  assert.equal(stop('Two ways to split the table.\n\n❓ Need you — pick A or B'), '', 'too few words to judge');
+  assert.equal(runHook('claude-home/hooks/verify-before-stop.mjs', home, {
+    session_id: 'ask', last_assistant_message: '❓ Need you — say go', stop_hook_active: true,
+  }), '', 'loop guard');
+}
+
 const MAIN_CHROME = { label: 'Main Chrome', chromeProfile: 'Default', deviceId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa' };
 const SNEAKERS_CHROME = { label: 'RapidSneakers Chrome', chromeProfile: 'Profile 3', deviceId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb' };
 const ACCOUNT_A = { CLAUDE_CONFIG_DIR: '' };
@@ -193,7 +221,7 @@ function testStopIgnoresArtifactWatchersAndNudgesRealWorkOnlyOnDone() {
   assert.doesNotMatch(stop('⏳ Working — wiring the comments next', watchers), /background task still running/);
   assert.equal(stop('✅ Done — page published', watchers), '');
   assert.equal(stop('⏳ Working — waiting on the workflow', [...watchers, workflow]), '', 'real workflow + ⏳ stays silent');
-  assert.equal(stop('❓ Need you — pick a name while the workflow runs', [...watchers, workflow]), '');
+  assert.equal(stop('The workflow needs a project name to publish under.\n\n❓ Need you — pick a name while the workflow runs', [...watchers, workflow]), '');
   assert.match(stop('✅ Done — all lanes merged', [...watchers, workflow]), /1 background task still running/,
     'real workflow + ✅ gets the nudge, counting only the workflow');
   const tail = { id: 'm3', type: 'monitor', status: 'running', description: 'tail the build log' };
@@ -275,7 +303,7 @@ function testStopWritesHookBeaconOnlyWithoutFreshModBeacon() {
 function testStopWritesNoHookBeaconInAVerificationSession() {
   const { home, plain } = routeFixture('hook-beacon-verify');
   const stop = (sessionId, env) => runHook('claude-home/hooks/verify-before-stop.mjs', home, {
-    session_id: sessionId, cwd: plain, last_assistant_message: '❓ Need you — add a test for hello.py in demo? Yes or no', background_tasks: [],
+    session_id: sessionId, cwd: plain, last_assistant_message: 'Created hello.py in demo. Should I add a test for it too?\n\n❓ Need you — add a test for hello.py in demo? Yes or no', background_tasks: [],
   }, { ...ACCOUNT_A, ...env });
 
   assert.equal(stop('verify-1', { NEBI_VERIFY: '1' }), '');
@@ -415,6 +443,7 @@ test('session start routes to codex-browser from any account when the route name
 test('steer channel keeps Claude in Chrome on the project browser', testSteerChannelKeepsChromeOnTheProjectBrowser);
 test('steer note goes to the lead, never a sub-agent', testSteerNoteIsTheLeadsOnly);
 test('stop hook nudges early stops only when nothing is in flight', testStopNudgesEarlyStopsOnlyWhenNothingIsInFlight);
+test('stop hook nudges asks that lean on unseen context', testStopNudgesAsksThatLeanOnUnseenContext);
 test('unknown tool responses are not success', testUnknownToolResponseIsNotSuccess);
 test('latest command controls the heuristic', testLatestCommandControlsProofHeuristic);
 test('state refresh preserves notes and unavailable git evidence', { skip: process.platform === 'win32' }, testSessionEndPreservesNotesAndDoesNotInventCleanGitState);

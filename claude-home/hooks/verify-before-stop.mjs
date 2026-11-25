@@ -90,6 +90,35 @@ function finalStatus(msg) {
   return finalStatusLine(msg)?.match(STATUS_RE)[1] ?? null;
 }
 
+// Words in a ❓ status line that say nothing about what is asked.
+const ASK_FILLER = new Set([
+  'need', 'reply', 'answer', 'with', 'your', 'from', 'that', 'this', 'then', 'them', 'have',
+  'will', 'when', 'what', 'which', 'still', 'plus', 'also', 'each', 'once', 'just', 'only',
+  'before', 'after', 'above', 'below', 'here', 'there', 'please',
+]);
+
+/** A text's content words: four or more letters or digits, possessives dropped. */
+function askWords(text) {
+  const words = text.toLowerCase().replace(/['’]s\b/gu, '').match(/[\p{L}\p{N}]{4,}/gu) ?? [];
+  return new Set(words.filter((word) => !ASK_FILLER.has(word)));
+}
+
+/**
+ * True when a ❓ reply leans on context the user may never have seen (§3):
+ * nothing above the status line, or a status line naming things the reply
+ * mostly never mentions, like a long session's `reply "go" (Karpet24 login)`.
+ * Fewer than three content words is too little to judge, so it passes.
+ */
+function bareAsk(msg) {
+  const line = finalStatusLine(msg);
+  const body = msg.slice(0, msg.lastIndexOf(line));
+  if (!body.trim()) return true;
+  const asked = [...askWords(line.replace(STATUS_RE, '').replace(STATUS_LABEL, ''))];
+  if (asked.length < 3) return false;
+  const told = askWords(body);
+  return asked.filter((word) => told.has(word)).length / asked.length < 1 / 3;
+}
+
 /** Model text made safe for another session's screen: no escapes or controls, one line. */
 function clean(text, max) {
   const safe = String(text)
@@ -218,6 +247,15 @@ async function main() {
   const tasks = backgroundTaskList(input.background_tasks)?.filter((t) => !isWatcher(t)) ?? null;
   const running = countRunning(tasks);
   const status = finalStatus(msg);
+  // Checked before the in-flight branch: asks shrink to shorthand mid-run.
+  if (status === '❓' && bareAsk(msg)) {
+    emit(
+      'Soft check (§3): this ❓ Need you leans on context the user may not have seen; they read ' +
+        'replies cold, often from another session. Restate each open question in a line or two: ' +
+        'what it is, what it blocks, what you will do with the answer, and your pick. No codewords.',
+    );
+    return;
+  }
   if (running > 0) {
     // A ⏳ or ❓ reply already says work is in flight; only a done-claim is early.
     if (status !== '✅') return;

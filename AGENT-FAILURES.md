@@ -28,7 +28,7 @@ The checks these entries turned into live in the [reliability checklist](claude-
 | 7 | [Stating facts it had not checked](#7-stating-facts-it-had-not-checked) | 2026-11-13 | about 24 | open |
 | 8 | [Mistakes late in long sessions](#8-mistakes-late-in-long-sessions) | 2026-11-13 | 4 | observed |
 | 9 | [Asking for what it could find itself](#9-asking-for-what-it-could-find-itself) | 2026-11-12 | 16 | open |
-| 10 | [Replies that hide the state](#10-replies-that-hide-the-state) | 2026-11-12 | about 20 | mitigated |
+| 10 | [Replies that hide the state](#10-replies-that-hide-the-state) | 2026-11-25 | about 21 | mitigated |
 | 11 | [Claiming done without proof](#11-claiming-done-without-proof) | 2026-11-10 | about 25 | mitigated |
 | 12 | [Destructive or risky commands](#12-destructive-or-risky-commands) | 2026-11-10 | 13 | mitigated |
 | 13 | [Two agents writing one tree](#13-two-agents-writing-one-tree) | 2026-11-10 | 11 | mitigated |
@@ -145,11 +145,11 @@ The problem here is inconsistency, not the gates themselves. I want confirmation
 
 ### 10. Replies that hide the state
 
-- **Seen:** about 20 of my messages, 2026-09-27 to 2026-11-12.
-- **What the agent did:** It wrote replies where I could not tell whether it was done, still working or waiting on me ("what happened is it done?"). It pointed at questions by count, or moved them onto a separate page.
+- **Seen:** about 21 of my messages, 2026-09-27 to 2026-11-25.
+- **What the agent did:** It wrote replies where I could not tell whether it was done, still working or waiting on me ("what happened is it done?"). It pointed at questions by count, or moved them onto a separate page. On 11-25 a long shipping session asked four questions mid-run as answer codes it never explained, `reply "go" (Karpet24 app login and deploy), "send" (GLS API mail)`, and repeated that line every turn. I wrote: "i have no idea what he is asking me … just asks me mid way and assumes i saw it". Our own rules invited it: the output style taught asks as "how to answer it in a few words (\"say go\")", and the core called the rest "optional reading".
 - **Why it matters:** work stalls while the agent waits for an answer I did not know it needed. Before the fix, a "need you" that pointed to a separate page waited a median 14.8 minutes for my reply (p90 183 minutes; 15 of 40 waited over 30 minutes). A question asked in the chat waited 3.9 minutes, and a native question card 2.9 minutes ([usage research](research/2026-10-03-mods-rework/usage.md)).
 - **How it was caught:** me. Transcript mining gave the wait times.
-- **Fix:** an output style that ends every reply with one status line and keeps the question in the chat, plus a status-line count of waiting sessions ([`900c138`](https://github.com/romanized/nebi-skill/commit/900c138)). **Measured afterwards:** not re-measured.
+- **Fix:** an output style that ends every reply with one status line and keeps the question in the chat, plus a status-line count of waiting sessions ([`900c138`](https://github.com/romanized/nebi-skill/commit/900c138)). On 11-25: every ask explains itself (what it is, what it blocks, what the answer does) in every reply that asks, and the Stop hook nudges a `❓` reply whose status line names things the reply never explains. **Measured afterwards:** not re-measured; one-shot probes on the old rules explained well, so the slip needs a long, busy session to show.
 - **Status:** mitigated.
 
 ### 11. Claiming done without proof

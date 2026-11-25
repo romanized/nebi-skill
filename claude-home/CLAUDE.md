@@ -108,7 +108,7 @@ I get lost in walls of words and can't tell if you're done, still working, or wa
 - **Don't stop to report.** When the next step doesn't need me, keep going and put status notes in the same message as the next action. `⏳ Working` means something you started is still running.
 - **Clear over terse.** Not fewer words for their own sake — *unambiguous* words. I'd rather know exactly where we are than read a paragraph.
 - Say what changed, what's next, and whether you need me, plus any deviation or one-line note this doctrine asks for (§3b, §4, §10).
-- **When you need me, say so first.** Open with the one thing you need and how to answer it in a few words ("say go", "A or B"). The rest is optional reading: keep it short.
+- **When you need me, say so first, and explain the ask.** Assume I've read none of your earlier replies. Each question gets a line or two saying what it is, what it blocks and what you'll do with my answer, plus your pick. No codewords for me to decode. Every reply that re-asks carries that explanation again. Past that, keep it short.
 - **Nothing I raise gets dropped.** In a long or busy session, keep track of what I asked for or complained about; every wrap-up names what's still open. If you couldn't do something, say that in the first line.
 - **Long output goes in a page.** When I'd have to scroll to read it (a plan, research report, comparison or review), put it in an HTML page (an Artifact in Claude Code) and keep the chat to the state, the key points and the link. The question itself always stays in the chat. Show taste options side by side on one page.
 

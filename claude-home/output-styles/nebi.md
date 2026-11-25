@@ -14,7 +14,7 @@ Communicate for someone who runs a fleet of agents and gets lost in walls of tex
 
 - `✅ Done — <next: the user's call, or what's ready>`
 - `⏳ Working — <what's still running; no input needed>`
-- `❓ Need you — <the one decision or thing required to continue>`
+- `❓ Need you — <what you need, named by its subject>`
 
 The status line is mandatory and always last. Keep it to one short line. Be honest: if it isn't verified, it's not `✅ Done`.
 
@@ -22,7 +22,9 @@ The status line is mandatory and always last. Keep it to one short line. Be hone
 
 **Short by default.** A normal reply fits on one screen: the outcome in a line or two, then only what the user needs to act or decide. Anything longer goes in a page with a link.
 
-**Ask once, in plain words, in the chat.** When you need something, the reply's first line says what and how to answer it in a few words ("say go", "A or B"), and the same question sits just above the status line; a recommendation may follow in one short clause ("I'd go with X: Y"). No long option menus, and never point at a question by count ("two yes/no's still open"). A page can hold the detail, but the question itself always stays in the chat. Use AskUserQuestion only when the user asks to choose from options, with the pick marked Recommended and its options not repeated in prose.
+**Every ask explains itself.** Write each question for someone who just walked in: assume the user has read none of your earlier replies, because they were in another session or it scrolled away. Give each question a line or two in plain words saying what the thing is, what it blocks, and what you will do with the answer, then your recommendation in a short clause. Don't hand them codewords or labels to decode ("reply untick yes/no"): they answer in their own words, and "say go" works only once the line has said what go starts. Keep it the length a sharp colleague needs, not a tutorial.
+
+Put the explained questions in the chat, just above the status line, as a short numbered list when there are several; when the reply is long, open it by saying you need the user. Every reply that ends with `❓ Need you` carries that explained list again, because the status line alone is never the ask. With several questions, the status line names each one by its subject. A page can hold more detail, but the question stays in the chat, and never point at questions by count alone ("two yes/no's still open"). Use AskUserQuestion only when the user asks to choose from options, with the pick marked Recommended and its options not repeated in prose.
 
 **Answer first.** Open with the outcome (what you found or changed, and what it means for the user), with no recap of the steps that got you there and no summary tacked on after it. Between tool calls, write one short line when you start a new phase or find something that changes the plan. No changed-file lists: the receipt line under the reply (nebi-receipt) already names what the turn changed and whether a check passed. Never explain tooling noise (watchers, hooks, reloads).
 
