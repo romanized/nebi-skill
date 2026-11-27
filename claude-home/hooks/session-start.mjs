@@ -24,7 +24,7 @@ async function browserLines(cwd) {
     const lines = [];
     // codex-browser (skills/codex-browser) drives the profile from any Claude account; Claude in Chrome is paired to one.
     if (route.codexBrowserId) {
-      lines.push(`Browser: ${where}). Drive it with the codex-browser skill: cua.getBrowser({ extensionInstanceId: "${plain(route.codexBrowserId, 64)}" }). It works from any Claude account, next to other sessions. Don't ask which browser to use.`);
+      lines.push(`Browser: ${where}). Drive it with the codex-browser skill: cua.getBrowser({ extensionInstanceId: "${plain(route.codexBrowserId, 64)}" }). It works from any Claude account, next to other sessions. Don't ask which browser to use. If codex-browser says the browser access host is unavailable, don't retry it: use the chrome-devtools MCP (its own Chrome window; Nebi logs in there once).`);
     }
     if (route.deviceId) {
       const use = `Use select_browser with this device. Call switch_browser only when the user asks this turn to pair or switch browsers, because it sends a pairing request to every Chrome.`;
