@@ -3487,6 +3487,149 @@
       "use_when": "A job needs paid data we hold no key for, per call instead of a subscription: SEO and backlinks, keyword volume, competitor ad libraries or ad accounts, people or company enrichment; or its ad and growth research workflows (rea-marketing, rea-growth, make-ugc, lead-signals).",
       "decision": "2026-11-24 Nebi asked to save it as a reference for ads and similar work. Reviewed at fa99c42: treg is a hosted tool registry (\"OpenRouter for agent tools\") at treg.to, 4,200+ endpoints across 140 providers, prepaid per call with $1 free once, plus a team vault that injects registered keys server-side. Ships a Claude Code plugin marketplace (treg skill and MCP, plus workflow plugins ai-ugc-video, doomscroll, jev-memory, lead-signals, make-ugc, rea-growth, rea-marketing, recruit, web-access). License: Apache-2.0 with an added term against offering it as a competing hosted service; self-hosting is allowed. Not installed: nobody needs it yet, and its skill description says to reach for it first for any external data, which would outrank nebi-tools, TikHub and Exa routes; install it in the project that needs it.",
       "notes": "Never run `treg upload` against this Mac: it sends .env keys, skills and CLI credentials to treg's server. Overlaps TikHub (social), Exa/Firecrawl/Scrapling (web) and Higgsfield (generated media); what it adds is SEO, ad-library and enrichment data without per-vendor subscriptions."
+    },
+    {
+      "name": "ChromeDevTools/chrome-devtools-mcp (skills)",
+      "repo": "ChromeDevTools/chrome-devtools-mcp",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "skills": [
+        {
+          "name": "debug-optimize-lcp",
+          "path": "skills/debug-optimize-lcp",
+          "tree": "720de923e2d9af832c9411bd1f105274f4617476",
+          "installed": [
+            "~/.claude/skills/debug-optimize-lcp"
+          ]
+        },
+        {
+          "name": "chrome-devtools",
+          "path": "skills/chrome-devtools",
+          "tree": "01ab3d54ad386f488e9719cb64ba21a1999102ef",
+          "installed": [
+            "~/.claude/skills/chrome-devtools"
+          ]
+        },
+        {
+          "name": "memory-leak-debugging",
+          "path": "skills/memory-leak-debugging",
+          "tree": "2ab3429ffe696d94556ae995122a7783c5e9af02",
+          "installed": [
+            "~/.claude/skills/memory-leak-debugging"
+          ]
+        },
+        {
+          "name": "a11y-debugging",
+          "path": "skills/a11y-debugging",
+          "tree": "83d677e8a36b891d8e0badc37bd60526ff3bbff3",
+          "installed": [
+            "~/.claude/skills/a11y-debugging"
+          ]
+        },
+        {
+          "name": "troubleshooting",
+          "path": "skills/troubleshooting",
+          "tree": "635bf71a666170bd7664eb0914dc2d3e6b6b141f",
+          "installed": [
+            "~/.claude/skills/troubleshooting"
+          ]
+        }
+      ],
+      "pin": "b1e35e3ab1774664dfc66a2cb813a392535fe160",
+      "update": "git clone https://github.com/ChromeDevTools/chrome-devtools-mcp <scratch> && git -C <scratch> checkout <SHA> (use the chrome-devtools-mcp-v<version> tag matching the registered MCP); copy skills/{debug-optimize-lcp,chrome-devtools,memory-leak-debugging,a11y-debugging,troubleshooting} into ~/.claude/skills/<name>",
+      "decision": "2026-11-25 (1oneam-project, user asked for more of the popular Google skills): INSTALL, global (web perf and a11y work recurs across projects). Pinned to tag chrome-devtools-mcp-v1.13.0, matching the registered MCP 1.13.0. Apache-2.0. Read at pin: SKILL.md plus references only (JS snippets for evaluate_script); no scripts, hooks or allowed-tools, nothing phones home. Copied from the reviewed checkout instead of the skills CLI. Skipped chrome-devtools-cli and cookie-debugging (not asked). memory-leak-debugging needs the MCP's --memoryDebugging flag, which the current registration does not pass.",
+      "why": "Google's own workflows for the chrome-devtools MCP: LCP subpart diagnosis, a11y tree checks, heap snapshot diffing, MCP setup failures.",
+      "use_when": "Debugging LCP, accessibility or memory leaks on a live page through the chrome-devtools MCP, or when that MCP fails to start or connect.",
+      "localEdits": "none (folders match the upstream trees; licence recorded here, not copied). chrome-devtools says the browser uses a persistent profile; our registration runs --isolated, which wins."
+    },
+    {
+      "name": "addyosmani/web-quality-skills",
+      "repo": "addyosmani/web-quality-skills",
+      "kind": "skills",
+      "projects": [
+        "1oneam-project"
+      ],
+      "skills": [
+        {
+          "name": "core-web-vitals",
+          "path": "skills/core-web-vitals",
+          "tree": "79f9fe00ddd0855b35e7498e3752c6d02304eb65",
+          "installed": [
+            "~/.claude/skills/core-web-vitals"
+          ]
+        },
+        {
+          "name": "performance",
+          "path": "skills/performance",
+          "tree": "69232372c8ae1d7f927267073560cbc762251662",
+          "installed": [
+            "~/.claude/skills/performance"
+          ]
+        },
+        {
+          "name": "accessibility",
+          "path": "skills/accessibility",
+          "tree": "90b7b38a892c625d19408df411e46cca7ff3819d",
+          "installed": [
+            "~/.claude/skills/accessibility"
+          ]
+        },
+        {
+          "name": "web-quality-audit",
+          "path": "skills/web-quality-audit",
+          "tree": "a04a8ccbc301e12a7a4680886981db4955ebafbb",
+          "installed": [
+            "~/.claude/skills/web-quality-audit"
+          ]
+        }
+      ],
+      "pin": "afa8da942115f2961fdbfa80807ea0b232ff6c00",
+      "update": "git clone https://github.com/addyosmani/web-quality-skills <scratch> && git -C <scratch> checkout <SHA>; copy skills/{core-web-vitals,performance,accessibility,web-quality-audit} into ~/.claude/skills/<name> (folder names must stay unprefixed: the skills link each other by ../<name>/)",
+      "decision": "2026-11-25 (1oneam-project, user asked for more of the popular Google skills): INSTALL, global. Pinned to afa8da9 (v2.0 merge, repo HEAD; the repo has no tags). MIT. Read at pin: four SKILL.md files, references and web-quality-audit/scripts/analyze.sh (read-only grep/jq HTML smoke check, no network). No hooks or allowed-tools. Skipped seo (seo-audit installed) and best-practices (not asked), so web-quality-audit's links to ../seo and ../best-practices dangle. No name clashes, so no prefix. Overlap: performance and core-web-vitals give technique; nebi-hillclimb still owns the measure-first loop.",
+      "why": "Current Lighthouse 13 / CWV / WCAG 2.2 technique with measured-vs-hypothesis discipline.",
+      "use_when": "Auditing or fixing a site's performance, Core Web Vitals or accessibility, or a whole-site quality audit.",
+      "localEdits": "none (folders match the upstream trees; licence recorded here, not copied)."
+    },
+    {
+      "name": "kinerette/claude-code-ecommerce-dark-patterns",
+      "repo": "kinerette/claude-code-ecommerce-dark-patterns",
+      "kind": "skills",
+      "projects": [
+        "cnlsneakers",
+        "withdrawal-desk"
+      ],
+      "status": "saved",
+      "pin": "3fa75712",
+      "use_when": "A one-off EU dark-pattern audit of a Shopify theme or checkout (CRD art. 6(1)(e), 8(2), 22; UCPD; Omnibus): pre-ticked boxes, fake urgency or scarcity, hidden costs, drip pricing, hard cancellation.",
+      "decision": "2026-11-25 (RapidSneakers shipping fixes, skill hunt for delivery-promise copy): SAVED, not installed. Read at 3fa75712 (2026-09-02): SKILL.md, references/patterns.md, references/law.md. MIT. 12 dark patterns with the legal articles, plus a read-only audit script that understands Liquid. Does not cover delivery-time or delivery-promise claims (no CRD art. 18, no misleading delivery estimates), which was the job; new and barely used (0 stars, 3 installs).",
+      "notes": "Before running it, read scripts/audit-dark-patterns.mjs (a bundled node script). Install at project scope (the theme repo) if an audit is wanted. Delivery-promise truth is still checked by hand against Directive 2011/83/EU art. 6(1)(g) and art. 18."
+    },
+    {
+      "name": "bartwaardenburg/postnl-mcp",
+      "repo": "bartwaardenburg/postnl-mcp",
+      "kind": "mcp",
+      "projects": [
+        "withdrawal-desk"
+      ],
+      "status": "declined",
+      "pin": "d2b160c5",
+      "use_when": "Only as a reference for PostNL Shipment v2.2 label, barcode and status request shapes; never as a live MCP.",
+      "decision": "2026-11-25 (RapidSneakers PostNL return label): DECLINED. Community MCP server (npm postnl-mcp 0.2.3), MIT, 0 stars. Read src/tools/shipping.ts and src/postnl-client.ts at d2b160c5: it calls /shipment/v2_2/label, /shipment/v1_1/barcode and /shipment/v2/status/barcode, with no return-label flow (no return product codes, no ReturnBarcode), so it cannot make the return label that was needed. The app's own PostNL client is the right design.",
+      "notes": "Needs live PostNL credentials in MCP env vars. A Pipedream-hosted PostNL MCP also exists; its return-label support was not checked."
+    },
+    {
+      "name": "UPS-API/ups-mcp",
+      "repo": "UPS-API/ups-mcp",
+      "kind": "mcp",
+      "projects": [
+        "withdrawal-desk"
+      ],
+      "status": "declined",
+      "use_when": "Only if a job needs UPS's shipping, rating or tracking API from an agent and the repo has been active again since July 2025.",
+      "decision": "2026-11-25 (UPS tracking-mail complaint, RapidSneakers and ReikoParis): DECLINED. UPS's own Python MCP server for its shipping API, MIT, 33 stars, last push 2025-07-29; listings call it early development. The job was the UPS Shopify app's notification settings, which a shipping-API MCP does not reach.",
+      "notes": "Judged from the GitHub API (stars, pushed_at) and directory listings; its tool list was not read from the repo itself."
     }
   ],
   "docs": [
